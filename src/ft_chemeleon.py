@@ -42,8 +42,10 @@ def build_points(df):
     return pts
 
 
-def train_fold(tr_df, va_df, full_ft, tag):
+def train_fold(tr_df, va_df, full_ft, tag, seed=0):
     featurizer = featurizers.SimpleMoleculeMolGraphFeaturizer()
+    from lightning import seed_everything
+    seed_everything(seed)
     tr_dset = data.MoleculeDataset(build_points(tr_df), featurizer)
     scaler = tr_dset.normalize_targets()
     va_dset = data.MoleculeDataset(build_points(va_df), featurizer)
@@ -89,7 +91,7 @@ def predict(model, smiles_df):
     return np.vstack(outs)[:, : len(ISO)]
 
 
-def main(full_ft):
+def main(full_ft, seed=0, tag_suffix=""):
     df = pd.read_csv(os.path.join(CACHE, "ft_data.csv"))
     test = pd.read_csv(os.path.join(CACHE, "ft_test_smiles.csv"))
     oof = pd.DataFrame(np.nan, index=df.index, columns=ISO)
@@ -99,31 +101,31 @@ def main(full_ft):
         va_df = df[df.fold == f].reset_index(drop=True)
         # internal val split for early stopping
         lab_tr = tr_df[ISO].notna().any(axis=1)
-        rng = np.random.default_rng(f)
+        rng = np.random.default_rng(1000 * seed + f)
         idx = np.where(lab_tr.values)[0]
         val_i = rng.choice(idx, size=int(len(idx) * VAL_FRAC), replace=False)
         fit_df = tr_df.drop(index=val_i).reset_index(drop=True)
         ev_df = tr_df.iloc[val_i].reset_index(drop=True)
-        model = train_fold(fit_df, ev_df, full_ft, f"fold{f}")
+        model = train_fold(fit_df, ev_df, full_ft, f"fold{f}", seed=seed)
         P = predict(model, va_df)
         for j, iso in enumerate(ISO):
             oof.loc[df.fold == f, iso] = P[:, j]
         del model
         torch.cuda.empty_cache()
         print(f"fold {f} done {time.time()-t0:.0f}s", flush=True)
-    tag = "fullft" if full_ft else "frozen"
+    tag = ("fullft" if full_ft else "frozen") + tag_suffix
     oof.insert(0, "SMILES", df["SMILES"])
     oof.insert(1, "fold", df["fold"])
     oof.to_csv(os.path.join(CACHE, f"ft_oof_{tag}.csv"), index=False)
 
     # all-data model -> test preds
     lab = df[ISO].notna().any(axis=1)
-    rng = np.random.default_rng(99)
+    rng = np.random.default_rng(99 + seed)
     idx = np.where(lab.values)[0]
     val_i = rng.choice(idx, size=int(len(idx) * VAL_FRAC), replace=False)
     fit_df = df.drop(index=val_i).reset_index(drop=True)
     ev_df = df.iloc[val_i].reset_index(drop=True)
-    model = train_fold(fit_df, ev_df, full_ft, "all")
+    model = train_fold(fit_df, ev_df, full_ft, "all", seed=seed)
     P = predict(model, test)
     tdf = pd.DataFrame(P, columns=ISO)
     tdf.insert(0, "SMILES", test["SMILES"])
@@ -134,4 +136,6 @@ def main(full_ft):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--full-ft", action="store_true")
-    main(ap.parse_args().full_ft)
+    ap.add_argument("--seed", type=int, default=0)
+    a = ap.parse_args()
+    main(a.full_ft, seed=a.seed, tag_suffix="" if a.seed == 0 else f"_s{a.seed}")
