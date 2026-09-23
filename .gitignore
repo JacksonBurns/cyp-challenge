@@ -8,3 +8,6 @@ external/d_*.json
 cache/chemeleon_emb.parquet
 cache/blend_test_preds.npz
 cache/tdi_emb_oof.npz
+cache/ft_oof_fullft.csv
+cache/oof_x_extemb.csv
+cache/oof_emb2_*.csv

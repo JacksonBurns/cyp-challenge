@@ -414,3 +414,45 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
   3A4 0.382/2D6 0.105 vs base 0.4095/0.153; z-mixtures: 3A4 best 0.4136 @
   w_base=0.7 (small gain), 2D6 best is base-only. TDI keeps base classifier;
   rerun fraction machinery (src/tdi_fraction_opt.py) on any final OOF.
+- Task-5 rerun on the blended OOF (`src/tdi_fraction_opt_v2.py` ->
+  cache/tdi_fraction_optima_v2.json): 3A4 E[MCC] plateau 0.37-0.58 (shipped
+  f=0.43 sits IN the plateau at 0.485); 2D6 optimum f~0.08-0.10 = shipped.
+  No threshold change warranted; ranking is the only lever. Reveal profile
+  (ours precision 0.372/recall 0.556 vs nova 0.708/0.505) = ROC-curve
+  quality, not operating point.
+
+### CheMeLeon FINE-TUNES (plan step 2) - BIG WIN, beats gate standalone
+- `src/ft_chemeleon.py` (chemeleon env): multitask 4-head FFN on CheMeLeon MP,
+  our scaffold folds (seed 0), NaN-masked, targets normalized (UnscaleTransform),
+  10% internal val for EarlyStopping, ~4-9 min/run. Modes: frozen MP (8.4M
+  trainable) and --full-ft (17.1M). OOF -> cache/ft_oof_<tag>.csv,
+  test preds -> cache/ft_test_preds_<tag>.csv (eval via src/eval_ft.py).
+- OOF Pearson (frozen / fullft) vs gate 0.527/0.604/0.399/0.771:
+  frozen 0.449/0.603/0.340/0.745; **fullft 0.527/0.640/0.383/0.766**.
+  Full fine-tune BEATS the gate standalone on 2C9 (+0.036) - contradicts
+  jeremy's "FT hurts" on OUR folds; frozen wins only as mixture filler.
+- **4-way N-mixture** (`src/blendN.py` -> cache/blendN.json; z-space greedy
+  w/ replacement over gbm/emb/ft_frozen/ft_fullft): per-isoform Pearson
+  0.566/0.668/0.442/0.799 vs gate 0.527/0.604/0.399/0.771. Macro rho^2
+  0.400 vs shipped-implied 0.349. Weights: 1A2 {gbm .4, emb .1, ft_full .5};
+  2C9 {gbm .2, emb .15, ft_frz .15, ft_full .5}; 2D6 {gbm .25, emb .5,
+  ft_full .25}; 3A4 {gbm .45, ft_frz .15, ft_full .4}.
+- `src/regression_v3.py` builds **cache/regression_v3_submission.csv** from
+  these weights + reveal placement (moments, F_SPREAD, OOF_TO_BLIND k-adjust
+  folded into rho assumption). PASSES official validator + row-for-row match.
+  Raw test preds all cached (blend_test_preds.npz + ft_test_preds_*.csv) so
+  placement knobs are cheap to re-tune without retraining.
+
+### External features into GBM - NO tabular win (deep route is the way)
+- `src/external_features.py` -> cache/ext_feats_{train,test}.parquet: per-iso
+  external-NN features (ChEMBL median IC50 pIC50 + AID1851 Fit_LogAC50/binary;
+  top1sim/wavg/top10/count7/binrate5). Overlap audit: only 11 train SMILES in
+  ChEMBL, 0 test (src/ext_overlap_audit.py).
+- CV (`src/sweep_ext.py`): ext 0.524/0.601/0.398/0.764 and extemb
+  0.519/0.608/0.431/0.758 - FP+NN features already saturate that signal
+  tabularly. External data should enter via deep multitask (jeremy 06_ script,
+  briford blog) - next lever if time allows.
+- Jeremy's README (cloned /tmp/jeremyscripts): kit OOF 0.614->blind 0.5214
+  WITH blind-moments calibration (matches our mechanism); TDI uses TabICL on
+  frozen chemprop embeddings (TabICL > TabPFN there); AID1851 chosen over
+  ChEMBL pretrain because ChEMBL population is ~1-1.65 log more potent.
