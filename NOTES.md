@@ -456,3 +456,26 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
   WITH blind-moments calibration (matches our mechanism); TDI uses TabICL on
   frozen chemprop embeddings (TabICL > TabPFN there); AID1851 chosen over
   ChEMBL pretrain because ChEMBL population is ~1-1.65 log more potent.
+
+### Session 3 (Sep 23, continued from crashed session) - seed averaging + ext multitask
+- Seed-1 full-FT OOF (cache/ft_oof_fullft_s1.csv, eval_ft.py fullft_s1):
+  0.530/0.655/0.367/0.761 - consistent with seed 0 (0.527/0.640/0.383/0.766).
+- **Seed-averaged full-FT** (z-mean of both seeds; src/blendN_seedavg.py ->
+  cache/blendN_seedavg.json): standalone avg singles 0.540/0.659/0.387/0.772;
+  4-way greedy 0.570/0.676/0.441/0.799, macro R2 0.404 (vs single-seed blendN
+  0.566/0.668/0.442/0.799, macro 0.400). Small but free gain; adopted.
+- `src/regression_final.py`: generalized submission builder - resolves blend
+  npz keys, per-tag ft_test_preds CSVs, and "<tag>_avg" = z-mean across all
+  matching seed files. Built cache/regression_final_submission.csv from
+  blendN_seedavg: PASSES official validators + row-for-row SMILES/name match.
+  Placement knobs identical to regression_v3 (F_SPREAD/OOF_TO_BLIND/moments).
+- `src/ft_ext.py` (fixed placeholder bugs, smoke-tested 1-fold + 2-epoch):
+  12-head multitask full-FT - 4 challenge primaries (inverse-count task wts)
+  + 4 ChEMBL IC50 + 4 AID1851 aux heads (flat 0.3 wt). 29,130-row table
+  (6,145 challenge + 9,159 ChEMBL + 13,826 PubChem); verified label
+  separation (challenge rows never carry aux labels and vice versa). External
+  subsampled to EXT_CAP=9,000/fold for throughput. Queue:
+  tools/queue_ext_tabicl.sh (ft_ext then tdi_tabicl on GPU).
+- `src/tdi_tabicl.py` (jeremy pattern): TabICL classifier on 2048-d CheMeLeon
+  embeddings, scaffold folds, per-iso 2D6/3A4; writes tdi_tabicl_oof.npz +
+  test probs; evaluated vs base classifier OOF + fraction machinery next.

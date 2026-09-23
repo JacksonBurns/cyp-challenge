@@ -1,0 +1,63 @@
+{
+  "CYP1A2": {
+    "pearson": 0.5700904866502402,
+    "weights": {
+      "gbm": 0.4,
+      "emb": 0.05,
+      "ft_fullft_avg": 0.55
+    },
+    "singles": {
+      "gbm": 0.527,
+      "emb": 0.514,
+      "ft_frozen": 0.449,
+      "ft_fullft_avg": 0.54
+    },
+    "gate": 0.5271836965525607
+  },
+  "CYP2C9": {
+    "pearson": 0.6755385509169117,
+    "weights": {
+      "gbm": 0.2,
+      "emb": 0.1,
+      "ft_frozen": 0.1,
+      "ft_fullft_avg": 0.6
+    },
+    "singles": {
+      "gbm": 0.604,
+      "emb": 0.606,
+      "ft_frozen": 0.603,
+      "ft_fullft_avg": 0.659
+    },
+    "gate": 0.6038552905926634
+  },
+  "CYP2D6": {
+    "pearson": 0.4407059818974334,
+    "weights": {
+      "gbm": 0.25,
+      "emb": 0.5,
+      "ft_fullft_avg": 0.25
+    },
+    "singles": {
+      "gbm": 0.399,
+      "emb": 0.427,
+      "ft_frozen": 0.34,
+      "ft_fullft_avg": 0.387
+    },
+    "gate": 0.3993052655616538
+  },
+  "CYP3A4": {
+    "pearson": 0.7994736136922623,
+    "weights": {
+      "gbm": 0.45,
+      "ft_frozen": 0.15,
+      "ft_fullft_avg": 0.4
+    },
+    "singles": {
+      "gbm": 0.771,
+      "emb": 0.756,
+      "ft_frozen": 0.745,
+      "ft_fullft_avg": 0.772
+    },
+    "gate": 0.7712192678192009
+  }
+}

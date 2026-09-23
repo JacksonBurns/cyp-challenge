@@ -1,0 +1,51 @@
+{
+  "CYP1A2": {
+    "weights": {
+      "gbm": 0.4,
+      "emb": 0.05,
+      "ft_fullft_avg": 0.55
+    },
+    "oof_pearson": 0.5700904866502402,
+    "rho_blind_assumed": 0.7525194423783171,
+    "f_spread": 0.6,
+    "placed_mean": 4.412,
+    "placed_sd": 0.7011976164081158
+  },
+  "CYP2C9": {
+    "weights": {
+      "gbm": 0.2,
+      "emb": 0.1,
+      "ft_frozen": 0.1,
+      "ft_fullft_avg": 0.6
+    },
+    "oof_pearson": 0.6755385509169117,
+    "rho_blind_assumed": 0.8309124176278014,
+    "f_spread": 0.6,
+    "placed_mean": 4.83,
+    "placed_sd": 0.5489007430849256
+  },
+  "CYP2D6": {
+    "weights": {
+      "gbm": 0.25,
+      "emb": 0.5,
+      "ft_fullft_avg": 0.25
+    },
+    "oof_pearson": 0.4407059818974334,
+    "rho_blind_assumed": 0.7315719299497394,
+    "f_spread": 1.0,
+    "placed_mean": 3.5699999999999994,
+    "placed_sd": 0.9000000000000001
+  },
+  "CYP3A4": {
+    "weights": {
+      "gbm": 0.45,
+      "ft_frozen": 0.15,
+      "ft_fullft_avg": 0.4
+    },
+    "oof_pearson": 0.7994736136922623,
+    "rho_blind_assumed": 0.8554367666507208,
+    "f_spread": 0.7,
+    "placed_mean": 4.88,
+    "placed_sd": 0.7616808970258017
+  }
+}
