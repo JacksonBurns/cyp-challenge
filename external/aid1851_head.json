@@ -1,0 +1,9 @@
+{
+  "Fault": {
+    "Code": "PUGREST.BadRequest",
+    "Message": "Invalid identifier namespace",
+    "Details": [
+      "Expected identifier namespace: aid, listkey, type, sourceall, target, or activity"
+    ]
+  }
+}

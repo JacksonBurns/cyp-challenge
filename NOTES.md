@@ -278,6 +278,12 @@ for 2D6 blending.
 
 ## 9. INTERIM REVEAL RESULTS (Sep 23 2026) - READ THIS FIRST
 
+> **STATUS UPDATE (Sep 23, post-reveal work session):** Section 9 diagnosis
+> stands. Since then: CheMeLeon frozen embeddings extracted + gated (sec 10),
+> candidate `cache/regression_v2_submission.csv` built (GBM x embeddings
+> mixture + reveal-calibrated spread shrink) - NOT submitted, verifier-passing;
+> external data downloaded (sec 10). Next: external-data features, TDI upgrade.
+
 Files: leaderboard/regression_2026-09-23_interim_reveal.csv (229 entries),
 leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
 
@@ -343,3 +349,68 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
   (c) TDI: retrain on train+external positives, keep fraction machinery.
 - We get exactly ONE more scored data point per track at final. Make the
   last submission the best-calibrated one, keep a safe file.
+
+## 10. POST-REVEAL ITERATION LOG (Sep 23)
+
+### CheMeLeon frozen embeddings (plan step 1) - MIXED, useful only in mixture
+- `src/extract_chemeleon.py` (chemeleon env): frozen BondMessagePassing from
+  `~/chemeleon_nazarov/chemeleon_mp.pt`, mean-pooled 2048-d atom states,
+  6895 compounds in ~6s GPU -> `cache/chemeleon_emb.parquet`. Chemprop 2.3.1
+  API gotchas: `BatchMolGraph.to()` is in-place (returns None); `mp(bmg)`
+  returns the node tensor directly; `agg(H, bmg.batch)`.
+- Naive concat with FP features (`src/sweep_emb.py`): per-isoform OOF Pearson
+  vs config-A baseline (0.523/0.598/0.397/0.767): 1A2 -0.009, 2C9 +0.008,
+  2D6 +0.030, 3A4 -0.011. Emb-only is worse everywhere. Raw 2048-d too noisy
+  for GBM on 1.3-2.3k rows (matches CheMeleon skill's descriptor-bank lesson).
+- Ridge linear probe on embeddings alone: 0.491/0.598/0.363/0.738 - the
+  embeddings alone nearly match the whole FP+desc GBM on 2C9/3A4. Signal is real.
+- **OOF z-space mixture wins everywhere** (`src/emb_blend.py` -> 
+  cache/emb_blend.json): best mix w_gbm in {1A2 0.6: 0.535, 2C9 0.4: 0.617,
+  2D6 0.4: 0.436, 3A4 0.7: 0.773} vs gate 0.527/0.604/0.399/0.771. GATE PASSED
+  on all 4 isoforms (vs shipped blend), biggest gain 2D6 (+0.037).
+- Shipped-config comparison note: gate used the 4cfg x 3seed blend, my CV used
+  config A only; mixture gain therefore understates the shipped-config blend.
+
+### Candidate regression v2 - BUILT, VERIFIER-PASSING, NOT SUBMITTED
+- `src/regression_v2.py`: FP-GBM blend (exact shipped 4cfg x 3seed) + same
+  recipe with embeddings concatenated; z-space mixture per isoform (weights as
+  above); placement = same moments but spread shrunk by F_SPREAD (below);
+  raw per-model test preds saved to `cache/blend_test_preds.npz` (reusable).
+- Output `cache/regression_v2_submission.csv` passes official validator +
+  row-for-row SMILES/name match (`src/verify_submissions.py` now takes paths).
+- OOF rho of the mixture (placement input): 0.535/0.617/0.436/0.773.
+
+### Task 4 placement-shrink analysis (src/shrink_placement.py)
+- Reveal-fit: MA-R2 0.387 with BLIND_MOMENTS exact + our placed sds implies
+  k = rho_blind/rho_oof ~= 1.05-1.09 (incl. 2D6 mean-shift penalty). So
+  OOF_TO_BLIND inflations were ~1.26/1.17/1.58/1.02x too big on average.
+- ST-RAE sims (truth = train label dist + real DRC bands; both train-dist and
+  chemistractive-enriched variants): optimal placement-spread factor is well
+  below 1 for 1A2/2C9 (0.45-0.65), 0.7-0.85 for 3A4, ~1.0 for 2D6
+  (STRAE_MOMENTS). Absolute sim levels do NOT transfer (train-dist OOF-equiv
+  ~0.9-1.5 vs actual 0.677); use the SHAPE (direction+relativity) only.
+- Leaderboard check: at our R2 band (0.35-0.42) entries span ST-RAE
+  0.597-0.782 (n=10) - placement-only headroom ~0.08 at constant ranking.
+- Adopted (in regression_v2): F_SPREAD = {1A2 0.6, 2C9 0.6, 2D6 1.0, 3A4 0.7}.
+  Expected gain: sim shape ~0.05-0.10 isoform-average, discounted for sim
+  transfer uncertainty -> ~0.03-0.06. Ranking gain from v2 mixture adds more.
+- CAUTION: this is expectation-based; final submission should be re-checked
+  against the one scored data point we get at the Nov 3 reveal.
+
+### External data (plan step 4) - DOWNLOADED
+- `external/chembl_cyp_ic50.csv`: 36,015 IC50 activities, 14,453 unique
+  canonical SMILES (CHEMBL3356 1A2 5,924 / CHEMBL3397 2C9 7,520 / CHEMBL289
+  2D6 8,684 / CHEMBL340 3A4 13,887) via paginated API (page cap 1000).
+- `external/pubchem_cyp_qhts_aid1851.csv`: 14,496 CIDs, per-isoform
+  Fit_LogAC50-derived pIC50 + binary Active/Inactive (Veith qHTS), SMILES via
+  PUG REST batched POST with recursive splitting (server 503s are routine).
+- RULE: these are NOT DRC-calibrated - use only for RANKING (pretraining /
+  multitask auxiliary / similar-compound features), never placement moments.
+- Jeremy's public repo cloned at /tmp/jeremyscripts (his AID1851 access
+  pattern + Caruana ensemble + calibration code worth mining for TDI).
+
+### TDI with embeddings - NOT a win by concat
+- `src/run_tdi_emb.py` + `src/tdi_emb_blend.py`: emb-augmented OOF MCC
+  3A4 0.382/2D6 0.105 vs base 0.4095/0.153; z-mixtures: 3A4 best 0.4136 @
+  w_base=0.7 (small gain), 2D6 best is base-only. TDI keeps base classifier;
+  rerun fraction machinery (src/tdi_fraction_opt.py) on any final OOF.

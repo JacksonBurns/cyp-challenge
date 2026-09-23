@@ -1,2 +1,10 @@
 __pycache__/
 *.pyc
+external/chembl_cyp_ic50.csv
+external/pubchem_aid1851_raw.csv
+external/pubchem_cyp_qhts_aid1851.csv
+external/t_*.json
+external/d_*.json
+cache/chemeleon_emb.parquet
+cache/blend_test_preds.npz
+cache/tdi_emb_oof.npz

@@ -1,0 +1,42 @@
+{
+  "CYP1A2": {
+    "rho_oof_blend": null,
+    "rho_mix_oof": 0.534974322053887,
+    "w_gbm": 0.6,
+    "f_spread": 0.6,
+    "target_mean": 4.412,
+    "target_sd": 0.6580055767425516,
+    "placed_mean": 4.412,
+    "placed_sd": 0.6580055767425516
+  },
+  "CYP2C9": {
+    "rho_oof_blend": null,
+    "rho_mix_oof": 0.6167297661190146,
+    "w_gbm": 0.4,
+    "f_spread": 0.6,
+    "target_mean": 4.83,
+    "target_sd": 0.5011163707028119,
+    "placed_mean": 4.83,
+    "placed_sd": 0.5011163707028119
+  },
+  "CYP2D6": {
+    "rho_oof_blend": null,
+    "rho_mix_oof": 0.4360177581420559,
+    "w_gbm": 0.4,
+    "f_spread": 1.0,
+    "target_mean": 3.57,
+    "target_sd": 0.9,
+    "placed_mean": 3.570045018512102,
+    "placed_sd": 0.8998705922638567
+  },
+  "CYP3A4": {
+    "rho_oof_blend": null,
+    "rho_mix_oof": 0.7729871005625383,
+    "w_gbm": 0.7,
+    "f_spread": 0.7,
+    "target_mean": 4.88,
+    "target_sd": 0.736446454344746,
+    "placed_mean": 4.88,
+    "placed_sd": 0.736446454344746
+  }
+}
