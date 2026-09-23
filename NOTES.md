@@ -261,6 +261,9 @@ for 2D6 blending.
      this + Chemprop ensemble got 0.438; also good for TDI pretraining).
   2. Chemprop D-MPNN (or frozen pretrained embeddings as LGBM features -
      jeremy: frozen beats fine-tuned) ensembled with the GBM blend.
+     CheMeLeon too: labels are only ~1.3-2.3k/isoform (small-data regime);
+     see docs/CHEMPROP_CHEMELEON_PLAN.md for the staged experiment plan and
+     local assets (weights + conda envs already on this box).
   3. Finish tdi_shift.py for 2D6 (classifier signal there is weak).
   4. Uncertainty-aware placement: predict INTO the per-compound CI band
      (ST-RAE is zero inside band) rather than z-matching moments.
