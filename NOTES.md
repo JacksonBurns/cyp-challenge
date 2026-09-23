@@ -202,3 +202,73 @@ row-for-row match to TEST-BLINDED (see `src/verify_submissions.py` output):
   different row order. Always rebuild labels via the same
   concat-tdi+emx/drop_duplicates/reindex(Xtr SMILES) as run_tdi.py before
   slicing with a boolean mask, or MCC checks silently compute garbage.
+
+## 8. WHAT WE BUILT + EXPECTATIONS FOR FUTURE ITERATIONS (2026-09-22)
+
+### Models implemented (exact recipe)
+
+**Features** (`src/featurize.py` -> cache/X_{train,test}.parquet, one row per
+SMILES, 3455 cols): RDKit `Descriptors._descList` (nonfinite->0), Morgan
+count FP r=2/2048, Morgan r=3/1024, MACCS 167. No scaling (tree models).
+
+**Regression** (`src/run_regression.py` library; `src/sweep.py` CV;
+`src/final_submit.py` final fit):
+- One LightGBM regressor per isoform on pIC50 direct-inhibition labels.
+  4 configs (differ in n_estimators/LR/leaves/min_child/regularization;
+  canonical values re-injected in cache/cv_sweep.json "params"), 3 seeds
+  each, equal-weight average of the 12 = per-isoform blend.
+- Extra label-derived features: k-NN target features from Morgan-Tanimoto
+  nearest labeled train rows (`nn_block` in run_regression.py) - top-1 NN
+  label, top-10 mean label, Tanimoto sims. MUST self-exclude in CV (q_idx).
+- Validation: scaffold-grouped 5-fold (`make_folds`/`scaffold_groups`,
+  Murcko scaffolds; groups split so each fold gets whole scaffolds).
+- Blend scaffold-OOF MA-ST-RAE 0.743 (per-isoform 1A2 0.821 / 2C9 0.692 /
+  2D6 0.947 / 3A4 0.512). Stacked multitask with TDI-arm aux: worse (0.770).
+- Calibration (THE thing that matters): final fit retrains on all labeled
+  rows, z-scores each isoform's test preds onto BLIND_MOMENTS with
+  target_sd = clip(rho_oof * inflation, 0.05, 0.95) * sd_blind, where
+  rho_oof = OOF Pearson (0.527/0.604/0.399/0.771, cache/oof_pearson.json)
+  and inflation OOF_TO_BLIND = 1.32/1.23/1.66/1.07 (per-isoform fudge,
+  tuned so ST-RAE-optimal on the moment-matched assumption; CYP2D6 targets
+  ST-RAE-specific moments mean 3.57 sd 0.90 instead of the BLIND_MOMENTS
+  3.107/1.599 because 2D6 test is near-random; all preds floored at 1.0).
+
+**TDI classification** (`src/run_tdi.py`): LightGBM classifier per scored
+isoform (2D6 n=1497, 3A4 n=3584 labeled), same features, same scaffold CV.
+Plus per-fold "NN-positive" features: max / top-10-mean / count>0.7
+Tanimoto similarity from query to in-fold labeled POSITIVES (self-excluded).
+Test preds = mean of 5 fold-models (cache/tdi_test_probs.csv). Threshold
+decision is separate (section 7; src/tdi_threshold_analysis.py +
+src/tdi_fraction_opt.py simulate expected MCC over base-rate hypotheses).
+`src/tdi_shift.py` (regress TDI-arm, apply label rule directly) was written
+but never finished - classifier won by default, may still be worth finishing
+for 2D6 blending.
+
+### Expectations (what to beat / how to know if you're doing better)
+- Regression: our scaffold-OOF says 0.743 but BLIND_MOMENTS calibration
+  means the blind number should land ~0.50-0.62 (jeremy's comparable
+  pipeline + same calibration = 0.518). Leaderboard: top 0.38; good
+  ensembles 0.5-0.65; raw GBMs 0.85-0.9. If your OOF improves but a new
+  calibrated submission does not beat the interim reveal of this file,
+  trust the blind number, not OOF.
+- TDI: shipped OOF blend ~0.28; blind MA-MCC expectation 0.25-0.45 with
+  real spread because the 3A4 enrichment thesis (blind pos rate ~0.40) is
+  a modeled bet, not observed. Top 0.494. The interim reveal (Sep 25) will
+  show per-column stats that mostly confirm/deny the thesis - check the
+  actual positive counts before iterating on models.
+- Biggest untried levers, roughly in expected-value order:
+  1. External data: ChEMBL 37 CYP + PubChem AID1851 (briford's blog says
+     this + Chemprop ensemble got 0.438; also good for TDI pretraining).
+  2. Chemprop D-MPNN (or frozen pretrained embeddings as LGBM features -
+     jeremy: frozen beats fine-tuned) ensembled with the GBM blend.
+  3. Finish tdi_shift.py for 2D6 (classifier signal there is weak).
+  4. Uncertainty-aware placement: predict INTO the per-compound CI band
+     (ST-RAE is zero inside band) rather than z-matching moments.
+  5. Re-tune OOF_TO_BLIND inflations against the Sep 25 reveal once we
+     have our own scored blind result (one data point per isoform, but
+     real, vs the analogy we used now).
+- Submission protocol: verify with src/verify_submissions.py (both official
+  validators + row-for-row SMILES/name match) before every upload; 12h
+  cooldown; latest valid submission counts; NEVER submit without Jackson's
+  explicit go-ahead (his HF login on the Submit tab of
+  https://huggingface.co/spaces/openadmet/cyp-challenge).
