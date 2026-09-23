@@ -45,7 +45,7 @@ POOLS = {
         "gbm": ["oof_blend.csv"], "emb": ["oof_emb_concat.csv"],
         "ft_frozen": ["ft_oof_frozen.csv"],
         "ft_fullft_avg": sorted(glob.glob(os.path.join(CACHE, "ft_oof_fullft*.csv"))),
-        "ft_ext": ["ft_oof_ext.csv"],
+        "ft_ext": sorted(glob.glob(os.path.join(CACHE, "ft_oof_ext*.csv"))),
     },
 }
 

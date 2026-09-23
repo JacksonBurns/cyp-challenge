@@ -134,6 +134,7 @@ def predict(model, smiles_df):
 
 
 def main(full_ft, seed, skip_folds=False):
+    sfx = "" if seed == 0 else f"_s{seed}"
     ft, test, allrows = load_tables()
     lab = allrows[COLS].notna().any(axis=1)
     ch_mask = (allrows["_src"] == "challenge").values
@@ -163,13 +164,13 @@ def main(full_ft, seed, skip_folds=False):
             torch.cuda.empty_cache()
             print(f"fold {f} done {time.time()-t0:.0f}s", flush=True)
     else:
-        src = os.path.join(CACHE, "ft_oof_ext.csv")
+        src = os.path.join(CACHE, f"ft_oof_ext{sfx}.csv") if sfx else os.path.join(CACHE, "ft_oof_ext.csv")
         prev = pd.read_csv(src)
         for iso in ISO:
             oof[iso] = prev[iso].values
         print("skipped folds; reused", src, flush=True)
     oof.insert(0, "SMILES", ft["SMILES"])
-    oof.to_csv(os.path.join(CACHE, "ft_oof_ext.csv"), index=False)
+    oof.to_csv(os.path.join(CACHE, f"ft_oof_ext{sfx}.csv"), index=False)
 
     lab_all = allrows[COLS].notna().any(axis=1)
     tr_pool = allrows[ch_mask].reset_index(drop=True)
@@ -184,7 +185,7 @@ def main(full_ft, seed, skip_folds=False):
     P = predict(model, test)
     tdf = pd.DataFrame(P[:, :4], columns=ISO)
     tdf.insert(0, "SMILES", test["SMILES"])
-    tdf.to_csv(os.path.join(CACHE, "ft_test_preds_ext.csv"), index=False)
+    tdf.to_csv(os.path.join(CACHE, f"ft_test_preds_ext{sfx}.csv"), index=False)
     print("DONE", time.time() - t0, flush=True)
 
 

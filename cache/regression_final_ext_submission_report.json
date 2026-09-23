@@ -3,53 +3,52 @@
     "weights": {
       "gbm": 0.35,
       "emb": 0.05,
-      "ft_fullft_avg": 0.25,
-      "ft_ext": 0.35
+      "ft_fullft_avg": 0.2,
+      "ft_ext": 0.4
     },
-    "oof_pearson": 0.5781071240886717,
-    "rho_blind_assumed": 0.7631014037970467,
+    "oof_pearson": 0.5782061390337416,
+    "rho_blind_assumed": 0.763232103524539,
     "f_spread": 0.6,
-    "placed_mean": 4.411999999999999,
-    "placed_sd": 0.7110578880580881
+    "placed_mean": 4.412,
+    "placed_sd": 0.7111796740641654
   },
   "CYP2C9": {
     "weights": {
       "gbm": 0.2,
       "emb": 0.1,
-      "ft_frozen": 0.1,
-      "ft_fullft_avg": 0.35,
-      "ft_ext": 0.25
+      "ft_frozen": 0.05,
+      "ft_fullft_avg": 0.3,
+      "ft_ext": 0.35
     },
-    "oof_pearson": 0.6807228403335464,
-    "rho_blind_assumed": 0.837289093610262,
+    "oof_pearson": 0.6831399342076906,
+    "rho_blind_assumed": 0.8402621190754594,
     "f_spread": 0.6,
     "placed_mean": 4.83,
-    "placed_sd": 0.5531131752389391
+    "placed_sd": 0.5550771558612485
   },
   "CYP2D6": {
     "weights": {
       "gbm": 0.25,
-      "emb": 0.5,
-      "ft_fullft_avg": 0.05,
-      "ft_ext": 0.2
+      "emb": 0.4,
+      "ft_ext": 0.35
     },
-    "oof_pearson": 0.44380969788220775,
-    "rho_blind_assumed": 0.7367240984844649,
+    "oof_pearson": 0.44870463382462655,
+    "rho_blind_assumed": 0.7448496921488801,
     "f_spread": 1.0,
-    "placed_mean": 3.57,
-    "placed_sd": 0.9
+    "placed_mean": 3.5699999999999994,
+    "placed_sd": 0.9000000000000001
   },
   "CYP3A4": {
     "weights": {
       "gbm": 0.4,
-      "ft_frozen": 0.15,
+      "ft_frozen": 0.1,
       "ft_fullft_avg": 0.2,
-      "ft_ext": 0.25
+      "ft_ext": 0.3
     },
-    "oof_pearson": 0.8032444593831826,
-    "rho_blind_assumed": 0.8594715715400054,
+    "oof_pearson": 0.8035854789497116,
+    "rho_blind_assumed": 0.8598364624761914,
     "f_spread": 0.7,
     "placed_mean": 4.88,
-    "placed_sd": 0.7652734872992207
+    "placed_sd": 0.7655983861888008
   }
 }

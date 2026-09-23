@@ -39,8 +39,10 @@ def zavg(files):
 
 
 CANDS["ft_fullft_avg"] = sorted(glob.glob(os.path.join(CACHE, "ft_oof_fullft*.csv")))
-if os.path.exists(os.path.join(CACHE, "ft_oof_ext.csv")):
-    CANDS["ft_ext"] = [os.path.join(CACHE, "ft_oof_ext.csv")]
+import glob as _g
+ext_files = sorted(_g.glob(os.path.join(CACHE, "ft_oof_ext*.csv")))
+if ext_files:
+    CANDS["ft_ext"] = ext_files
 
 gate = json.load(open(os.path.join(CACHE, "oof_pearson.json")))
 oofs = {k: zavg([f if os.path.isabs(f) else os.path.join(CACHE, f) for f in fs])

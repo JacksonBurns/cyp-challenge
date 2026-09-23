@@ -37,17 +37,19 @@ def ft_test_pred(key, test_smiles):
     """Resolve a candidate's test predictions; seed-averaged in z-space."""
     tag = key[len(FT_PREFIX):]
     if tag.endswith("_avg"):
-        base = tag[:-4]
-        files = sorted(glob.glob(os.path.join(CACHE, f"ft_test_preds_{base}*.csv")))
-        assert files, f"no test preds for {base}"
-        z = None
-        for f in files:
-            p = pd.read_csv(f).set_index("SMILES")[ISO].reindex(test_smiles).values
-            zz = (p - p.mean(0)) / p.std(0)
-            z = zz if z is None else z + zz
-        return z / len(files)
-    p = pd.read_csv(os.path.join(CACHE, f"ft_test_preds_{tag}.csv")).set_index("SMILES")
-    return p[ISO].reindex(test_smiles).values
+        tag = tag[:-4]
+    # seed-averaging is automatic: any tag matching multiple files is z-averaged
+    files = sorted(glob.glob(os.path.join(CACHE, f"ft_test_preds_{tag}*.csv")))
+    assert files, f"no test preds for {tag}"
+    if len(files) == 1:
+        p = pd.read_csv(files[0]).set_index("SMILES")
+        return p[ISO].reindex(test_smiles).values
+    z = None
+    for f in files:
+        p = pd.read_csv(f).set_index("SMILES")[ISO].reindex(test_smiles).values
+        zz = (p - p.mean(0)) / p.std(0)
+        z = zz if z is None else z + zz
+    return z / len(files)
 
 
 def main(blend_path, out_path):

@@ -526,3 +526,13 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
   file raw_regression_submission.csv (scored 0.677).
 - TDI: cache/tdi_submission_v2.csv (3-way blend) [best]; tdi_submission.csv
   (shipped 0.315 baseline).
+
+### ft_ext seed-1 + final candidate refresh
+- ft_ext seed-1 done (auto-suffixed outputs _s1; blendN_ext + regression_final
+  now seed-average ext automatically via glob). ext seed-avg singles
+  0.545/0.653/0.407/0.773; 5-way blend 0.578/0.683/0.449/0.804,
+  **macro R2 0.412**; nested-honest 0.4127 (selection-overfit-free).
+- regression_final_ext_submission.csv rebuilt on the 2-seed ext (verified).
+- GPU lesson (Hermes): foreground terminal caps at ~420s and SIGTERM's the
+  child; long GPU jobs MUST use terminal(background=true) - wrappers that
+  exit also SIGTERM queued children, so one script per tracked process.
