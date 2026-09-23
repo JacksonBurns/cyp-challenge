@@ -536,3 +536,70 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
 - GPU lesson (Hermes): foreground terminal caps at ~420s and SIGTERM's the
   child; long GPU jobs MUST use terminal(background=true) - wrappers that
   exit also SIGTERM queued children, so one script per tracked process.
+
+## 11. SECOND SCORED POINT - the v3 blend was submitted (Sep 23 evening)
+
+Jackson submitted cache/regression_final_ext_submission.csv and
+cache/tdi_submission_v2.csv at 19:41 UTC (leaderboard "Submitted" timestamps;
+the live entries confirm our blend is what is on the board, Open Code = Yes,
+repo pinned at ee5ab9a). New leaderboards saved:
+leaderboard/{regression,classification}_2026-09-23_final_reveal.csv.
+
+### Our scored numbers (238 reg / 125 TDI entries now)
+- Regression: rank 73/238, MA-ST-RAE 0.5870, MAE 0.760, R2 0.4472,
+  Spearman 0.6799, Kendall 0.5078. (was 93/229: ST-RAE 0.6766, R2 0.387)
+- TDI: rank 39/125, MA-MCC 0.3419, acc 0.8115, prec 0.4079, rec 0.5368,
+  F1 0.4613. (was 60/121: MCC 0.3149)
+- Gains delivered: regression ST-RAE -0.090, R2 +0.060; TDI MCC +0.027.
+  Both slightly UNDER the OOF prediction (blend macro R2 0.412 vs realized
+  R2 0.4472 -> k = sqrt(0.4472/0.412) = 1.042, consistent with the first
+  scored point k=1.053; but TDI OOF blend MCC 0.398 -> blind 0.342, so TDI
+  transfer ratio ~0.86 - blend gains do NOT fully transfer on classification).
+
+### Regression diagnosis (2 scored points now)
+- ST-RAE vs R2 field fit (R2 in [0.40,0.50]): ST-RAE ~ 0.695 - 0.210*R2;
+  at our R2 the fit predicts 0.601, we score 0.587 - PLACEMENT IS NOW
+  SLIGHTLY BETTER THAN FIELD-AVERAGE. Placement headroom is exhausted
+  (~0.01-0.02); do not spend more time on shrink knobs. F_SPREAD as shipped
+  was validated empirically.
+- Top-12 all have Spearman 0.75-0.79 / R2 0.58-0.68. We are 0.680/0.447.
+  The entire remaining gap (0.587 -> ~0.43 = top-12 band) is RANKING:
+  need per-isoform Pearson ~+0.08-0.10 (Spearman 0.68 -> 0.75+).
+- OOF says the current blend reaches 0.578/0.683/0.449/0.804 (macro rho^2
+  0.412). Field top implies test-equivalent Pearson ~0.76-0.80 macro.
+  Gap to close: 1A2 +0.14, 2C9 +0.10, 2D6 +0.14, 3A4 +0.08 (2D6 is the
+  weakest head, both abs and relative to field).
+
+### TDI diagnosis
+- Top band MCC 0.41-0.51 (nova 0.513). We are 0.342 - still mid-pack,
+  above baselines (LGBM 0.288, TabICL-baseline 0.325). Profile prec 0.408/
+  rec 0.537 vs top-10 ~0.55-0.71 prec: our ranking quality at the chosen
+  operating point still over-predicts positives. With better ranking,
+  retune fraction (tdi_fraction_opt_v3) - fraction stays second-order.
+- The blend gains (OOF +0.01-0.02) were real but small; the step function
+  on TDI is what the top entries exploit (nova: high precision at f~0.5;
+  public reports to mine: TeamPozeSCAF Google doc, jeremy repo - he now
+  scores 0.402 TDI / 0.518 reg, both open code).
+
+### Nov 3 game plan (final submission = latest valid counts; 1/12h)
+Current submitted files are OUR BEST and are ON THE BOARD. Everything below
+must beat them on OOF before swapping in; keep them safe otherwise.
+1. Regression ranking (priority 1, biggest measurable headroom):
+   - ft_ext seeds 3-5 (cheap, proven; seed-avg gain still open).
+   - ChEMBL pretrain-then-finetune (the big untried lever; pretrain the
+     CheMeLeon MP on the 36k ChEMBL CYP pIC50 multitask, then fine-tune
+     heads on challenge data; population-shift caveat per jeremy README).
+   - D-MPNN (chemprop) with external multitask aux as a 6th blend member.
+   - Target: blend macro rho^2 >= 0.45 (per-iso ~0.62/0.71/0.52/0.82).
+2. TDI ranking (priority 2): retrain base classifier on train+external
+   positives (AID1851 binaries - near-mandatory, all top entries have it);
+   add TabICL-on-emb as full blend member with per-fold nested weights;
+   consider jeremy's TabICL-on-chemprop-emb route directly (his 0.402).
+3. Placement: leave regression placement machinery AS IS unless OOF rho
+   moves >0.03 (then re-fit k on the two scored points: k ~ 1.04-1.05,
+   NOT the original 1.2-1.6 OOF_TO_BLIND; recompute F_SPREAD from
+   shrink sims at the new rho). Re-verify with official validators +
+   src/verify_submissions.py, 12h cadence, final submit >= Nov 1.
+4. Decision rule at Nov 3: submit the highest-OOF verified candidate;
+   if nothing beats current, do not resubmit (latest counts - the two
+   files on the board are already the best candidates built so far).
