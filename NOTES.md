@@ -479,3 +479,19 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
 - `src/tdi_tabicl.py` (jeremy pattern): TabICL classifier on 2048-d CheMeLeon
   embeddings, scaffold folds, per-iso 2D6/3A4; writes tdi_tabicl_oof.npz +
   test probs; evaluated vs base classifier OOF + fraction machinery next.
+
+### CheMeLeon external-aux multitask ft_ext - WIN, new best blend
+- src/ft_ext.py run completed (full-FT, 12 heads): inf crash root cause was 5
+  ChEMBL standard_value=0 rows -> log10 -> inf (now filtered; pyarrow also
+  installed into tabicl-chemeleon env which was missing parquet support).
+- OOF (src/eval_ft.py ext): 0.534/0.630/0.378/0.761 standalone - weaker than
+  seed-avg full-FT on 2C9/3A4 but complements it better.
+- 5-way blend (src/blendN_ext.py -> cache/blendN_ext.json):
+  **0.578/0.681/0.444/0.803, macro R2 0.410** (seed-avg 4-way was 0.404,
+  single-seed 0.400, shipped-implied 0.349). ft_ext takes 20-35% weight on
+  every isoform.
+- cache/regression_final_ext_submission.csv BUILT (regression_final.py
+  --blend blendN_ext.json) - PASSES official validators + row-for-row match.
+- GPU queue lesson: background wrapper got SIGTERM'd mid-queue once (fold OOF
+  survived because oof.to_csv happens before the all-data model; added
+  --skip-folds reuse flag to avoid redoing 5 folds).

@@ -51,6 +51,7 @@ def load_tables():
     ch["standard_value"] = pd.to_numeric(ch["standard_value"], errors="coerce")
     u = ch["standard_units"].astype(str).str.strip().str.lower()
     ch = ch[u.isin(["nm"])].dropna(subset=["standard_value", "canonical_smiles"])
+    ch = ch[ch["standard_value"] > 0]
     ch["pic50"] = 9.0 - np.log10(ch["standard_value"])
     g = ch.groupby(["isoform", "canonical_smiles"])["pic50"].median().reset_index()
     wide = g.pivot(index="canonical_smiles", columns="isoform", values="pic50")
@@ -132,7 +133,7 @@ def predict(model, smiles_df):
     return np.vstack(outs)[:, : len(COLS)]
 
 
-def main(full_ft, seed):
+def main(full_ft, seed, skip_folds=False):
     ft, test, allrows = load_tables()
     lab = allrows[COLS].notna().any(axis=1)
     ch_mask = (allrows["_src"] == "challenge").values
@@ -140,26 +141,33 @@ def main(full_ft, seed):
     oof = pd.DataFrame(np.nan, index=ft.index, columns=ISO)
     folds = ft["fold"].values
     t0 = time.time()
-    for f in range(5):
-        va_idx = np.where(folds == f)[0]
-        va_df = allrows[ch_mask].iloc[va_idx]
-        tr_pool = allrows[ch_mask].drop(index=va_idx).reset_index(drop=True)
-        tr_extra = allrows[~ch_mask & lab]
-        rng = np.random.default_rng(1000 * seed + f)
-        if len(tr_extra) > EXT_CAP:
-            keep = rng.choice(len(tr_extra), EXT_CAP, replace=False)
-            tr_extra = tr_extra.iloc[keep]
-        lab_tr = tr_pool[COLS].notna().any(axis=1).values
-        vi = rng.choice(np.where(lab_tr)[0], size=int(lab_tr.sum() * VAL_FRAC), replace=False)
-        fit_df = pd.concat([tr_pool.drop(index=vi), tr_extra], ignore_index=True)
-        ev_df = tr_pool.iloc[vi]
-        model = train_model(fit_df, ev_df, full_ft, f"fold{f}", seed=seed)
-        P = predict(model, va_df)
-        for j, iso in enumerate(ISO):
-            oof.loc[va_idx, iso] = P[:, j]
-        del model
-        torch.cuda.empty_cache()
-        print(f"fold {f} done {time.time()-t0:.0f}s", flush=True)
+    if not skip_folds:
+        for f in range(5):
+            va_idx = np.where(folds == f)[0]
+            va_df = allrows[ch_mask].iloc[va_idx]
+            tr_pool = allrows[ch_mask].drop(index=va_idx).reset_index(drop=True)
+            tr_extra = allrows[~ch_mask & lab]
+            rng = np.random.default_rng(1000 * seed + f)
+            if len(tr_extra) > EXT_CAP:
+                keep = rng.choice(len(tr_extra), EXT_CAP, replace=False)
+                tr_extra = tr_extra.iloc[keep]
+            lab_tr = tr_pool[COLS].notna().any(axis=1).values
+            vi = rng.choice(np.where(lab_tr)[0], size=int(lab_tr.sum() * VAL_FRAC), replace=False)
+            fit_df = pd.concat([tr_pool.drop(index=vi), tr_extra], ignore_index=True)
+            ev_df = tr_pool.iloc[vi]
+            model = train_model(fit_df, ev_df, full_ft, f"fold{f}", seed=seed)
+            P = predict(model, va_df)
+            for j, iso in enumerate(ISO):
+                oof.loc[va_idx, iso] = P[:, j]
+            del model
+            torch.cuda.empty_cache()
+            print(f"fold {f} done {time.time()-t0:.0f}s", flush=True)
+    else:
+        src = os.path.join(CACHE, "ft_oof_ext.csv")
+        prev = pd.read_csv(src)
+        for iso in ISO:
+            oof[iso] = prev[iso].values
+        print("skipped folds; reused", src, flush=True)
     oof.insert(0, "SMILES", ft["SMILES"])
     oof.to_csv(os.path.join(CACHE, "ft_oof_ext.csv"), index=False)
 
@@ -168,7 +176,7 @@ def main(full_ft, seed):
     rng = np.random.default_rng(99 + seed)
     l = tr_pool[COLS].notna().any(axis=1).values
     vi = rng.choice(np.where(l)[0], size=int(l.sum() * VAL_FRAC), replace=False)
-    ext = allrows[~ch_mask.values & lab_all.values]
+    ext = allrows[(~ch_mask) & lab_all.values]
     if len(ext) > EXT_CAP:
         ext = ext.iloc[rng.choice(len(ext), EXT_CAP, replace=False)]
     fit_df = pd.concat([tr_pool.drop(index=vi), ext], ignore_index=True)
@@ -184,5 +192,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--full-ft", action="store_true")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--skip-folds", action="store_true",
+                    help="reuse cache/ft_oof_ext.csv, only train the all-data model")
     a = ap.parse_args()
-    main(a.full_ft, a.seed)
+    main(a.full_ft, a.seed, skip_folds=a.skip_folds)
