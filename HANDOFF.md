@@ -1,5 +1,11 @@
 # HANDOFF - cyp-challenge (2026-09-22, ~17:30 local)
 
+**SUPERSEDED PARTIALLY - SEE NOTES.md SECTION 9 FIRST (Sep 23 interim
+reveal):** interim scored: regression 0.6766 MA-ST-RAE (rank 93/229),
+TDI 0.3149 MA-MCC (rank 60/121). Diagnosis: placement works, ranking is
+the gap; external data + deep embeddings now mandatory for top-40.
+Updated agent handoff prompt lives at docs/NEXT_AGENT_PROMPT.md.
+
 Interim-submission deadline: **Sep 24 2026**. Final closes Nov 3 2026.
 12h cooldown between submissions; DO NOT SUBMIT without Jackson's explicit go-ahead
 (needs his HF account on the Submit tab of https://huggingface.co/spaces/openadmet/cyp-challenge).

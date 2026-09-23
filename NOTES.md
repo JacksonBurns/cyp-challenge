@@ -275,3 +275,71 @@ for 2D6 blending.
   cooldown; latest valid submission counts; NEVER submit without Jackson's
   explicit go-ahead (his HF login on the Submit tab of
   https://huggingface.co/spaces/openadmet/cyp-challenge).
+
+## 9. INTERIM REVEAL RESULTS (Sep 23 2026) - READ THIS FIRST
+
+Files: leaderboard/regression_2026-09-23_interim_reveal.csv (229 entries),
+leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
+
+### Our scored interim numbers
+- Regression: JacksonBurns rank 93/229, MA-ST-RAE 0.6766, MAE 0.808,
+  MA-R2 0.387, MA-Spearman 0.616.
+- Classification: rank 60/121, MA-MCC 0.3149, precision 0.372, recall 0.556,
+  accuracy 0.789.
+
+### Diagnosis - regression (what the reveal actually tells us)
+- The calibration thesis WORKED directionally: raw-GBM-class is ~0.85-0.9,
+  our uncalibrated-scaffold-OOF equivalent sits near 0.74, and our scored
+  blind is 0.677. But 0.5-0.62 was optimistic; we expected jeremy-with-our-
+  ranking, got a mid-table rank.
+- KEY DIAGNOSTIC: our blind MA-R2 (0.387) ~= our OOF Pearson^2 (mean of
+  squared per-isoform OOF Pearson = 0.349). R2 under affine placement is
+  maximized at corr^2, so (a) our BLIND corr ~ OOF corr (ratio ~1.05, NOT
+  the 1.32 we assumed in OOF_TO_BLIND), and (b) our placement is already
+  near R2-optimal. The remaining gap is 100% RANKING quality:
+  top field Spearman 0.75-0.79 / R2 0.62-0.68 (preheat 0.374, wbot 0.380,
+  testcyp 0.389); jeremy 0.734/0.602; us 0.616/0.387. No placement trick
+  closes an 0.62 vs 0.75 correlation gap - only better models do.
+- Concrete correction for next submission: OOF_TO_BLIND inflations are
+  overestimated by ~1.2-1.3x on average (macro-averaged, so per-isoform
+  caveat); our preds were slightly over-dispersed. Re-centering them down
+  by that factor may win 0.02-0.05 ST-RAE cheaply, but ranking is the
+  main event.
+- Leaderboard pattern: top ~20 ALL have external data (briford 0.438 blog
+  open; C_CYPher-cypext-* 0.443; CYPext-x-endpt 0.473) or non-fp deep
+  features. 'random-forest' 0.447 and 'SVM' 0.464 show well-calibrated
+  classic models + presumably external data reach 0.44-0.46.
+  CheMeLeon evidence: KalenJosifovski 'CYP CheMeLeon MT+TDI TabPFN' scored
+  0.631 (better than us, Spearman 0.689 vs our 0.616) - CheMeLeon
+  embeddings add real signal on this task; baseline raw CheMeLeon is 0.834.
+
+### Diagnosis - classification
+- 0.3149 is mid-pack: above LGBM-baseline (0.288), ~= cypster's
+  'LightGBM ECFP4+RDKit multi-seed TDI v2' (0.316, same family as ours),
+  ~0.09 below jeremy (0.402, open code), 0.20 below nova (0.513).
+- Our profile recall 0.556 / precision 0.372 vs nova 0.505/0.708:
+  we over-predict positives relative to our ranking quality. The 3A4
+  enrichment bet (43% fraction) was NOT confirmed as wrong nor right -
+  recall/precision are macro, so true per-isoform positive rates are NOT
+  recoverable from this CSV. But at our ROC the fraction is second-order;
+  ranking dominates. Do not re-litigate 43% vs 21% until the classifier
+  gets stronger; retune fraction via the same expected-MCC machinery
+  (src/tdi_fraction_opt.py) with any new OOF.
+- Public method docs to mine: jeremy github (jeremycheminf/openadmet_scripts
+  /CYP_Challenge, regression+TDI), TeamPozeSCAF Google Doc (TDI 0.449),
+  briford supercowpowers blog (regression 0.438), Lizard Wizard Gizzard
+  METHOD.md (TDI 0.284 - what not to do: recall 0.73/precision 0.30).
+
+### Revised expectations & priorities (Nov 3 final)
+- Getting to 0.45 reg / 0.42 TDI requires BOTH: (1) external data
+  (ChEMBL 37 CYP + PubChem AID1851) - this is now near-mandatory, every
+  top-20 entry has it; (2) ranking upgrade from D-MPNN/CheMeLeon
+  embeddings stacked on the GBM (KalenJosifovski proves CheMeLeon lifts
+  ranking: Spearman +0.07 over our recipe with roughly TabPFN head).
+- docs/CHEMPROP_CHEMELEON_PLAN.md stays the plan; its step 1 (frozen
+  embeddings -> LGBM, must beat per-isoform OOF Pearson) is still first.
+- Cheap wins to try in parallel: (a) recenter OOF_TO_BLIND by /1.25;
+  (b) per-isoform placement search using our scored point + BLIND_MOMENTS;
+  (c) TDI: retrain on train+external positives, keep fraction machinery.
+- We get exactly ONE more scored data point per track at final. Make the
+  last submission the best-calibrated one, keep a safe file.
