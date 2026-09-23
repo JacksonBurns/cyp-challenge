@@ -495,3 +495,34 @@ leaderboard/classification_2026-09-23_interim_reveal.csv (121 entries).
 - GPU queue lesson: background wrapper got SIGTERM'd mid-queue once (fold OOF
   survived because oof.to_csv happens before the all-data model; added
   --skip-folds reuse flag to avoid redoing 5 folds).
+
+### TDI TabICL + 3-way blend - WIN (both isoforms)
+- src/tdi_tabicl.py OOM-killed by memory cgroup at 2048-d embeddings (kernel
+  log: "Memory cgroup out of memory"); fixed with unsupervised PCA-256
+  (whitened, fit on train+test embeddings only) + n_estimators=4. Runs ~35 min.
+- TabICL standalone OOF MCC: 2D6 0.141, 3A4 0.372 (both below base).
+- 3-way z-blend (src/tdi_blend3.py -> cache/tdi_blend3.json):
+  2D6 0.9*base+0.1*emb -> MCC 0.161 (base 0.150) @ f=0.08
+  3A4 0.6*base+0.2*emb+0.2*tabicl -> MCC 0.427 (base 0.407) @ f=0.36
+- Fraction machinery rerun on the blended score (src/tdi_fraction_opt_v3.py):
+  2D6 f=0.08 confirmed (E[MCC] 0.156); 3A4 plateau 0.36-0.50, minimax 0.38 ->
+  chose 0.36 (OOF-argmax of blend also 0.36; shipped v1 used 0.43).
+- cache/tdi_submission_v2.csv BUILT (src/make_tdi_submission_v2.py: same
+  weights, test z-space) - PASSES official validator + row-for-row match.
+  Note: blend weight selection is OOF-argmax on ~600/2400 labeled rows;
+  weight gains are small (+0.01-0.02 MCC) so treated as mild, direction is
+  robust (blends beat standalone everywhere).
+
+### Nested blend check (selection-overfit audit)
+- src/blend_nested_check.py: per-fold greedy weight selection scored on the
+  held-out fold (Fisher-averaged). Honest macro R2: 4way_seedavg 0.4063 vs
+  5way_ext 0.4106 - matches the in-sample blendN_ext numbers (0.404/0.410):
+  the greedy weights barely overfit, ext gain is real.
+
+### CANDIDATE FILES (all verified, NOT submitted - need Jackson's go-ahead)
+- Regression: cache/regression_final_ext_submission.csv (5-way, macro R2
+  0.410 honest) [best]; regression_final_submission.csv (4-way seed-avg,
+  0.404); regression_v3_submission.csv (single-seed, 0.400); interim safe
+  file raw_regression_submission.csv (scored 0.677).
+- TDI: cache/tdi_submission_v2.csv (3-way blend) [best]; tdi_submission.csv
+  (shipped 0.315 baseline).

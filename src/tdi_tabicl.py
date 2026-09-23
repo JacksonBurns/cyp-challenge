@@ -82,8 +82,18 @@ def main():
     Y = lab.reindex(Xtr["SMILES"])
 
     emb = pd.read_parquet(os.path.join(CACHE, "chemeleon_emb.parquet")).set_index("SMILES")
-    Etr = emb.reindex(Xtr["SMILES"]).fillna(0.0).values.astype(np.float32)
-    Ete = emb.reindex(Xte["SMILES"]).fillna(0.0).values.astype(np.float32)
+    Etr_full = emb.reindex(Xtr["SMILES"]).fillna(0.0).values.astype(np.float32)
+    Ete_full = emb.reindex(Xte["SMILES"]).fillna(0.0).values.astype(np.float32)
+    # PCA to tame TabICL memory (cgroup OOM at 2048-d). Unsupervised, no labels.
+    from sklearn.decomposition import PCA
+    npc = 256
+    pca = PCA(n_components=npc, whiten=True, random_state=0)
+    allE = np.vstack([Etr_full, Ete_full])
+    mask = ~np.all(np.isnan(allE), axis=1)
+    pca.fit(allE[mask])
+    Etr = np.nan_to_num(pca.transform(Etr_full)).astype(np.float32)
+    Ete = np.nan_to_num(pca.transform(Ete_full)).astype(np.float32)
+    del allE, Etr_full, Ete_full, emb
     folds = make_folds(scaffold_groups(Xtr["SMILES"].tolist()), seed=7)
 
     oof = {i: np.full(len(Xtr), np.nan) for i in ISO}
@@ -95,7 +105,7 @@ def main():
             tr = np.where((folds != f) & l)[0]
             va = np.where((folds == f) & l)[0]
             yy = np.array([1 if bool(v) else 0 for v in y[tr]])
-            clf = TabICLClassifier(n_estimators=8, random_state=42, device="cuda")
+            clf = TabICLClassifier(n_estimators=4, random_state=42, device="cuda")
             clf.fit(Etr[tr], yy)
             oof[iso][va] = clf.predict_proba(Etr[va])[:, 1]
             tepro[iso].append(clf.predict_proba(Ete)[:, 1])
