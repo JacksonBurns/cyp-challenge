@@ -52,7 +52,7 @@ def extract(ckpt, smiles):
         for batch in loader:
             bmg, V_d, X_d = batch[0], batch[1], batch[2]
             bmg.to(dev)
-            H = model.agg(model.message_passing(bmg, V_d, X_d), bmg.batch)
+            H = model.agg(model.message_passing(bmg, V_d), bmg.batch)
             outs.append(H.detach().cpu().numpy())
     del model
     torch.cuda.empty_cache()

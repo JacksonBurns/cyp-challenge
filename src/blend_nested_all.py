@@ -47,11 +47,14 @@ FAMS = {
     "ft_ext": g("ext"),
     "ft_pre": g("pre"),
     "ft_dmpnn": g("dmpnn"),
+    "ft_cpmed": g("cpmed"),
+    "ft_cpchm": g("cpchm"),
 }
 POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "all7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn"],
          "all6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_dmpnn"],
-         "pre6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre"]}
+         "pre6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre"],
+         "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm"]}
 
 
 def greedy(zs, y, m, rounds=12):

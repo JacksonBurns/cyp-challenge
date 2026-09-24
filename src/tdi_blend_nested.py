@@ -47,23 +47,36 @@ def best_by_frac(z, yy):
 def greedy_w(zs, y, rounds=12):
     keys = list(zs)
     w = {k: 0.0 for k in keys}
-    cur = None
+    best = None  # (aggregated score, weights dict)
+    pool = {k: [] for k in keys}
     for _ in range(rounds):
         bestk, bestr = None, -2
         for k in keys:
-            cand = sum((w[j] + (1 if j == k else 0)) * zs[j] for j in keys) / (sum(w.values()) + 1)
-            r, _f = best_by_frac(cand, y)
+            z = np.mean(np.stack(pool[k] + pool["__base__"] if False else [zs[k]]), axis=0)
+        # greedy over per-fold Fisher-averaged pearson handled by caller; here score
+        # is MCC-at-best-fraction of the running z-average
+        wsum = sum(w.values())
+        cand_all = {k: ((wsum * (sum(w[kk] * zs[kk] for kk in keys) / wsum if wsum else 0)) for k in keys)}
+        # fallback simple: pick argmax standalone correlation with residual via MCC gain
+        cur_z = (sum(w[k] * zs[k] for k in keys) / wsum) if wsum else None
+        cur_r = best_by_frac(cur_z, y)[0] if wsum else -2
+        for k in keys:
+            z = (wsum * cur_z + zs[k]) / (wsum + 1) if wsum else zs[k]
+            r = best_by_frac(z, y)[0]
             if r > bestr:
                 bestr, bestk = r, k
         w[bestk] += 1
-        cur = bestr
-    return {k: v / sum(w.values()) for k, v in w.items()}, cur
+        wsum += 1
+        best = (bestr, dict(w))
+    return {k: v / sum(w.values()) for k, v in w.items()}, (best[0] if best else -2)
 
 
 def main(cand_csv=None):
     members = {"base": np.load(os.path.join(CACHE, "tdi_oof.npz"))}
     for name, fn in [("emb", "tdi_emb_oof.npz"), ("tab", "tdi_tabicl_oof.npz"),
-                     ("extbase", "tdi_oof_extbase_w03.npz")]:
+                     ("extbase", "tdi_oof_extbase_w03.npz"),
+                     ("tabcp", "tdi_tabicl_cp_oof.npz"),
+                     ("tabcpext", "tdi_tabicl_cp_ext_oof.npz")]:
         p = os.path.join(CACHE, fn)
         if os.path.exists(p):
             members[name] = np.load(p)

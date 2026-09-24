@@ -44,8 +44,7 @@ def extract(ckpt, smiles):
         for batch in loader:
             bmg, V_d, X_d = batch[0], batch[1], batch[2]
             bmg.to(dev)
-            mp_out = model.message_passing(bmg, V_d, X_d)
-            H = model.agg(mp_out, bmg.batch)
+            H = model.agg(model.message_passing(bmg, V_d), bmg.batch)
             outs.append(H.detach().cpu().numpy())
     del model
     torch.cuda.empty_cache()
@@ -83,10 +82,10 @@ def main():
             for f in range(5):
                 trn = m & (folds != f)
                 va = m & (folds == f)
-                r = RidgeCV(alphas=[1.0, 10.0, 100.0, 1000.0])
+                r = RidgeCV(alphas=[100.0, 1000.0, 10000.0])
                 r.fit(Xt[trn], y[trn])
                 oof.loc[va, iso] = r.predict(Xt[va])
-            r = RidgeCV(alphas=[1.0, 10.0, 100.0, 1000.0])
+            r = RidgeCV(alphas=[100.0, 1000.0, 10000.0])
             r.fit(Xt[m], y[m])
             tpreds[iso] = r.predict(Xe)
             from scipy.stats import pearsonr

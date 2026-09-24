@@ -1,0 +1,94 @@
+{
+  "CYP1A2": {
+    "pearson": 0.595523234087618,
+    "weights": {
+      "gbm": 0.25,
+      "ft_ext": 0.2,
+      "ft_pre": 0.2,
+      "ft_dmpnn": 0.05,
+      "ft_cpmed": 0.25,
+      "ft_cpchm": 0.05
+    },
+    "singles": {
+      "gbm": 0.527,
+      "emb": 0.514,
+      "ft_frozen": 0.449,
+      "ft_fullft": 0.54,
+      "ft_ext": 0.558,
+      "ft_pre": 0.541,
+      "ft_dmpnn": 0.462,
+      "ft_cpmed": 0.55,
+      "ft_cpchm": 0.548
+    },
+    "gate": 0.5271836965525607
+  },
+  "CYP2C9": {
+    "pearson": 0.7160508912836199,
+    "weights": {
+      "gbm": 0.05,
+      "ft_fullft": 0.05,
+      "ft_ext": 0.25,
+      "ft_cpmed": 0.55,
+      "ft_cpchm": 0.1
+    },
+    "singles": {
+      "gbm": 0.604,
+      "emb": 0.606,
+      "ft_frozen": 0.603,
+      "ft_fullft": 0.659,
+      "ft_ext": 0.663,
+      "ft_pre": 0.628,
+      "ft_dmpnn": 0.57,
+      "ft_cpmed": 0.701,
+      "ft_cpchm": 0.639
+    },
+    "gate": 0.6038552905926634
+  },
+  "CYP2D6": {
+    "pearson": 0.46433477636048354,
+    "weights": {
+      "gbm": 0.1,
+      "emb": 0.25,
+      "ft_ext": 0.05,
+      "ft_pre": 0.15,
+      "ft_dmpnn": 0.15,
+      "ft_cpmed": 0.15,
+      "ft_cpchm": 0.15
+    },
+    "singles": {
+      "gbm": 0.399,
+      "emb": 0.427,
+      "ft_frozen": 0.34,
+      "ft_fullft": 0.387,
+      "ft_ext": 0.417,
+      "ft_pre": 0.408,
+      "ft_dmpnn": 0.368,
+      "ft_cpmed": 0.407,
+      "ft_cpchm": 0.419
+    },
+    "gate": 0.3993052655616538
+  },
+  "CYP3A4": {
+    "pearson": 0.8205613368034574,
+    "weights": {
+      "gbm": 0.25,
+      "ft_frozen": 0.05,
+      "ft_ext": 0.15,
+      "ft_dmpnn": 0.1,
+      "ft_cpmed": 0.35,
+      "ft_cpchm": 0.1
+    },
+    "singles": {
+      "gbm": 0.771,
+      "emb": 0.756,
+      "ft_frozen": 0.745,
+      "ft_fullft": 0.772,
+      "ft_ext": 0.78,
+      "ft_pre": 0.759,
+      "ft_dmpnn": 0.738,
+      "ft_cpmed": 0.8,
+      "ft_cpchm": 0.764
+    },
+    "gate": 0.7712192678192009
+  }
+}
