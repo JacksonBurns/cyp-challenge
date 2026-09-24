@@ -55,19 +55,22 @@ def extract(ckpt, smiles):
 def main():
     ft = pd.read_csv(os.path.join(CACHE, "ft_data.csv"))
     test = pd.read_csv(os.path.join(CACHE, "ft_test_smiles.csv"))
+    Xtr = pd.read_parquet(os.path.join(CACHE, "X_train.parquet")).drop_duplicates("SMILES")
+    smi_all = list(pd.unique(pd.concat([Xtr["SMILES"], test["SMILES"]])))
     for src, ckpt in [("cpmed", os.path.join(CKPT_DIR, "chemprop_medium.pt")),
                       ("cpchm", os.path.join(CKPT_DIR, "chemprop_chemeleon.pt"))]:
         print(f"== {src}", flush=True)
-        femb = os.path.join(CACHE, f"emb_{src}_train.npy")
-        ftest = os.path.join(CACHE, f"emb_{src}_test.npy")
-        if os.path.exists(femb):
-            Etr, Ete = np.load(femb), np.load(ftest)
+        fpall = os.path.join(CACHE, f"emb_{src}_all.parquet")
+        if os.path.exists(fpall):
+            dall = pd.read_parquet(fpall).set_index("SMILES")
         else:
-            Etr = extract(ckpt, ft["SMILES"].tolist())
-            Ete = extract(ckpt, test["SMILES"].tolist())
-            np.save(femb, Etr)
-            np.save(ftest, Ete)
-        print("emb", Etr.shape, Ete.shape, flush=True)
+            Eall = extract(ckpt, smi_all)
+            dall = pd.DataFrame(Eall, index=pd.Index(smi_all, name="SMILES")).reset_index()
+            dall.to_parquet(fpall)
+        print("emb", dall.shape, flush=True)
+        cols = [c for c in dall.columns if c != "SMILES"]
+        Etr = dall[cols].reindex(ft["SMILES"]).fillna(0.0).values
+        Ete = dall[cols].reindex(test["SMILES"]).fillna(0.0).values
         # ridge probe per isoform with scaffold folds
         folds = ft["fold"].values
         oof = pd.DataFrame(np.nan, index=ft.index, columns=ISO)
