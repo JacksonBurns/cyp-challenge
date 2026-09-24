@@ -83,7 +83,7 @@ def build_points(df):
     return pts
 
 
-def train_model(tr_df, va_df, full_ft, tag, seed=0):
+def train_model(tr_df, va_df, full_ft, tag, seed=0, pretrained=None):
     featurizer = featurizers.SimpleMoleculeMolGraphFeaturizer()
     tr_dset = data.MoleculeDataset(build_points(tr_df), featurizer)
     scaler = tr_dset.normalize_targets()
@@ -91,7 +91,7 @@ def train_model(tr_df, va_df, full_ft, tag, seed=0):
     va_dset.normalize_targets(scaler)
     tr_loader = data.build_dataloader(tr_dset, batch_size=BATCH, num_workers=0)
     va_loader = data.build_dataloader(va_dset, batch_size=BATCH, num_workers=0, shuffle=False)
-    st = torch.load(WEIGHTS, map_location="cpu", weights_only=False)
+    st = torch.load(pretrained or WEIGHTS, map_location="cpu", weights_only=False)
     mp = nn.BondMessagePassing(**st["hyper_parameters"])
     mp.load_state_dict(st["state_dict"])
     if not full_ft:
@@ -133,8 +133,9 @@ def predict(model, smiles_df):
     return np.vstack(outs)[:, : len(COLS)]
 
 
-def main(full_ft, seed, skip_folds=False):
+def main(full_ft, seed, skip_folds=False, pretrained=None, prefix="ext"):
     sfx = "" if seed == 0 else f"_s{seed}"
+    tag = f"{prefix}{sfx}"
     ft, test, allrows = load_tables()
     lab = allrows[COLS].notna().any(axis=1)
     ch_mask = (allrows["_src"] == "challenge").values
@@ -156,7 +157,7 @@ def main(full_ft, seed, skip_folds=False):
             vi = rng.choice(np.where(lab_tr)[0], size=int(lab_tr.sum() * VAL_FRAC), replace=False)
             fit_df = pd.concat([tr_pool.drop(index=vi), tr_extra], ignore_index=True)
             ev_df = tr_pool.iloc[vi]
-            model = train_model(fit_df, ev_df, full_ft, f"fold{f}", seed=seed)
+            model = train_model(fit_df, ev_df, full_ft, f"fold{f}", seed=seed, pretrained=pretrained)
             P = predict(model, va_df)
             for j, iso in enumerate(ISO):
                 oof.loc[va_idx, iso] = P[:, j]
@@ -164,13 +165,13 @@ def main(full_ft, seed, skip_folds=False):
             torch.cuda.empty_cache()
             print(f"fold {f} done {time.time()-t0:.0f}s", flush=True)
     else:
-        src = os.path.join(CACHE, f"ft_oof_ext{sfx}.csv") if sfx else os.path.join(CACHE, "ft_oof_ext.csv")
+        src = os.path.join(CACHE, f"ft_oof_{tag}.csv")
         prev = pd.read_csv(src)
         for iso in ISO:
             oof[iso] = prev[iso].values
         print("skipped folds; reused", src, flush=True)
     oof.insert(0, "SMILES", ft["SMILES"])
-    oof.to_csv(os.path.join(CACHE, f"ft_oof_ext{sfx}.csv"), index=False)
+    oof.to_csv(os.path.join(CACHE, f"ft_oof_{tag}.csv"), index=False)
 
     lab_all = allrows[COLS].notna().any(axis=1)
     tr_pool = allrows[ch_mask].reset_index(drop=True)
@@ -181,11 +182,11 @@ def main(full_ft, seed, skip_folds=False):
     if len(ext) > EXT_CAP:
         ext = ext.iloc[rng.choice(len(ext), EXT_CAP, replace=False)]
     fit_df = pd.concat([tr_pool.drop(index=vi), ext], ignore_index=True)
-    model = train_model(fit_df, tr_pool.iloc[vi], full_ft, "all", seed=seed)
+    model = train_model(fit_df, tr_pool.iloc[vi], full_ft, "all", seed=seed, pretrained=pretrained)
     P = predict(model, test)
     tdf = pd.DataFrame(P[:, :4], columns=ISO)
     tdf.insert(0, "SMILES", test["SMILES"])
-    tdf.to_csv(os.path.join(CACHE, f"ft_test_preds_ext{sfx}.csv"), index=False)
+    tdf.to_csv(os.path.join(CACHE, f"ft_test_preds_{tag}.csv"), index=False)
     print("DONE", time.time() - t0, flush=True)
 
 
@@ -193,7 +194,11 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--full-ft", action="store_true")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--pretrained", default=None,
+                    help="path to pretrained MP ckpt (e.g. cache/mp_pretrained_cyp.pt)")
+    ap.add_argument("--prefix", default="ext",
+                    help="output tag: ft_oof_<prefix>[_s<seed>].csv")
     ap.add_argument("--skip-folds", action="store_true",
-                    help="reuse cache/ft_oof_ext.csv, only train the all-data model")
+                    help="reuse cache/ft_oof_<tag>.csv, only train the all-data model")
     a = ap.parse_args()
-    main(a.full_ft, a.seed, skip_folds=a.skip_folds)
+    main(a.full_ft, a.seed, skip_folds=a.skip_folds, pretrained=a.pretrained, prefix=a.prefix)
