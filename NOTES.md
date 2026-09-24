@@ -603,3 +603,37 @@ must beat them on OOF before swapping in; keep them safe otherwise.
 4. Decision rule at Nov 3: submit the highest-OOF verified candidate;
    if nothing beats current, do not resubmit (latest counts - the two
    files on the board are already the best candidates built so far).
+
+## 12. SESSION 4 (Sep 23 night -> Sep 24) - seeds 2-4, pretrain test, jeremy ckpts mined
+### Stage 1 DONE: ft_ext seeds 2-4 (4-seed ext family)
+- ft_ext seeds 2/3/4 added (~30 min each; tools/run_ext_seeds234.sh).
+- 4-seed ext singles 0.558/0.663/0.417/0.780; ext2 blend (gbm,emb,ft_frozen,
+  ft_fullft,ft_ext): 0.582/0.684/0.450/0.804, macro R2 0.4141 (was 0.412 with
+  2 ext seeds; nested-honest 0.4155 vs 0.4127). Gain small but real.
+- cache/regression_final_ext4_seed_submission.csv BUILT from blendN_ext2.json
+  + verified (official validator + row-for-row). NOT submitted (pending;
+  marginal +0.002, and 12h cooldown from 19:41 UTC means earliest slot is
+  07:41 UTC Sep 24 anyway).
+### Stage 2 IN PROGRESS: CheMeLeon pretrain-then-finetune - looking WEAK
+- src/pretrain_mp.py: MP pretrained on 20k rows ChEMBL+AID1851 union (4 CYP
+  heads, 10 epochs, 4 min) -> cache/mp_pretrained_cyp.pt.
+- src/ft_ext.py now takes --pretrained + --prefix (outputs ft_oof_pre*.csv,
+  disjoint from the ext seed glob).
+- pre seed-0 standalone OOF: 0.528/0.602/0.390/0.745 vs 4-seed ext singles
+  0.558/0.663/0.417/0.780 - WORSE on every isoform. Matches jeremy's
+  population-shift warning (his fix was AID1851-weighted pretraining; we
+  mixed both scales already, didn't help). Seed-1 running; will test
+  pre6 pool for blend value anyway (decorrelation could still pay).
+### TDI external-positives base classifier - FAILED on both weights tested
+- src/run_tdi_ext.py adds 13,447 AID1851 rows (challenge-excluded, deduped)
+  to the LightGBM base with sample_weight W_EXT; OOF scored on challenge only.
+- W_EXT=0.3: 2D6 OOF MCC 0.060 (base 0.150), 3A4 0.285 (base 0.410). The
+  qHTS population DRASTICALLY shifts the decision function - naive pooling
+  hurts exactly like jeremy warned for fine-tuning. W_EXT=0.1 running.
+- CONCLUSION so far: jeremy's TDI gain comes from a DIFFERENT mechanism:
+  TabICL on frozen adme_pretrain embeddings (checkpoints chemprop_medium.pt
+  / chemprop_chemeleon.pt shipped in /tmp/jeremyscripts/CYP_Challenge/
+  checkpoints/, loadable via chemprop models.MPNN.load_from_file; 600-d
+  pre-FFN output). src/cp_embeddings.py (regression ridge probes, blend-ready
+  outputs ft_oof_cpmed/cpchm) + src/tdi_tabicl_cp.py (TabICL TDI on cpmed,
+  optional --ext 1 to add AID1851 binaries as in-context rows) queued.
