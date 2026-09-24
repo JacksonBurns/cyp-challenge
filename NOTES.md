@@ -690,3 +690,49 @@ must beat them on OOF before swapping in; keep them safe otherwise.
   already in; a 3rd checkpoint (adme_pretrain variant) would be the analogous
   next win. TDI: jeremy says his full pool has "more genuinely diverse
   candidates" - TabPFN on cpchm embeddings could add a 2D6 point.
+
+## 13. THIRD SCORED POINT (Sep 24 14:17 UTC) - cp7+v3 pair submitted, READ THIS FIRST
+
+Jackson submitted the Session-4 pair at 14:17 UTC (repo pinned 0fa9dd4):
+regression_final_cp7_submission.csv + tdi_submission_v3.csv. Leaderboards to
+re-scrape when convenient (last scrape: leaderboard/*_2026-09-23_final_reveal.csv).
+
+### What came back (vs the Sep 23 19:41 scored pair)
+| metric | 19:41 pair | 14:17 pair (NOW ON BOARD) | delta |
+| Regression rank | 73/238 | 61/238 | +12 |
+| MA-ST-RAE | 0.5870 | 0.5415 | -0.046 (better) |
+| MA-MSE (std) | - | 0.7262 (0.0137) | - |
+| MA-R2 | 0.4472 | 0.4924 | +0.045 |
+| MA-Spearman | 0.6799 | 0.7079 | +0.028 |
+| MA-Kendall | 0.5078 | 0.5338 | +0.026 |
+| TDI rank | 39/125 | **54/125** | **-15 (WORSE)** |
+| MA-MCC | 0.3419 | **0.3057** | **-0.036** |
+| MA-Accuracy | 0.8115 | 0.7170 | -0.095 |
+| MA-Precision | 0.4079 | 0.3458 | -0.062 |
+| MA-Recall | 0.5368 | 0.6571 | +0.120 |
+| MA-F1 | 0.4613 | 0.4175 | -0.044 |
+
+### Transfer audit (blind vs nested-honest OOF)
+- Regression: nested OOF macro R2 0.4385 -> blind 0.4924; pooled k =
+  sqrt(0.4924/0.4385) = 1.060 (history: 1.053, 1.042, 1.060). Placement
+  continues to validate; ranking gains transfer.
+- TDI: v2 nested macro 0.268 -> blind 0.342 (ratio 1.28); v3 nested macro
+  0.326 -> blind 0.306 (ratio **0.94**). The v3 blend gains did NOT
+  transfer - they were selection noise.
+- Mechanism: v3 shifted 2D6 positives 8% -> 33%; blind recall rose
+  (0.537 -> 0.657) but precision FELL (0.408 -> 0.346), so the v3 blend's
+  TOP-RANKED molecules are worse than nested OOF claimed, not just the
+  operating point. 2D6 test weights were tabcp+tabcpext = 0.664 (plus
+  0.131 base) - we bet the head on ONE embedding family (chemprop_medium).
+
+### Shared root cause: both v3/cp7 changes leaned on the frozen-checkpoint ridge/TabICL family
+cpmed/cpchm ridge probes share featurization AND fold structure, so the
+per-fold greedy nested audit does not price the variance ACROSS that family
+(folds agree with each other). Regression survived it (+0.045 R2), TDI did
+not (-0.036 MCC). Audit both before the next bet (see plan).
+
+### Scored points now on file (3): Sep 24 three-way
+1. 0.6766 ST-RAE / 0.387 R2 (raw GBM blend, 4cfg x 3seed)
+2. 0.5870 ST-RAE / 0.4472 R2 (ext 5-way blend, macro OOF R2 0.412)
+3. 0.5415 ST-RAE / 0.4924 R2 (cp7 9-member blend, nested 0.4385)
+k estimates 1.053 / 1.042 / 1.060 -> keep placement machinery AS SHIPPED.
