@@ -637,3 +637,56 @@ must beat them on OOF before swapping in; keep them safe otherwise.
   pre-FFN output). src/cp_embeddings.py (regression ridge probes, blend-ready
   outputs ft_oof_cpmed/cpchm) + src/tdi_tabicl_cp.py (TabICL TDI on cpmed,
   optional --ext 1 to add AID1851 binaries as in-context rows) queued.
+
+### Session 4 RESULTS (Sep 24 early) - NEW CANDIDATES, both beats scored points
+#### Regression: cp7 pool = gbm+emb+ft_frozen+ft_fullft+ft_ext+ft_pre+ft_dmpnn+ft_cpmed+ft_cpchm
+- WINNERS: jeremy's FROZEN adme_pretrain checkpoints (his public kit at
+  /tmp/jeremyscripts/CYP_Challenge/checkpoints/) + ridge probe (alpha grid
+  100/1000/10000; small alphas overfit and gave -0.04 garbage, big win with
+  correct grid): cpmed 0.550/0.701/0.407/0.800, cpchm 0.548/0.639/0.419/0.764
+  standalone scaffold-OOF Pearson.
+- dmpnn from-scratch (chemprop-dev, MultiHot v1 atoms, 12-head ext multitask,
+  seed 7, 10 min total - far faster than CheMeLeon FT): weak standalone
+  (0.462/0.570/0.368/0.738) but adds blend weight on every isoform.
+- pre (ChEMBL-pretrained CheMeLeon FT): WEAK standalone (0.524-0.528 avg per
+  iso below ext), consistent with jeremy's population-shift warning; still
+  gets 15-25% greedy weight on 1A2/2D6 via decorrelation.
+- blendN cp7: 0.596/0.716/0.464/0.821, macro R2 0.4391 (nested-honest 0.4385;
+  all7 without cp members: 0.4184/0.4192; ext2 4-seed: 0.4141/0.4155; the
+  two scored files' blend: 0.412/0.4127). OOF rho up +0.014..+0.033 per iso
+  vs submitted -> within the 0.03 rule, placement UNCHANGED (F_SPREAD/
+  OOF_TO_BLIND/BLIND_MOMENTS as shipped, validated by both scored points).
+- NEW CANDIDATE cache/regression_final_cp7_submission.csv - official validator
+  + row-for-row verified. (regression_final_ext4_seed_submission.csv = 0.4141
+  interim candidate, superseded.)
+#### TDI: TabICL-on-chemprop_medium embeddings is the win jeremy's repo advertised
+- src/tdi_tabicl_cp.py: TabICL n_est=4 on PCA-256 of frozen chemprop_medium
+  embeddings (same scaffold folds seed 7). Standalone OOF MCC: 2D6 0.2057
+  @f0.22 (vs base 0.1495!), 3A4 0.4363 @f0.35 (vs base 0.4066).
+- --ext 1 (AID1851 binaries as extra in-context rows) HURTS: 2D6 0.097,
+  3A4 0.325 - qHTS population shift poisons ICL context; confirms the naive
+  external-pool failure found in run_tdi_ext.py (w=0.3: 0.060/0.285,
+  w=0.1: 0.058/0.314 - monotone in weight, direction: qHTS != TDI population).
+- tdi_blend_nested.py (per-fold greedy w/ replacement, MCC-at-best-fraction
+  score on held-out fold) over {base,emb,tab,extbase,tabcp,tabcpext}:
+  nested-honest 2D6 0.1857 @f0.35, 3A4 0.4663 @f0.32 (v2 pool = these without
+  tabcp: nested 0.121/0.4156). Macro 0.326 vs 0.268.
+- Fraction v4 (posterior E[MCC] on nested pooled OOF): 2D6 E[MCC] 0.139@f0.08
+  vs 0.203@f0.33 - the 2D6 optimum MOVED from ~0.08 to 0.25-0.35 because the
+  blend fixes the ranking; shipped 0.33/0.36 (0.455/0.33 argmax left alone;
+  0.33 chosen for 2D6 as it dominates 0.25 on both E and worst-case).
+- NEW CANDIDATE cache/tdi_submission_v3.csv - official validator + row-for-row
+  verified; test rates 2D6 0.331, 3A4 0.360 (v2 on board: 0.08/0.36).
+- TDI expected blind: nested-blend macro +0.058 over v2's nested; with the
+  observed OOF->blind blend transfer (v2: 0.294 nested -> 0.342 blind) the
+  v3 expectation is ~0.39-0.40 macro MCC vs 0.342 on the board.
+#### Decision guidance for Nov 3 (or earlier slot after 07:41 UTC Sep 24)
+- Submit pair: cache/regression_final_cp7_submission.csv + cache/tdi_submission_v3.csv
+  (needs Jackson's HF login + explicit go-ahead; latest valid submission counts).
+- Both beat the current on-board files on honest nested OOF by +0.026 macro R2
+  and +0.058 macro MCC respectively.
+- Still open levers if time: 2nd seed for cpmed ridge is moot (ridge is
+  deterministic); ft_ext 5th seed (+~0.001); cpchm+cpmed blend weight is
+  already in; a 3rd checkpoint (adme_pretrain variant) would be the analogous
+  next win. TDI: jeremy says his full pool has "more genuinely diverse
+  candidates" - TabPFN on cpchm embeddings could add a 2D6 point.
