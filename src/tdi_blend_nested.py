@@ -80,6 +80,9 @@ def main(cand_csv=None):
         p = os.path.join(CACHE, fn)
         if os.path.exists(p):
             members[name] = np.load(p)
+    excl = set(os.environ.get("TDI_EXCLUDE", "").split(",")) - {""}
+    for e in excl:
+        members.pop(e, None)
     if cand_csv:
         for part in cand_csv.split(","):
             nm, fn = part.split(":")
@@ -112,6 +115,7 @@ def main(cand_csv=None):
             w, _ = greedy_w({k: v[trn] for k, v in zs.items()}, yl[trn])
             w_hist.append({k: round(v, 2) for k, v in w.items() if v > 0})
             pooled_blend[va] = sum(w[k] * zs[k][va] for k in names)
+        np.save(os.path.join(CACHE, f"tdi_nested_pooled_oof_{iso}.npy"), pooled_blend)
         rb, fb = best_by_frac(zs["base"], yl)
         rall, fall = best_by_frac(sum(zs[k] for k in names) / len(names), yl)
         nest_mcc, _ = best_by_frac(pooled_blend, yl)

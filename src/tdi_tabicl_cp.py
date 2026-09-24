@@ -113,33 +113,45 @@ def main(use_ext):
     else:
         from rdkit import Chem
         can = lambda s: Chem.MolToSmiles(Chem.MolFromSmiles(s)) if Chem.MolFromSmiles(s) else None
-        E_map = {}
-
-        def get_emb(smis):
-            E = extract(CKPT, smis)
-            return {can(s): E[i] for i, s in enumerate(smis) if can(s)}
         tr_c = [can(s) for s in Xtr["SMILES"]]
         te_c = [can(s) for s in Xte["SMILES"]]
-        need = [s for s in pd.Series(tr_c + te_c).dropna().unique() if s not in E_map]
-        E_map.update(get_emb(list(need)))
-        Etr = np.array([E_map.get(c, np.zeros_like(next(iter(E_map.values())))) for c in tr_c], dtype=np.float32)
-        Ete = np.array([E_map.get(c, np.zeros_like(next(iter(E_map.values())))) for c in te_c], dtype=np.float32)
-        Eex = np.zeros((0, Etr.shape[1]), dtype=np.float32)
-        ex_lab = np.zeros((0, 2))
+        ext_rows = None
+        need = list(pd.Series(tr_c + te_c).dropna().unique())
         if use_ext:
             pc = pd.read_csv(os.path.join(HERE, "..", "external", "pubchem_cyp_qhts_aid1851.csv"))
             pc["canon"] = pc["smiles"].map(can)
             pc = pc.dropna(subset=["canon"])
-            both = pc.dropna(subset=[f"{i}_active" for i in ISO]).drop_duplicates("canon")
-            both = both[~both["canon"].isin(set(tr_c) | set(te_c))]
-            Eex = np.array([E_map[c] if c in E_map else extract(CKPT, [c])[0] for c in both["canon"]],
-                           dtype=np.float32)
-            ex_lab = both[[f"{i}_active" for i in ISO]].values.astype(float)
+            ext_rows = pc.dropna(subset=[f"{i}_active" for i in ISO]).drop_duplicates("canon")
+            ext_rows = ext_rows[~ext_rows["canon"].isin(set(tr_c) | set(te_c))]
+            need = list(dict.fromkeys(need + list(ext_rows["canon"])))
+        dall = os.path.join(CACHE, "emb_cpmed_all.parquet")
+        E_map = {}
+        if os.path.exists(dall):
+            d0 = pd.read_parquet(dall)
+            for s, vec in zip(d0["SMILES"], d0.drop(columns=["SMILES"]).values):
+                c = can(s)
+                if c is not None:
+                    E_map[c] = np.asarray(vec, dtype=np.float32)
+        missing = [s for s in need if s not in E_map]
+        if missing:
+            Em = extract(CKPT, missing)
+            for i, s in enumerate(missing):
+                E_map[s] = Em[i]
+        dim = len(next(iter(E_map.values())))
+        zero = np.zeros(dim, dtype=np.float32)
+        Etr = np.array([E_map.get(c, zero) for c in tr_c], dtype=np.float32)
+        Ete = np.array([E_map.get(c, zero) for c in te_c], dtype=np.float32)
+        Eex = np.zeros((0, dim), dtype=np.float32)
+        ex_lab = np.zeros((0, 2))
+        if use_ext:
+            Eex = np.stack([E_map[c] for c in ext_rows["canon"]]).astype(np.float32)
+            ex_lab = ext_rows[[f"{i}_active" for i in ISO]].values.astype(float)
         np.savez(fpath, Etr=Etr, Ete=Ete, Eex=Eex, ex_lab=ex_lab)
 
     from sklearn.decomposition import PCA
     stack = [Etr, Ete] + ([Eex] if len(Eex) else [])
     pca = PCA(n_components=NPC, whiten=True, random_state=0)
+    pca.fit(np.vstack(stack))
     pcs = [pca.transform(x).astype(np.float32) for x in stack]
     Etr, Ete, Eex = pcs[0], pcs[1], pcs[2] if len(pcs) > 2 else np.zeros((0, NPC), dtype=np.float32)
 

@@ -1,0 +1,16 @@
+{
+  "CYP2D6": {
+    "posterior_optimal_frac": 0.33,
+    "posterior_optimal_mcc": 0.2075,
+    "minimax_optimal_frac": 0.35000000000000003,
+    "minimax_optimal_mcc": 0.1954,
+    "shipped_fraction": 0.33
+  },
+  "CYP3A4": {
+    "posterior_optimal_frac": 0.4700000000000001,
+    "posterior_optimal_mcc": 0.5566,
+    "minimax_optimal_frac": 0.32000000000000006,
+    "minimax_optimal_mcc": 0.4953,
+    "shipped_fraction": 0.45500000000000007
+  }
+}
