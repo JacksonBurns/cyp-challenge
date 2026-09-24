@@ -60,10 +60,13 @@ FAMS = {
 }
 FAMS["ft_pre"] = g("pre")
 FAMS["ft_dmpnn"] = g("dmpnn")
+FAMS["ft_cpmed"] = g("cpmed")
+FAMS["ft_cpchm"] = g("cpchm")
 POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "all7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn"],
          "all6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_dmpnn"],
-         "pre6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre"]}
+         "pre6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre"],
+         "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm"]}
 
 pool = sys.argv[1] if len(sys.argv) > 1 else "ext2"
 names = [n for n in POOLS[pool] if FAMS.get(n)]

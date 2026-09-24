@@ -114,7 +114,7 @@ def main(rows_cap, seed=0):
     seed_everything(seed)
     t0 = time.time()
     trainer.fit(model, train_dataloaders=tr_loader, val_dataloaders=va_loader)
-    mp_state = model.mp.state_dict()
+    mp_state = model.message_passing.state_dict()
     torch.save({"state_dict": {k: v.cpu() for k, v in mp_state.items()},
                 "hyper_parameters": st["hyper_parameters"],
                 "meta": {"rows": len(tb), "epochs_run": trainer.current_epoch,
