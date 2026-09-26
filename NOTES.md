@@ -736,3 +736,51 @@ not (-0.036 MCC). Audit both before the next bet (see plan).
 2. 0.5870 ST-RAE / 0.4472 R2 (ext 5-way blend, macro OOF R2 0.412)
 3. 0.5415 ST-RAE / 0.4924 R2 (cp7 9-member blend, nested 0.4385)
 k estimates 1.053 / 1.042 / 1.060 -> keep placement machinery AS SHIPPED.
+
+## 14. FOURTH SCORED POINT (Sep 26 board) - repaired pair, READ THIS FIRST
+
+New scrape: leaderboard/{regression,classification}_2026-09-26_interim_reveal2.csv
+(219 reg / 114 cls entries; ~40 reg / ~26 cls low-effort accounts pruned).
+Jackson re-submitted the SAFE PAIR from the sec-13 plan: cp7 regression
+(unchanged) + tdi_submission_v2.csv. Board "Submitted" 2026-09-24 14:17 UTC,
+repo pinned 0fa9dd4 (the timestamp mirrors the prior submission; content is
+the v2 TDI file). This is scored point 4.
+
+### Our numbers on the Sep 26 board
+- Regression: rank 57/219, MA-ST-RAE 0.5354, MAE 0.7329, MA-R2 0.5192,
+  Spearman 0.7251, Kendall 0.5522. Tier 10. Top-1 preheat-to-450 R2 0.677 /
+  rho 0.805 / ST-RAE 0.372.
+- TDI: rank 39/114, MA-MCC 0.3209, acc 0.7252, prec 0.3590, rec 0.6716,
+  F1 0.4213. Tier 2 (top 26 is Tier 1). Top-1 nova MCC 0.398.
+- Step-0 repair worked: TDI recovered ~0.32 on this blind vs v3's 0.306
+  on the old one (different blind, so not a strict paired comparison).
+
+### Paired field drift between the two boards (SAME submission, n=157 reg / 83 cls)
+- Regression got EASIER: median drift +0.073 R2 / -0.058 ST-RAE / +0.017 rho
+  (band-dependent: +0.078 for weak entries, +0.015 for top band). Our cp7
+  gained only +0.027 R2 -> ~0.046 BELOW the median drift of our old band.
+  The gap to the top WIDENED in relative terms even though rank improved.
+- TDI got HARDER in our region: median MCC drift is negative at every old
+  band >= 0.28 (0.28-0.34: -0.022; 0.34-0.42: -0.046; top: -0.077). Our v2
+  drifted +0.015 (0.3419 -> 0.3209 with band discount ~ +0.037 relative).
+  v3 had scored 0.3057 on the OLD board; a same-v3 on this blind would land
+  ~0.284-0.30. So v3's RANKING machinery was likely genuinely better than
+  v2's (+0.04-0.05 relative) while its operating point hurt - the v3
+  rollback was right but the diagnosis "selection noise" was too harsh.
+- CAUTION: the blind set changed between boards. Cross-board rank and
+  absolute comparisons are unreliable; use the paired drift tables above or
+  absolute nested OOF gates only.
+
+### New read on placement (regression)
+Neighbors at rho 0.70-0.75: competitive ranks 19-51 carry R2/rho^2 =
+1.02-1.15; we are 0.988. A ratio deficit ~0.08-0.09 implies ~+0.04 blind R2
+available from placement alone (spread bump / calibration). Confounded by
+blind noise and by the field drift, so treat as a bounded LAST-MILE
+experiment, not a priority-1 move. Ranking still dominates rank movement.
+
+### TDI operating point is now the cheapest gap (step 1d evidence)
+Top-10 TDI accuracy band 0.839-0.859; ours 0.725. Our 0.33/0.36 positive
+fractions produce over-prediction (recall 0.672 at precision 0.359 while
+rank-1 nova holds 0.56/0.44). Top-10 precision floor ~0.44. Retune fraction
+per isoform with tdi_fraction_opt_v4 on the BEST available nested OOF before
+any final bet; macro accuracy ~0.72 is a red flag independent of ranking.
