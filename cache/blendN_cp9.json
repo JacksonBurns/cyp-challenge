@@ -20,18 +20,19 @@
       "ft_cpmed": 0.55,
       "ft_cpchm": 0.548,
       "ft_chmridge": 0.468,
-      "ft_d2d6": 0.499
+      "ft_d2d6": 0.488,
+      "ft_near": 0.518
     },
     "gate": 0.5271836965525607
   },
   "CYP2C9": {
-    "pearson": 0.7160508912836199,
+    "pearson": 0.716851908588382,
     "weights": {
       "gbm": 0.05,
-      "ft_fullft": 0.05,
-      "ft_ext": 0.25,
+      "ft_ext": 0.2,
       "ft_cpmed": 0.55,
-      "ft_cpchm": 0.1
+      "ft_cpchm": 0.1,
+      "ft_near": 0.1
     },
     "singles": {
       "gbm": 0.604,
@@ -44,19 +45,21 @@
       "ft_cpmed": 0.701,
       "ft_cpchm": 0.639,
       "ft_chmridge": 0.585,
-      "ft_d2d6": 0.618
+      "ft_d2d6": 0.617,
+      "ft_near": 0.647
     },
     "gate": 0.6038552905926634
   },
   "CYP2D6": {
-    "pearson": 0.47438656039916643,
+    "pearson": 0.47420866006977336,
     "weights": {
       "gbm": 0.1,
       "emb": 0.2,
       "ft_pre": 0.1,
-      "ft_cpmed": 0.15,
+      "ft_cpmed": 0.1,
       "ft_cpchm": 0.1,
-      "ft_d2d6": 0.35
+      "ft_d2d6": 0.3,
+      "ft_near": 0.1
     },
     "singles": {
       "gbm": 0.399,
@@ -69,20 +72,21 @@
       "ft_cpmed": 0.407,
       "ft_cpchm": 0.419,
       "ft_chmridge": 0.344,
-      "ft_d2d6": 0.433
+      "ft_d2d6": 0.425,
+      "ft_near": 0.4
     },
     "gate": 0.3993052655616538
   },
   "CYP3A4": {
-    "pearson": 0.8214101667839883,
+    "pearson": 0.8217599875464591,
     "weights": {
       "gbm": 0.2,
       "ft_frozen": 0.05,
-      "ft_ext": 0.15,
-      "ft_dmpnn": 0.05,
+      "ft_ext": 0.1,
       "ft_cpmed": 0.35,
       "ft_cpchm": 0.1,
-      "ft_d2d6": 0.1
+      "ft_d2d6": 0.15,
+      "ft_near": 0.05
     },
     "singles": {
       "gbm": 0.771,
@@ -95,7 +99,8 @@
       "ft_cpmed": 0.8,
       "ft_cpchm": 0.764,
       "ft_chmridge": 0.723,
-      "ft_d2d6": 0.766
+      "ft_d2d6": 0.762,
+      "ft_near": 0.755
     },
     "gate": 0.7712192678192009
   }

@@ -938,3 +938,88 @@ regression_final_cp7_submission.csv unchanged, new filename only).
    of cp7's cp-family before any regression resubmit.
 3. If a stronger TDI pool is ever found, the cap machinery + v6 posterior
    are the gate; ship only on BOTH E[MCC] and family-block numbers.
+
+## 17. STEP 2 EXECUTED (Sep 27) - regression: mined reports, 2 new members, family-block audit of cp7, cp8d candidate (small honest gain)
+
+### Public reports mined (step 2a reading)
+- rasayan-labs whis9/rasayan-cyp (rank 14): EMPTY repo, nothing to mine.
+- stir_bar lachrymator/openadmet-cyp-challenge-public (rank 28 reg / 6 TDI):
+  representation-diverse stack (transformer + MPNN + 3D + tabFM-on-frozen-emb
+  + FP + additive-fragment); masked multitask aux pretraining; RETRIEVED
+  near-neighbours of the blind test from public catalogue (~5k admitted,
+  properties only, no labels); Butina cluster folds; NON-NEGATIVE stacking
+  (cancelling coefficients transfer badly); PCA feature budget on tabular
+  legs; Mitra beat TabPFN (residual corr 0.94-0.98 = one family, like our
+  cpmed/cpchm finding).
+- briford supercowpowers.github.io workbench/cyp_challenge (rank 15):
+  4 stock-hyperparam Chemprop D-MPNNs trained on challenge + ChEMBL + qHTS
+  as SEPARATE HEADS (not pooled rows), incl. two CYP2D6-SLICE specialists
+  ("a different slice of the data, so different compounds missed"); explicit
+  affine calibration to the blind population (R2 = 2*rho*k - k^2 - d^2);
+  warns ST-RAE and R2 calibration point OPPOSITE ways on 2D6 (matches our
+  STRAE_MOMENTS history).
+
+### Step 2a members built
+- src/chemeleon_ridge.py -> ft_oof/test_preds_chmridge: frozen CheMeLeon
+  2048-d ridge probe, big-alpha grid only. Singles 0.468/0.585/0.344/0.723
+  = WEAK (below the cp probes on every iso); greedy blend weight 0.00 on all
+  four isoforms (cp8 nested identical to cp7). DEAD as a member; the
+  "frozen ridge probes" lever is tapped (emb GBM already owns this signal).
+- src/dmpnn_2d6.py -> ft_oof/test_preds_d2d6{,_s8,_s9}: briford's 2D6-slice
+  specialist (same D-MPNN as ft_dmpnn, external rows restricted to CYP2D6
+  readouts, off-slice aux heads weight 0). 3-seed avg singles 0.488/0.617/
+  0.425/0.762 - best 2D6 single in the pool; blend weight 0.30-0.35 on 2D6,
+  0.15 on 3A4. ~8 min/run.
+- stir_bar retrieval lever adapted: src/ext_neighbors.py (top-9000 Tanimoto
+  to test from ChEMBL+PubChem, no labels imported) + src/ft_ext_near.py
+  (ft_ext --full-ft on that pool) -> tag 'near'. Nested cp9 0.4405 vs cp8d
+  0.4403 = NOISE (+0.0002); rejected, no further variants. (Their gain likely
+  rides on the unlabelled-property rows + Butina folds together, not
+  retrievable cheaply here.)
+
+### Step 2b family-block audit (src/regression_family_block.py, new)
+cp7 (the file on the board): fold-nested 0.4385 reproduced; cpridge family
+(cpmed+cpchm) mean weight 0.417 max 0.667, LOFO gain +0.0192 SURVIVES honest
+reselection from the rest; dropping the whole CheMeLeon lineage {emb,
+ft_frozen} costs only 0.0017. Verdict: cp7's +0.045 blind gain was NOT
+family-internal - the sec 13 worry is cleared, direction confirmed ("know
+which way it cuts": it cuts safe).
+cp8d: same structure holds (cp LOFO +0.0186; dmpnn-family incl. d2d6 +0.003).
+
+### Step 2d blend + gate
+cp8d = cp7 + chmridge + d2d6(3 seeds): blend macro R2 0.4418, honest nested
+0.4403 (cp7 0.4385), 2D6 nested 0.466 -> 0.473, 3A4 0.818 -> 0.818.
+- GATE CHECK, honestly: the prompt gate wants family-block-honest macro R2
+  >= ~0.47 AND "a clear jump, not noise". cp8d = 0.4403: FAILS the absolute
+  bar (as cp7 itself did: 0.4385), and +0.0018 macro is noise-level on the
+  pooled history (per-seed disagreement is larger per briford's 2D6 warning).
+- What it DOES have: the gain is concentrated on 2D6 (our weakest head) at
+  the single-head level (+0.007 nested, consistent across 3 seeds and LOFO),
+  family-block clean, placement machinery untouched. Expected blind delta
+  ~+0.002-0.004 macro R2 - real but tiny; does NOT approach the rank-34 band
+  requirement (+0.08), especially with field drift likely to raise it.
+- CANDIDATE BUILT + VERIFIED: cache/regression_final_cp8d_submission.csv
+  (official validator PASS, row-for-row SMILES/Molecule_Name PASS; incumbents
+  untouched). 1A2/2C9 columns identical to cp7 (weights unchanged); 2D6
+  differs (max 0.52 pIC50, corr 0.9865), 3A4 marginal.
+- DECISION for the Nov 1 final pair: cp8d DOMINATES cp7 on honest gates and
+  risks nothing, so it is the file to ship at the end if nothing better
+  arrives; it does NOT merit its own mid-course submission slot (the slot is
+  better spent on the TDI v4_candidate, which has a real +0.04 E[MCC] bet).
+
+### Step 2e placement probe (src/placement_probe.py, SIMULATION ONLY)
+R2 is maximized at spread factor f ~ 1.2-1.35, ST-RAE at f ~ 0.9-0.95
+(briford's conflict reproduced); near f=1 the two are ~zero-sum (k=1.05:
+f=1.35 gains +0.031 R2 but +0.073 ST-RAE macro, worse combined). Per the
+prompt: knob UNCHANGED, no separate candidate shipped. The sec 14 "R2/rho^2
+deficit worth +0.04" is real only if ST-RAE were ignored - it is scored.
+
+### Remaining big levers (rank-34 band still needs ~+0.08)
+1. A genuinely NEW encoder family (representation diversity, the one lever
+   every top report agrees on): Uni-Mol 3D-conformer encoder on box, or
+   ft_ext-model intermediate embeddings as a fresh ridge/tabFM source.
+2. Butina-cluster CV would change which models look good, but rebuilding all
+   OOF gates on new folds now (5 weeks to deadline, shared single GPU) is
+   likely net-negative vs making one new encoder work.
+3. Dead ends ledger +1: CheMeLeon-2048 ridge probe (zero weight); near-test
+   retrieval on external aux rows (nested +0.0002).
