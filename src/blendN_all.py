@@ -62,11 +62,17 @@ FAMS["ft_pre"] = g("pre")
 FAMS["ft_dmpnn"] = g("dmpnn")
 FAMS["ft_cpmed"] = g("cpmed")
 FAMS["ft_cpchm"] = g("cpchm")
+FAMS["ft_chmridge"] = g("chmridge")
+FAMS["ft_d2d6"] = g("d2d6")
+FAMS["ft_near"] = g("near")
 POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "all7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn"],
          "all6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_dmpnn"],
          "pre6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre"],
-         "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm"]}
+         "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm"],
+         "cp8": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge"],
+         "cp8d": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6"],
+         "cp9": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_near"]}
 
 pool = sys.argv[1] if len(sys.argv) > 1 else "ext2"
 names = [n for n in POOLS[pool] if FAMS.get(n)]

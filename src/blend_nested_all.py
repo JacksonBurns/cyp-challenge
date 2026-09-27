@@ -49,12 +49,18 @@ FAMS = {
     "ft_dmpnn": g("dmpnn"),
     "ft_cpmed": g("cpmed"),
     "ft_cpchm": g("cpchm"),
+    "ft_chmridge": g("chmridge"),
+    "ft_d2d6": g("d2d6"),
+    "ft_near": g("near"),
 }
 POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "all7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn"],
          "all6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_dmpnn"],
          "pre6": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre"],
-         "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm"]}
+         "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm"],
+         "cp8": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge"],
+         "cp8d": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6"],
+         "cp9": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_near"]}
 
 
 def greedy(zs, y, m, rounds=12):

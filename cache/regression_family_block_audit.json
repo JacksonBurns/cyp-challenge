@@ -1,0 +1,482 @@
+{
+  "cp7": {
+    "nested": {
+      "CYP1A2": 0.5979,
+      "CYP2C9": 0.7145,
+      "CYP2D6": 0.4657,
+      "CYP3A4": 0.8178
+    },
+    "nested_macro": 0.4385,
+    "capped": {
+      "CYP1A2": 0.5979,
+      "CYP2C9": 0.7145,
+      "CYP2D6": 0.4657,
+      "CYP3A4": 0.8178
+    },
+    "capped_macro": 0.4385,
+    "capped_cp_macro": 0.4382,
+    "capped_frozen_macro": 0.4382,
+    "lofo_cp": {
+      "cpridge": {
+        "nested_macro": 0.4192,
+        "gain_free": 0.0192,
+        "gain_vs_capped": 0.0192
+      }
+    },
+    "concentration_cp": {
+      "cpridge": {
+        "mean": 0.417,
+        "max": 0.667
+      },
+      "emb": {
+        "mean": 0.067,
+        "max": 0.25
+      },
+      "ft_dmpnn": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ft_ext": {
+        "mean": 0.167,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.079,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.158,
+        "max": 0.333
+      }
+    },
+    "lofo_frozen": {
+      "ridge": {
+        "nested_macro": 0.4192,
+        "gain_free": 0.0192,
+        "gain_vs_capped": 0.0192
+      }
+    },
+    "concentration_frozen": {
+      "emb": {
+        "mean": 0.067,
+        "max": 0.25
+      },
+      "ft_dmpnn": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ft_ext": {
+        "mean": 0.167,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.079,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.158,
+        "max": 0.333
+      },
+      "ridge": {
+        "mean": 0.417,
+        "max": 0.667
+      }
+    },
+    "lofo_chem": {
+      "chemeleon": {
+        "nested_macro": 0.4367,
+        "gain_free": 0.0017,
+        "gain_vs_capped": 0.0017
+      }
+    },
+    "concentration_chem": {
+      "chemeleon": {
+        "mean": 0.083,
+        "max": 0.25
+      },
+      "ft_cpchm": {
+        "mean": 0.1,
+        "max": 0.25
+      },
+      "ft_cpmed": {
+        "mean": 0.317,
+        "max": 0.583
+      },
+      "ft_dmpnn": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ft_ext": {
+        "mean": 0.167,
+        "max": 0.333
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.079,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.158,
+        "max": 0.333
+      }
+    }
+  },
+  "cp8": {
+    "nested": {
+      "CYP1A2": 0.5979,
+      "CYP2C9": 0.7145,
+      "CYP2D6": 0.4657,
+      "CYP3A4": 0.8178
+    },
+    "nested_macro": 0.4385,
+    "capped": {
+      "CYP1A2": 0.5979,
+      "CYP2C9": 0.7145,
+      "CYP2D6": 0.4657,
+      "CYP3A4": 0.8178
+    },
+    "capped_macro": 0.4385,
+    "capped_cp_macro": 0.4382,
+    "capped_frozen_macro": 0.4382,
+    "lofo_cp": {
+      "cpridge": {
+        "nested_macro": 0.4192,
+        "gain_free": 0.0192,
+        "gain_vs_capped": 0.0192
+      }
+    },
+    "concentration_cp": {
+      "cpridge": {
+        "mean": 0.417,
+        "max": 0.667
+      },
+      "emb": {
+        "mean": 0.067,
+        "max": 0.25
+      },
+      "ft_dmpnn": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ft_ext": {
+        "mean": 0.167,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.079,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.158,
+        "max": 0.333
+      }
+    },
+    "lofo_frozen": {
+      "ridge": {
+        "nested_macro": 0.4192,
+        "gain_free": 0.0192,
+        "gain_vs_capped": 0.0192
+      }
+    },
+    "concentration_frozen": {
+      "emb": {
+        "mean": 0.067,
+        "max": 0.25
+      },
+      "ft_dmpnn": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ft_ext": {
+        "mean": 0.167,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.079,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.158,
+        "max": 0.333
+      },
+      "ridge": {
+        "mean": 0.417,
+        "max": 0.667
+      }
+    },
+    "lofo_chem": {
+      "chemeleon": {
+        "nested_macro": 0.4367,
+        "gain_free": 0.0017,
+        "gain_vs_capped": 0.0017
+      }
+    },
+    "concentration_chem": {
+      "chemeleon": {
+        "mean": 0.083,
+        "max": 0.25
+      },
+      "ft_cpchm": {
+        "mean": 0.1,
+        "max": 0.25
+      },
+      "ft_cpmed": {
+        "mean": 0.317,
+        "max": 0.583
+      },
+      "ft_dmpnn": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ft_ext": {
+        "mean": 0.167,
+        "max": 0.333
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.079,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.158,
+        "max": 0.333
+      }
+    }
+  },
+  "cp8d": {
+    "nested": {
+      "CYP1A2": 0.5979,
+      "CYP2C9": 0.7145,
+      "CYP2D6": 0.4723,
+      "CYP3A4": 0.8202
+    },
+    "nested_macro": 0.441,
+    "capped": {
+      "CYP1A2": 0.5979,
+      "CYP2C9": 0.7145,
+      "CYP2D6": 0.4723,
+      "CYP3A4": 0.8202
+    },
+    "capped_macro": 0.441,
+    "capped_cp_macro": 0.4398,
+    "capped_frozen_macro": 0.4398,
+    "lofo_cp": {
+      "cpridge": {
+        "nested_macro": 0.4216,
+        "gain_free": 0.0194,
+        "gain_vs_capped": 0.0194
+      }
+    },
+    "concentration_cp": {
+      "cpridge": {
+        "mean": 0.396,
+        "max": 0.667
+      },
+      "emb": {
+        "mean": 0.05,
+        "max": 0.25
+      },
+      "ft_d2d6": {
+        "mean": 0.117,
+        "max": 0.333
+      },
+      "ft_dmpnn": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_ext": {
+        "mean": 0.154,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.075,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.154,
+        "max": 0.333
+      }
+    },
+    "lofo_frozen": {
+      "ridge": {
+        "nested_macro": 0.4218,
+        "gain_free": 0.0191,
+        "gain_vs_capped": 0.0191
+      }
+    },
+    "concentration_frozen": {
+      "emb": {
+        "mean": 0.05,
+        "max": 0.25
+      },
+      "ft_d2d6": {
+        "mean": 0.117,
+        "max": 0.333
+      },
+      "ft_dmpnn": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_ext": {
+        "mean": 0.154,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.075,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.154,
+        "max": 0.333
+      },
+      "ridge": {
+        "mean": 0.396,
+        "max": 0.667
+      }
+    },
+    "lofo_chem": {
+      "chemeleon": {
+        "nested_macro": 0.4397,
+        "gain_free": 0.0013,
+        "gain_vs_capped": 0.0013
+      }
+    },
+    "concentration_chem": {
+      "chemeleon": {
+        "mean": 0.067,
+        "max": 0.25
+      },
+      "ft_cpchm": {
+        "mean": 0.087,
+        "max": 0.167
+      },
+      "ft_cpmed": {
+        "mean": 0.308,
+        "max": 0.583
+      },
+      "ft_d2d6": {
+        "mean": 0.117,
+        "max": 0.333
+      },
+      "ft_dmpnn": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_ext": {
+        "mean": 0.154,
+        "max": 0.333
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.075,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.154,
+        "max": 0.333
+      }
+    },
+    "lofo_mpnn": {
+      "dmpnn": {
+        "nested_macro": 0.4373,
+        "gain_free": 0.0037,
+        "gain_vs_capped": 0.0037
+      }
+    },
+    "concentration_mpnn": {
+      "dmpnn": {
+        "mean": 0.133,
+        "max": 0.333
+      },
+      "emb": {
+        "mean": 0.05,
+        "max": 0.25
+      },
+      "ft_cpchm": {
+        "mean": 0.087,
+        "max": 0.167
+      },
+      "ft_cpmed": {
+        "mean": 0.308,
+        "max": 0.583
+      },
+      "ft_ext": {
+        "mean": 0.154,
+        "max": 0.333
+      },
+      "ft_frozen": {
+        "mean": 0.017,
+        "max": 0.083
+      },
+      "ft_fullft": {
+        "mean": 0.021,
+        "max": 0.167
+      },
+      "ft_pre": {
+        "mean": 0.075,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.154,
+        "max": 0.333
+      }
+    }
+  }
+}
