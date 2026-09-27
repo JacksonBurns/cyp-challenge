@@ -784,3 +784,63 @@ fractions produce over-prediction (recall 0.672 at precision 0.359 while
 rank-1 nova holds 0.56/0.44). Top-10 precision floor ~0.44. Retune fraction
 per isoform with tdi_fraction_opt_v4 on the BEST available nested OOF before
 any final bet; macro accuracy ~0.72 is a red flag independent of ranking.
+
+## 15. STEP 1a/1c EXECUTED (Sep 26 night) - family-block audit + fraction posterior
+
+### 1a. src/tdi_blend_family_block.py (new audit, rewrites the tdi_blend_nested pattern)
+Members grouped into FAMILIES: base={base}, emb={emb,tab} (CheMeLeon emb),
+cp={tabcp,tabcpext} (frozen chemprop_medium). Per iso, per pool: fold-nested
+greedy (old, reproduction check), the same greedy with per-family weight cap
+0.5, and leave-one-family-out (LOFO) blends honestly reselected from the rest.
+cache/tdi_family_block_audit.json. Reproduction: v2 fold-nested 2D6 0.118 /
+3A4 0.419 (macro 0.2685) matches the recorded 0.268.
+
+Fold-nested / capped / family gains (MCC at best fraction):
+| pool | iso | fold-nested | capped 0.5 | LOFO gain of cp | cp share mean/max |
+| v2 | 2D6 | 0.118 | 0.140 | n/a | base 0.63 |
+| v2 | 3A4 | 0.419 | 0.407 | n/a | base 0.60 |
+| v3 | 2D6 | 0.219 | 0.188 | +0.101 (drop cp -> 0.118) | cp 0.65/0.83 |
+| v3 | 3A4 | 0.468 | 0.468 | +0.049 (drop cp -> 0.419) | cp 0.37/0.42 |
+Verdicts:
+- v2 pool is family-block CLEAN: removing either family costs nothing at the
+  blend level (2D6 LOFO gains are NEGATIVE) - its nested number carries no
+  family optimism. Capping even HELPS 2D6 (+0.022).
+- v3's cp gain SURVIVES honest reselection (LOFO -cp = the v2 blend exactly).
+  The Sep 26 drift read stands: the ranking machinery is real (+0.10 2D6 /
+  +0.05 3A4 honest OOF). BUT on 2D6 the free greedy still concentrates 0.65
+  mean / 0.83 max on cp - the same failure mode as shipped v3 - and the cap
+  costs 0.031 there. Family-block-honest v3 macro: 0.328 capped (0.344 free).
+- Gate check (step 1a): v3 must beat v2's 0.268 on family-block audit before
+  candidate status. Capped v3 = 0.328 >= 0.268 with the gain demonstrably not
+  family-internal. PASS, subject to 1b diversification diluting cp on 2D6.
+
+### 1c. Fraction posterior on nested OOF (src/tdi_fraction_opt_v5.py + _v5_board.py)
+Board-informed prior discovery: the shipped v2 file's OWN scored points imply
+the blind positive rate is pi = prec*f/rec ~= 0.167 (Sep 23) / 0.118 (Sep 26),
+far below the 0.30-0.40 center of mass in the shipped pi_post. The accuracy
+"red flag" is at least half a PRIOR error: at pi~0.16 accuracy is capped ~0.78
+even at the MCC-optimal fraction, so the top-10 acc 0.84+ partly reflects
+higher effective pi (better ranking pulls positives up), not a magic fraction.
+E[MCC] at shipped fractions on the v2 static blend (the file on the board),
+board prior {0.08:.10,0.11:.20,0.14:.25,0.17:.22,0.213:.15,0.25:.08}:
+- 2D6 f=0.08: E[MCC]=0.138 = argmax (plateau 0.08-0.10). v2's 0.08 is FINE.
+- 3A4 f=0.36: E[MCC]=0.355 vs argmax 0.30 @ 0.363 (gap 0.008, noise-level).
+So v2's shipped 0.08/0.36 is near-optimal on its own score; the board MCC gap
+is NOT a v2 fraction mistuning. Cheapest real lever = the blend score itself.
+Blend variants (same prior): v3_nested_cap @ (0.32, 0.24) E[MCC] = 0.165 /
+0.409 (macro 0.287, +0.040 vs v2 static at shipped); E[acc] 0.672/0.801.
+v2's fold-nested blend scores WORSE than the static 0.9/0.1 blend on OOF at
+every fraction (0.101/0.351) - more evidence per-fold greedy w/ replacement
+was fitting fold noise, esp. on 2D6.
+tools/pi_sensitivity.py printed the full pi x fraction grid (E[MCC]/E[acc])
+for all four variants if we need the trade-off table again.
+
+### Decision / next step
+- Do NOT touch the shipped v2 fractions on the incumbent file.
+- Next candidate (needs step 1b before a submit ask): cp-capped v3 blend
+  (family weights <= 0.5) with fractions ~ 2D6 0.20-0.32 (curve bumpy -
+  resolve with the 1b diversified pool), 3A4 0.24. Both E[MCC] and E[acc]
+  beat the incumbent on the family-block-honest score; blind ratio discount
+  applies (v2 nested->blind ~1.28, v3->blind 0.94 on the free greedy).
+- Step 1b remains: TabICL/TabPFN on cpchm + PCA-256 CheMeLeon 2048-d to
+  dilute the 2D6 cp concentration, then re-run THIS audit before any build.

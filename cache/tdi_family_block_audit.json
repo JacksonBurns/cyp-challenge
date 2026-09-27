@@ -1,0 +1,328 @@
+{
+  "CYP2D6": {
+    "singles": {
+      "base": 0.1495,
+      "emb": 0.1099,
+      "tab": 0.1409,
+      "extbase": 0.0608,
+      "tabcp": 0.2057,
+      "tabcpext": 0.096
+    },
+    "v2": {
+      "members": [
+        "base",
+        "emb",
+        "tab"
+      ],
+      "fold_nested": [
+        0.118,
+        0.24
+      ],
+      "fold_nested_family_weights": [
+        {
+          "base": 1.0
+        },
+        {
+          "base": 0.92,
+          "emb": 0.08
+        },
+        {
+          "base": 0.83,
+          "emb": 0.17
+        },
+        {
+          "emb": 0.08,
+          "tab": 0.92
+        },
+        {
+          "base": 0.42,
+          "emb": 0.17,
+          "tab": 0.42
+        }
+      ],
+      "family_share_free": {
+        "base": {
+          "mean": 0.633,
+          "max": 1.0
+        },
+        "emb": {
+          "mean": 0.367,
+          "max": 1.0
+        }
+      },
+      "fold_nested_capped": [
+        0.1402,
+        0.4
+      ],
+      "lofo": {
+        "-base": [
+          0.1227,
+          0.21
+        ],
+        "-emb": [
+          0.1495,
+          0.08
+        ]
+      },
+      "family_gain": {
+        "base": -0.0047,
+        "emb": -0.0315
+      }
+    },
+    "v3": {
+      "members": [
+        "base",
+        "emb",
+        "tab",
+        "tabcp",
+        "tabcpext"
+      ],
+      "fold_nested": [
+        0.2193,
+        0.32
+      ],
+      "fold_nested_family_weights": [
+        {
+          "base": 0.25,
+          "emb": 0.17,
+          "tabcp": 0.25,
+          "tabcpext": 0.33
+        },
+        {
+          "base": 0.25,
+          "emb": 0.17,
+          "tabcp": 0.25,
+          "tabcpext": 0.33
+        },
+        {
+          "base": 0.08,
+          "tab": 0.08,
+          "tabcp": 0.75,
+          "tabcpext": 0.08
+        },
+        {
+          "base": 0.08,
+          "emb": 0.33,
+          "tabcp": 0.25,
+          "tabcpext": 0.33
+        },
+        {
+          "base": 0.08,
+          "emb": 0.17,
+          "tab": 0.08,
+          "tabcp": 0.33,
+          "tabcpext": 0.33
+        }
+      ],
+      "family_share_free": {
+        "base": {
+          "mean": 0.15,
+          "max": 0.25
+        },
+        "cp": {
+          "mean": 0.65,
+          "max": 0.833
+        },
+        "emb": {
+          "mean": 0.2,
+          "max": 0.333
+        }
+      },
+      "fold_nested_capped": [
+        0.1878,
+        0.34
+      ],
+      "lofo": {
+        "-base": [
+          0.1838,
+          0.27
+        ],
+        "-cp": [
+          0.118,
+          0.24
+        ],
+        "-emb": [
+          0.1833,
+          0.26
+        ]
+      },
+      "family_gain": {
+        "base": 0.0355,
+        "cp": 0.1013,
+        "emb": 0.036
+      }
+    }
+  },
+  "CYP3A4": {
+    "singles": {
+      "base": 0.4066,
+      "emb": 0.3967,
+      "tab": 0.3717,
+      "extbase": 0.2832,
+      "tabcp": 0.4363,
+      "tabcpext": 0.3252
+    },
+    "v2": {
+      "members": [
+        "base",
+        "emb",
+        "tab"
+      ],
+      "fold_nested": [
+        0.4191,
+        0.35
+      ],
+      "fold_nested_family_weights": [
+        {
+          "base": 0.5,
+          "emb": 0.33,
+          "tab": 0.17
+        },
+        {
+          "base": 0.58,
+          "emb": 0.17,
+          "tab": 0.25
+        },
+        {
+          "base": 0.58,
+          "emb": 0.25,
+          "tab": 0.17
+        },
+        {
+          "base": 0.58,
+          "emb": 0.17,
+          "tab": 0.25
+        },
+        {
+          "base": 0.75,
+          "tab": 0.25
+        }
+      ],
+      "family_share_free": {
+        "base": {
+          "mean": 0.6,
+          "max": 0.75
+        },
+        "emb": {
+          "mean": 0.4,
+          "max": 0.5
+        }
+      },
+      "fold_nested_capped": [
+        0.4073,
+        0.29
+      ],
+      "lofo": {
+        "-base": [
+          0.4008,
+          0.3
+        ],
+        "-emb": [
+          0.4066,
+          0.28
+        ]
+      },
+      "family_gain": {
+        "base": 0.0183,
+        "emb": 0.0125
+      }
+    },
+    "v3": {
+      "members": [
+        "base",
+        "emb",
+        "tab",
+        "tabcp",
+        "tabcpext"
+      ],
+      "fold_nested": [
+        0.468,
+        0.26
+      ],
+      "fold_nested_family_weights": [
+        {
+          "base": 0.33,
+          "emb": 0.17,
+          "tab": 0.17,
+          "tabcp": 0.08,
+          "tabcpext": 0.25
+        },
+        {
+          "base": 0.33,
+          "emb": 0.08,
+          "tab": 0.17,
+          "tabcp": 0.25,
+          "tabcpext": 0.17
+        },
+        {
+          "base": 0.42,
+          "emb": 0.08,
+          "tab": 0.17,
+          "tabcp": 0.08,
+          "tabcpext": 0.25
+        },
+        {
+          "base": 0.5,
+          "emb": 0.08,
+          "tab": 0.08,
+          "tabcp": 0.25,
+          "tabcpext": 0.08
+        },
+        {
+          "base": 0.33,
+          "emb": 0.08,
+          "tab": 0.17,
+          "tabcp": 0.25,
+          "tabcpext": 0.17
+        }
+      ],
+      "family_share_free": {
+        "base": {
+          "mean": 0.383,
+          "max": 0.5
+        },
+        "cp": {
+          "mean": 0.367,
+          "max": 0.417
+        },
+        "emb": {
+          "mean": 0.25,
+          "max": 0.333
+        }
+      },
+      "fold_nested_capped": [
+        0.468,
+        0.26
+      ],
+      "lofo": {
+        "-base": [
+          0.4413,
+          0.4
+        ],
+        "-cp": [
+          0.4191,
+          0.35
+        ],
+        "-emb": [
+          0.4584,
+          0.24
+        ]
+      },
+      "family_gain": {
+        "base": 0.0267,
+        "cp": 0.0489,
+        "emb": 0.0096
+      }
+    }
+  },
+  "_macro": {
+    "v2": {
+      "fold_nested_macro": 0.2685,
+      "fold_nested_capped_macro": 0.2737
+    },
+    "v3": {
+      "fold_nested_macro": 0.3437,
+      "fold_nested_capped_macro": 0.3279
+    }
+  }
+}
