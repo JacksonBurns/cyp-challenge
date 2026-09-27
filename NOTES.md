@@ -844,3 +844,97 @@ for all four variants if we need the trade-off table again.
   applies (v2 nested->blind ~1.28, v3->blind 0.94 on the free greedy).
 - Step 1b remains: TabICL/TabPFN on cpchm + PCA-256 CheMeLeon 2048-d to
   dilute the 2D6 cp concentration, then re-run THIS audit before any build.
+
+## 16. STEP 1b AUDITED (Sep 26 late night) - diversified pool FAILS to beat capped v3; candidate = v3-capped @ 0.33/0.26
+
+### Built (tools/run_gpuqueue4.sh, one tracked process, ~15 min total)
+- src/tdi_tabicl_cp2.py: generalized tdi_tabicl_cp.py to any jeremy ckpt
+  (--src cpmed|cpchm). Ran --src cpchm (TabICL n_est=4, PCA-256 whitened,
+  scaffold folds seed 7, challenge rows only). cache/tdi_tabicl_cpchm_oof.npz.
+  Emb cache emb_cpchm_all.parquet covers all 6145 train + 750 test SMILES,
+  zero missing (checked).
+- src/tdi_dmpnn.py: D-MPNN (chemprop BondMessagePassing d_h=300 +
+  BinaryClassificationFFN, BCE) 2 heads = is_TDI, challenge rows only, folds
+  verified row-identical to run_regression seed-7 splits. NaN target masking
+  comes free (model.training_step isfinite()). cache/tdi_dmpnn_oof.npz.
+- TabPFN on cpchm: NOT run - tabpfn v2 ckpt is HF-gated (401 Unauthorized on
+  this box, no token). Cheap retry if Jackson ever `hf auth login`.
+- Skipped (prompt alt option): TabICL on raw CheMeLeon 2048-d PCA-256 - the
+  existing 'tab' member IS that recipe already (tdi_tabicl.py, npc=256).
+
+### Singles OOF MCC (best-fraction, merged-audit numbers)
+tabcpchm 2D6 0.2073 / 3A4 0.4220 (near-twin of tabcp 0.2057/0.4363, as
+expected from the same featurizer class); dmpnn 2D6 0.0812 / 3A4 0.2635
+(weak, like its regression twin).
+
+### src/tdi_blend_family_block2.py - v2/v3/v4 pools, TWO family maps
+merged: cp={tabcp,tabcpext,tabcpchm} (conservative); split: cpmed vs cpchm
+separate. Reproduces audit1 v2/v3 numbers exactly (0.2685/0.3437 macro).
+cache/tdi_family_block_audit2.json.
+
+pool (merged) | 2D6 nested/capped | 3A4 nested/capped | macro nested/capped
+v2 | 0.1180 / 0.1402 | 0.4191 / 0.4073 | 0.2685 / 0.2737
+v3 | 0.2193 / 0.1878 | 0.4680 / 0.4680 | 0.3437 / 0.3279
+v4 | 0.1992 / 0.1727 | 0.4602 / 0.4657 | 0.3297 / 0.3192
+
+Verdicts:
+- cpchm does NOT diversify: split-family LOFO on 2D6 says dropping cpchm
+  alone costs 0 (its inclusion even HURTS: v4 < v3 everywhere on 2D6) while
+  dropping cpmed also costs ~0 - the two are interchangeable within one
+  cp family. Greedy just shuffles weight between twins; cp merged share stays
+  0.683 mean. The step-1b "different pretraining corpus = new family" hope is
+  REFUTED on this data. (PCA-256 whitening + same folds likely caps it.)
+- dmpnn is blend-neutral (LOFO gain +0.001 2D6 / -0.002 3A4, weight <=0.08).
+- => v4 pool REJECTED by the prompt's own gate spirit: a new pool must BEAT
+  the incumbent candidate on family-block honest numbers; v4 is worse than
+  capped v3 on 3 of 4 cells. No further members worth adding.
+- Best family-block-honest pool remains v3 with the 0.5 cap (capped cp share
+  mean 0.483 max 0.5 on 2D6): capped macro nested 0.3279.
+
+### Step 1c extension: fraction posterior on the capped v3 blend (v6)
+src/tdi_fraction_opt_v6.py (same board prior as v5_board: pi ~0.08-0.25
+center 0.16, N=1500). cache/tdi_fraction_optima_v6.json.
+- v3_nested_cap: 2D6 argmax f=0.34 (plateau 0.32-0.35) E[MCC]=0.165
+  E[acc]=0.671; 3A4 argmax f=0.25 (plateau 0.23-0.27) E[MCC]=0.409 E[acc]=0.802.
+- pi-sensitivity (1000-trial grid, pi=0.08..0.213): on 2D6 f=0.33 is at/near
+  the top AT EVERY pi (pi=0.08 0.129 > f0.22's 0.084!); 3A4 f=0.26 within
+  0.005 of max at every pi>=0.11, only pi=0.08 prefers 0.30. Robust choice:
+  2D6 0.33, 3A4 0.26.
+- incumbent v2 static @ shipped 0.08/0.36: E[MCC] 0.138/0.356 macro 0.247,
+  E[acc] 0.816/0.712. Candidate (capped v3 @ 0.33/0.26): E[MCC] 0.163/0.409
+  macro 0.286 (+0.039), E[acc] 0.671/0.802. NOTE E[acc] on 2D6 DROPS below
+  the incumbent - the acc-0.725 board profile was mostly prior error (sec
+  15), chasing acc here would mean chasing the wrong metric; MCC is scored.
+
+### Candidate BUILT + verified: cache/tdi_submission_v4_candidate.csv
+src/make_tdi_submission_v4.py: per-member averaged fold weights from the
+CAPPED selection (2D6 base .23 emb .16 tab .12 tabcp .28 tabcpext .20;
+3A4 base .35 emb .10 tab .17 tabcp .18 tabcpext .20 - cp family 0.48/0.38,
+cap respected), fractions 2D6 0.33 / 3A4 0.26. Official validator PASS,
+row-for-row SMILES/Molecule_Name PASS (verify_submissions.py), achieved
+rates 0.3307/0.2600. Incumbents untouched (tdi_submission_v2.csv and
+regression_final_cp7_submission.csv unchanged, new filename only).
+- Expectation book: nested->blind ratios seen so far: v2 1.28, v3-free 0.94.
+  E[MCC] posterior (0.286) sits between; honest blind range ~0.30-0.36.
+  Tier 1 needs ~0.341, top-10 ~0.371 on the Sep 26 board. This is a genuine
+  promotion bet, NOT a lock - Jackson's call on a submit slot (NEVER submit
+  without his go-ahead + HF login; latest-valid-counts so no rush).
+
+### Step 1d dead-end ledger (updated)
+- TabPFN variants: gated HF weights (401), no token on box.
+- AID1851 pooling / ChEMBL pretrain: still dead (sec 12/14).
+- NEW dead end: adding same-featurizer twins (cpmed+cpchm) as "diversity" -
+  they are one family, and dmpnn classifier heads are blend-neutral at this
+  data size. Remaining pool levers are genuinely different model classes or
+  better cp embeddings, not more TabICL flavors.
+
+### Next (priority order unchanged)
+1. Ask Jackson for a submit slot to test the v4_candidate pair (cp7 + tdi
+   v4_candidate) - the v2-on-board is 12h+ cooldown-free, and the latest
+   valid submission counts, so a mid-course probe is low-risk if he agrees.
+2. Step 2a (regression ranking): frozen CheMeLeon 2048-d ridge probe
+   (big-alpha only) + mine the three public method reports (rasayan-cyp
+   rank 14, stir_bar rank 28/6, briford blog). Then 2b family-block check
+   of cp7's cp-family before any regression resubmit.
+3. If a stronger TDI pool is ever found, the cap machinery + v6 posterior
+   are the gate; ship only on BOTH E[MCC] and family-block numbers.
