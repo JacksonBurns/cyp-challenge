@@ -1,0 +1,5 @@
+2026-09-27 23:03:07 | unimol_tools/weights/weighthub.py | 54 | INFO | Uni-Mol Tools | Weights will be downloaded to default directory: /home/jackson/miniforge3/envs/unimol/lib/python3.11/site-packages/unimol_tools/weights
+2026-09-27 23:03:07 | unimol_tools/weights/weighthub.py | 71 | INFO | Uni-Mol Tools | Downloading mol_pre_all_h_220816.pt
+2026-09-27 23:03:19 | unimol_tools/weights/weighthub.py | 54 | INFO | Uni-Mol Tools | Weights will be downloaded to default directory: /home/jackson/miniforge3/envs/unimol/lib/python3.11/site-packages/unimol_tools/weights
+2026-09-27 23:03:19 | unimol_tools/weights/weighthub.py | 71 | INFO | Uni-Mol Tools | Downloading mol.dict.txt
+2026-09-27 23:03:19 | unimol_tools/models/unimol.py | 169 | INFO | Uni-Mol Tools | Loading pretrained weights from /home/jackson/miniforge3/envs/unimol/lib/python3.11/site-packages/unimol_tools/weights/mol_pre_all_h_220816.pt

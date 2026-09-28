@@ -1062,3 +1062,51 @@ Blend gates unchanged: TDI candidate must beat v4_candidate's capped-nested
 macro + E[MCC] posterior 0.286 AND stay family-block clean; regression
 candidate must show a clear (>= ~+0.01 macro nested), family-block-clean jump
 - the Nov 1 pair defaults stay cp8d + best verified TDI file until beaten.
+
+## 19. TASKS 1-3 EXECUTED (Sep 27 night -> Sep 28) - TDI CheMeLeon-FT REJECTED; admecd fine-tunes training; Uni-Mol GO
+### Task 1 DONE + REJECTED (TDI: CheMeLeon encoder fine-tuned on the binary task)
+src/tdi_ft_chemeleon.py (new; = tdi_dmpnn.py task recipe + ft_chemeleon.py
+encoder load, BinaryClassificationFFN hidden 512, d_h=2048 from ckpt; both
+--variant fullft and frozen, seed 0; chain tools/run_tdi_ft_chm.sh; fullft
+400 s, frozen 278 s). cache/tdi_ft_chm{,_frozen}_oof.npz (+test probs).
+Standalone best-fraction OOF MCC: fullft 2D6 0.1669 / 3A4 0.3251; frozen
+0.1668 / 0.3818. Mid-pool (tabcp 0.206/0.436), above the D-MPNN twin.
+src/tdi_blend_family_block3.py (new; reuses fb2 audit machinery) pools
+v5a=v3+fullft, v5b=v3+frozen, v5c=v3+both under THREE family maps (merged =
+ftchm its own family; strict = frozen variant joins emb; paranoid = ftchm
+joins cp). cache/tdi_family_block_audit3.json.
+pool (macro nested / capped, merged map): v3 0.3437/0.3279 | v5a 0.3301/0.3213
+| v5b 0.3423/0.3349 | v5c 0.3319/0.3223.
+- GATE: prompt bar = beat v4_candidate machinery (v3 capped 0.3279) by the +0.018
+  v4 set over v2-nested. Best new pool v5b capped 0.3349 = +0.007 only, and its
+  FREE nested is WORSE than v3; ftchm family_gain is NEGATIVE on 2D6 in both
+  variants (-0.021 fullft / -0.009 frozen), +0.007/-0.006 on 3A4; paranoid map
+  caps at 0.3271-0.3349 too. FAILS on every reading -> NO new TDI candidate,
+  v4_candidate stays the TDI slot owner. Dead-end ledger +1: CheMeLeon fine-tuned
+  on TDI binaries is blend-neutral/harmful at this data size (mirrors the
+  regression finding that its power needs the 4-head pIC50 + 29k-row recipe).
+### Task 2 IN FLIGHT (regression: jeremy adme_pretrain ckpts FULL-TUNED)
+- src/adapt_adme_ckpt.py (new): converts /tmp/jeremyscripts checkpoints (full
+  MPNN schema: message_passing.* + predictor.*, MPNN-level hyper_parameters)
+  to ft_ext --pretrained bare-encoder schema (unprefixed keys, MP-level hp;
+  predictor.* dropped, fresh 12-head head). Verified round-trip smoke on both.
+  cache/admecd_ckpt_{chm,med}.pt (d_h 2048 depth 6 / d_h 600 depth 4).
+  Note logged: chemprop_medium was pretrained with NormAggregation(norm=100)
+  but ft_ext fixes MeanAggregation - deviation from jeremy's original stack.
+- tools/run_admecd.sh: ft_ext --full-ft --pretrained ... tags admchm (seeds
+  0,1) then admmed (seeds 0,1). admchm seed0 ~34 min; ETA all four ~2.3 h.
+### Task 3 GO GATE PASSED (Uni-Mol 3D encoder)
+- dptech/Uni-Mol-Models weights download fine on this box (190 MB in ~7 s at
+  ~30 MB/s; NOT the TabPFN/401 pattern). PyPI has no uni-core wheel (repo docs
+  stale); installed unimol-tools 0.1.6 into NEW conda env `unimol`
+  (python 3.11, standing rule; torch 2.14 cu130 works with driver 595).
+  Disk warning: / was at 99% - purged pip cache + /tmp artifacts (now ~5 GB
+  free); keep it that way for the embedding parquet.
+- Smoke verified end-to-end: UniMolRepr(data_type='molecule', remove_hs=False)
+  -> get_repr(df) returns (N, 512) float vectors, conformer gen 100% success
+  at ~160 mol/s CPU, GPU inference ~4.9 it/s at bs32. Scripts ready:
+  src/unimol_embeddings.py (all 6895 unique SMILES -> cache/unimol_emb.parquet)
+  + src/unimol_ridge.py (big-alpha ridge -> ft_oof_unimol.csv / test preds).
+  Queue order after Task 2 frees the GPU: unimol embeddings (~10-20 min) ->
+  ridge probe (CPU) -> blend + family-block as NEW family 'unimol' (3D lineage,
+  genuinely distinct from every 2D graph family in the pool).
