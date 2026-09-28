@@ -68,6 +68,9 @@ FAMS = {
     "ft_chmridge": g("chmridge"),
     "ft_d2d6": g("d2d6"),
     "ft_near": g("near"),
+    "ft_admchm": g("admchm"),
+    "ft_admmed": g("admmed"),
+    "ft_unimol": g("unimol"),
 }
 POOLS = {
     "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
@@ -78,6 +81,14 @@ POOLS = {
              "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6"],
     "cp9": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_near"],
+    "cp10": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed"],
+    "cp11": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_unimol"],
+    "cp12": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed", "ft_unimol"],
 }
 FAMAPS = {
     "cp": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge"},
@@ -85,6 +96,15 @@ FAMAPS = {
     "chem": {"emb": "chemeleon", "ft_frozen": "chemeleon", "ft_chmridge": "chemeleon"},
     "mpnn": {"ft_dmpnn": "dmpnn", "ft_d2d6": "dmpnn"},
     "ftext": {"ft_ext": "fullft", "ft_near": "fullft"},
+    # Task 2 (sec 19): admecd = jeremy adme_pretrain encoders FULL-TUNED on the
+    # ft_ext recipe. Prompt: keep SEPARATE from the frozen cpridge family but
+    # SAME corpus lineage - report both ways.
+    "adm_split": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
+                  "ft_admchm": "admchm", "ft_admmed": "admmed"},
+    "adm_merged": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
+                   "ft_admchm": "admecd", "ft_admmed": "admecd"},
+    "adm_cpall": {"ft_cpmed": "cpall", "ft_cpchm": "cpall",
+                  "ft_admchm": "cpall", "ft_admmed": "cpall"},
 }
 
 
