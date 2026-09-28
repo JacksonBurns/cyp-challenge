@@ -1110,3 +1110,52 @@ pool (macro nested / capped, merged map): v3 0.3437/0.3279 | v5a 0.3301/0.3213
   Queue order after Task 2 frees the GPU: unimol embeddings (~10-20 min) ->
   ridge probe (CPU) -> blend + family-block as NEW family 'unimol' (3D lineage,
   genuinely distinct from every 2D graph family in the pool).
+### Task 2 DONE (regression: jeremy adme_pretrain encoders FULL-TUNED) -> cp10
+Chain tools/run_admecd.sh: ft_ext --full-ft 12-head on adapted ckpts, tags
+admchm (d_h 2048, 2 seeds) + admmed (d_h 600, 2 seeds); total ~85 min.
+Singles (seed-avg blend-ready; per-seed similar): 1A2 0.562/0.555, 2C9
+0.657/0.667, 2D6 0.417/0.425, 3A4 0.787/0.782 -> admchm seed-avg singles
+0.573/0.677/0.435/0.796 = BEST new singles the pool has ever seen (beats
+cpmed 0.550/0.701*/0.407/0.800 except 2C9/3A4 slightly). Population shift did
+NOT bite (unlike ft_pre) - fine-tuning these corpus-lineage ckpts works.
+- blend cp10 = cp8d + ft_admchm + ft_admmed: free blend macro 0.4489,
+  honest nested 0.4475 (cp8d 0.4403, cp7 0.4385) = +0.0072/+0.009. Wins on ALL
+  four iso nested: 1A2 0.598->0.604, 2C9 0.715->0.717, 2D6 0.473->0.482 (our
+  weakest head, largest jump), 3A4 0.818->0.823. admchm takes 15-40% greedy
+  weight on every iso; admmed 5-20%.
+- family-block (regression_family_block.py, new adm_* maps): LOFO[adm_merged]
+  admecd family gain +0.0071 survives honest reselection; cpridge still +0.0097
+  SEPARATELY (so adm != cp twin, they add independently); paranoid adm_cpall
+  (all four adme_pretrain-lineage members as ONE family) gain +0.0257 survives
+  -> the pool is not an echo chamber. admecd single-family concentration mean
+  0.329 max 0.417 < 0.5 cap. capped_cp/capped_frozen macro both 0.448.
+- CANDIDATE BUILT + VERIFIED: cache/regression_final_cp10_submission.csv
+  (official validator PASS; row-for-row SMILES/Molecule_Name PASS; incumbents
+  cp7/cp8d/v2/v4 untouched). vs cp8d corr 0.983-0.997 (2D6 biggest delta 0.73
+  pIC50 max).
+- GATE CALL (honest): +0.0072 nested is BELOW the sec 18 ">= ~+0.01 clear jump"
+  bar in absolute terms, but 4x cp8d's +0.0018, wins every iso, family-block
+  clean, and cp8d itself failed the absolute bar too. Verdict: cp10 DOMINATES
+  cp8d and is the Nov 1 regression default; whether it merits its own
+  mid-course slot is Jackson's call vs the TDI slot (this is the strongest
+  regression candidate we have).
+### Task 3 DONE + DEAD (Uni-Mol 3D encoder ridge member)
+GO gate PASSED (weights download OK, ~30 MB/s; no 401) - new conda env
+`unimol` (python 3.11) with PyPI unimol-tools 0.1.6 (the repo's uni-core pip
+instructions are stale: uni-core is NOT on PyPI; unimol-tools IS).
+src/unimol_embeddings.py: 6895 unique SMILES -> 512-d Uni-Mol v1 84m
+(all-H pretrain mol_pre_all_h_220816, RDKit ETKDG conformers, 100% success)
+in 63 s GPU -> cache/unimol_emb.parquet (20 MB).
+src/unimol_ridge.py (big-alpha ridge, same folds/schema): singles 1A2 0.383 /
+2C9 0.460 / 2D6 0.235 / 3A4 0.589 = WORST in pool by a mile (chmridge 0.468/
+0.585/0.344/0.723 was already the floor). cp11 = cp8d + ft_unimol: nested
+0.4403 = cp8d EXACTLY, greedy weight 0.00 on every iso (even in cp12 next to
+admecd). The 3D signal is either real-but-weak on this population (frozen
+conformer + ridge, no fine-tune) or redundant with 2D families; stirring_bar's
+gain likely needs their full stack. NOT adding a Uni-Mol GBM member: the
+emb-GBM lever already owns 'GBM sees extra embedding columns' (that member is
+in gbm/emb), and the ridge singles prove the marginal info is ~0. Dead-end
+ledger +1: frozen Uni-Mol embeddings (any reader) - would need FT + conformer
+ensembling to matter, not affordable this cycle.
+### Task 4 filler IN FLIGHT: tools/run_filler1.sh (ft_ext seed 5, d2d6 seed 10)
+### Task 5 SKIPPED (not early; Tasks 1-3 consumed the queue time)
