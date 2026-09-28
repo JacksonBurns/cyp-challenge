@@ -1023,3 +1023,42 @@ deficit worth +0.04" is real only if ST-RAE were ignored - it is scored.
    likely net-negative vs making one new encoder work.
 3. Dead ends ledger +1: CheMeLeon-2048 ridge probe (zero weight); near-test
    retrieval on external aux rows (nested +0.0002).
+
+## 18. CHEMELEON FINE-TUNE AUDIT (Sep 27) + FULL-SEND GPU QUEUE (next agent prompt rewritten)
+
+### Q from Jackson: "have we tried fine-tuning CheMeLeon?" - YES, mostly. Full map:
+TRIED (all use CheMeLeon MP weights ~/chemeleon_nazarov/chemeleon_mp.pt as encoder,
+chemprop MPNN wrapper, scaffold folds, chemeleon conda env):
+- Frozen-MP heads only, 4-head pIC50 regression (ft_frozen): weak standalone
+  (0.449/0.603/0.340/0.745), blend filler (~0.15 weight). Sec 10/11.
+- FULL fine-tune, 4-head pIC50 (ft_fullft +fullft_s1): BIG WIN, standalone beat
+  the gate on 2C9; 2-seed avg adopted into every blend since. Sec 11.
+- FULL fine-tune 12-head external multitask (ft_ext + seeds 1-4, 29k rows):
+  WIN, core of cp7 pool (sec 11/12).
+- ChEMBL+AID1851 PRETRAIN-then-finetune (ft_pre, pretrain_mp.py): WEAK on every
+  isoform (population shift, matches jeremy's warning); kept only as
+  decorrelation filler (15-25% weight on 1A2/2D6 via greedy). Sec 12.
+- Frozen 2048-d embeddings as FEATURES: GBM 'emb' member (sec 10), TabICL
+  'tab' member in the TDI pool (PCA-256), and Sep 27 ridge probe chmridge
+  (DEAD, zero blend weight). Sec 10/15/17.
+NOT TRIED (the real gaps, now queued in docs/NEXT_AGENT_PROMPT.md):
+1. CheMeLeon encoder fine-tuned on the TDI BINARY task (2-head BCE is_TDI).
+   Every CheMeLeon run so far was regression or embeddings-only; the TDI deep
+   members are chemprop D-MPNN only (tdi_dmpnn, blend-neutral). ~40 min GPU.
+2. jeremy's adme_pretrain checkpoints (chemprop_medium/chemprop_chemeleon.pt)
+   FULL-TUNED: we only ever froze them + ridge probe (cpmed/cpchm, the cp
+   family). Fine-tuning that lineage on the ft_ext 12-head recipe is untried;
+   it is the same encoder class that produced cp7's +0.045 blind gain.
+3. Uni-Mol / any non-2D-pretrained encoder: not installed on box; weights
+   download must be verified before investing (TabPFN 401 precedent).
+4. Intermediate ft_ext-model embeddings as ridge/tabFM sources (models are not
+   persisted today - needs save-state or same-run extraction; medium effort).
+### Full-send queue decision (agreed direction Sep 27, "FULL SEND"):
+Priority order: (1) CheMeLeon-TDI ft (TDI is priority-1 per sec 14: Tier 1
+needs +0.02 MCC and v4_candidate is only a bet), (2) adme_pretrain full-tune
+regression members, (3) Uni-Mol attempt with go/no-go gate, (4) filler seeds
+(ft_ext seed 5, d2d6 4th seed) ONLY when nothing above needs the GPU.
+Blend gates unchanged: TDI candidate must beat v4_candidate's capped-nested
+macro + E[MCC] posterior 0.286 AND stay family-block clean; regression
+candidate must show a clear (>= ~+0.01 macro nested), family-block-clean jump
+- the Nov 1 pair defaults stay cp8d + best verified TDI file until beaten.
