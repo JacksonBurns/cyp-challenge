@@ -1159,3 +1159,5 @@ ledger +1: frozen Uni-Mol embeddings (any reader) - would need FT + conformer
 ensembling to matter, not affordable this cycle.
 ### Task 4 filler IN FLIGHT: tools/run_filler1.sh (ft_ext seed 5, d2d6 seed 10)
 ### Task 5 SKIPPED (not early; Tasks 1-3 consumed the queue time)
+### Task 4 filler seeds MEASURED (Sep 28): ext_s5 + d2d6_s10 = neutral-to-slightly-negative -> NOT adopted
+tools/run_filler1.sh ran both (34 min + 8 min, DONE clean). Honest nested with the two extra seeds in: cp8d 0.4403->0.4393, cp10 0.4475->0.4471. Both DROPPED ~0.001 (blend reselection noise; the new seeds' singles are mid-pool). sec 18's "+0.001 each, never displaces" claim is NOT confirmed - measured verdict: leave them in cache as members, but the committed cp10/cp8d candidate files are the PRE-filler blends (rebuilt-and-compared; reverted to the better committed files, both re-verified PASS). Filler line closed.
