@@ -1161,3 +1161,30 @@ ensembling to matter, not affordable this cycle.
 ### Task 5 SKIPPED (not early; Tasks 1-3 consumed the queue time)
 ### Task 4 filler seeds MEASURED (Sep 28): ext_s5 + d2d6_s10 = neutral-to-slightly-negative -> NOT adopted
 tools/run_filler1.sh ran both (34 min + 8 min, DONE clean). Honest nested with the two extra seeds in: cp8d 0.4403->0.4393, cp10 0.4475->0.4471. Both DROPPED ~0.001 (blend reselection noise; the new seeds' singles are mid-pool). sec 18's "+0.001 each, never displaces" claim is NOT confirmed - measured verdict: leave them in cache as members, but the committed cp10/cp8d candidate files are the PRE-filler blends (rebuilt-and-compared; reverted to the better committed files, both re-verified PASS). Filler line closed.
+
+## 20. BOARD 4 (Oct 3) + FINAL PUSH PLAN (docs/FINAL_PUSH_PLAN.md)
+- Board 4: regression JacksonBurns rank 58/255 ST-RAE 0.5366 R2 0.496 Spearman
+  0.709 (top 0.377/0.66/0.78); TDI rank 78/147 MCC 0.283 (top 0.535/0.513).
+  cp7 scored 0.5192 -> 0.5366 on the SAME file across two boards: board-side
+  noise ~0.02/reveal; field drift has FLATTENED (top-10 deltas |<0.02| since
+  Sep 26) - absolute gates are honest again.
+- Unsubmitted: cp10 (regression, nested +0.009 over cp8d) and tdi_v4_candidate
+  both dominate incumbents; cp10 = Nov 1 default, does not need its own slot.
+- New facts verified from data: TDI train is a superset of regression train
+  (all 4905 direct-pIC50 mols have TDI-condition pIC50); TDI-condition vs direct
+  pIC50 corr 0.90-0.95 but is_TDI is NOT a threshold of it (best acc 0.78);
+  single-conc log2fc covers 4376 mols x 4 enzymes (Spearman -0.83..-0.94 vs
+  direct pIC50). jeremy kit downloaded (/tmp/jeremyscripts/CYP_Challenge):
+  17-head multitask w/ log2fc aux, Monroe frozen+TabPFN, qHTS-only domain-adapt
+  freeze (their best-ever 2D6 single), Caruana bagged ES; SimCLR SSL = their
+  worst source (demotes Jackson's idea 1).
+- Board diagnostics: TDI MCC-vs-precision corr 0.94 at fixed recall; every
+  entry MCC>0.4 has P>=0.43 - we ship P 0.36-0.41 (precision-constrained
+  fraction retune queued). TDI top-12 includes regression rank-212 entrant ->
+  leaders have TDI-specific signal, not regression ranker transfers.
+- Plan written to docs/FINAL_PUSH_PLAN.md: Lever A = multi-view multitask
+  (regression + TDI heads on ONE encoder, Jackson's idea 2, priority 1),
+  Lever B = TDI-condition pIC50 aux heads for regression, Lever D = precision-
+  constrained TDI fractions, Lever E = mine new leaders + qHTS-only DA + Monroe
+  go/no-go, Lever C = SSL unlabeled pretrain DEMOTED (jeremy evidence + our
+  ft_pre population-shift result). Calendar Oct 3 -> lock Oct 28.
