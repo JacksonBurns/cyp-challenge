@@ -1188,3 +1188,19 @@ tools/run_filler1.sh ran both (34 min + 8 min, DONE clean). Honest nested with t
   constrained TDI fractions, Lever E = mine new leaders + qHTS-only DA + Monroe
   go/no-go, Lever C = SSL unlabeled pretrain DEMOTED (jeremy evidence + our
   ft_pre population-shift result). Calendar Oct 3 -> lock Oct 28.
+
+## 21. BIG SWING v2 PLAN (Oct 3): CYP-UMTM unified multi-task multi-view model
+Jackson directive: consolidate FINAL_PUSH_PLAN v1 levers into one maximal model,
+start now. docs/FINAL_PUSH_PLAN.md rewritten as CYP-UMTM spec: ONE encoder
+recipe, 23 NaN-masked heads over a master SMILES table (direct pIC50 x4 primary,
+TDI-condition pIC50 x4 w0.5, is_TDI x2 BCE w0.5 w/ stacked stop-grad potency
+inputs, single-conc log2fc x4 w0.3, ChEMBL x4 + qHTS x4 aux w0.3); encoder
+lineages L1 CheMeLeon / L2+L3 adme_pretrain / L4 from-scratch D-MPNN / L5 Monroe
+go-no-go / L2p MLM-continue optional; seeds x4 per lineage; mixed MSE+BCE
+Lightning module (smoke gate: zeroed-aux must match ft_ext OOF); Caruana ES +
+unchanged BLIND_MOMENTS placement; TDI fraction = max E[MCC] s.t. E[P] >= 0.45.
+Gates: regression nested >= 0.4475 (cp10) else fold members into legacy pool;
+TDI capped nested >= 0.35. Revert spine = cp10 + legacy TDI. Phase 1 code starts
+immediately; first go/no-go = unified TDI vs standalone (2D6 0.17-0.21 / 3A4
+0.38-0.44) after L2 chain (Oct 7). Honest bet-against list in plan sec 4.
+NEXT_AGENT_PROMPT.md rewritten for execution.
