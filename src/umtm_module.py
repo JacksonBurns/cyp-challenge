@@ -67,7 +67,6 @@ D_H_L4, FFN_HID = 300, 2048
 BIN_IDX = [HEADS.index(h) for h in TDIB]
 DIR_IDX = [HEADS.index(h) for h in DIRECT]
 TDIC_IDX = [HEADS.index(h) for h in TDIC]
-CHAL_IDX = DIR_IDX + TDIC_IDX + BIN_IDX  # heads whose rows exist only in challenge
 W_BIN = 0.25  # 0.5 group weight / 2 heads
 
 
@@ -138,7 +137,7 @@ class UMTM(models.MPNN):
             bin_logits = raw[:, BIN_IDX]
         return raw, bin_logits
 
-    def _loss_parts(self, raw, bin_logits, targets, weights):
+    def _loss_parts(self, raw, bin_logits, targets, w_bin):
         mask = targets.isfinite()
         t = targets.nan_to_num(nan=0.0)
         wm = self._wm_t.to(t.device)
@@ -150,13 +149,15 @@ class UMTM(models.MPNN):
         l_mse = sq.sum() / active
         mb = mask[:, BIN_IDX]
         lb = F.binary_cross_entropy_with_logits(bin_logits, t[:, BIN_IDX], reduction="none")
-        l_bce = (lb * mb * weights.reshape(-1, 1)).sum() * W_BIN / mb.sum().clamp(min=1)
+        # gate modes (ext/primary) pass w_bin=0: bin heads fully inactive so
+        # the loss == ft_ext recipe exactly (stack exists but gets no gradient).
+        l_bce = (lb * mb).sum() * w_bin / mb.sum().clamp(min=1)
         return sq, mb, l_mse, l_bce
 
     def training_step(self, batch, batch_idx):
         bmg, V_d, X_d, targets, weights, lt, gt = batch
         raw, bl = self.outputs(bmg, V_d, X_d)
-        sq, mb, l_mse, l_bce = self._loss_parts(raw, bl, targets, weights)
+        sq, mb, l_mse, l_bce = self._loss_parts(raw, bl, targets, self._w_bin)
         self._tr_sq += sq.sum().item()
         self._tr_m += int(targets.shape[0])
         l = l_mse + l_bce
@@ -168,12 +169,17 @@ class UMTM(models.MPNN):
         raw, bl = self.outputs(bmg, V_d, X_d)
         mask = targets.isfinite()
         t = targets.nan_to_num(nan=0.0)
-        # ES loss: challenge heads only (external rows never validate); unweighted
-        # z-space MSE over direct+tdic + mean masked BCE. Monotone, unit-clean.
-        cm = mask[:, CHAL_IDX]
-        err = ((raw[:, CHAL_IDX] - t[:, CHAL_IDX]) ** 2) * cm
-        self._va_err = getattr(self, "_va_err", 0.0) + err.sum().item()
-        self._va_n = getattr(self, "_va_n", 0) + int(cm.sum().item())
+        # ES loss == the training loss formula restricted to ev (challenge) rows:
+        # weighted z-MSE over active columns / active cells + w_bin * mean masked
+        # BCE. In ext/primary gate modes (w_bin=0, only primary aux columns
+        # active, and ev rows carry no aux labels) this is byte-equivalent to
+        # ft_ext's val_loss, so EarlyStopping stops at the same place. External
+        # rows never validate (ev_df is always challenge-only).
+        wm = self._wm_t.to(t.device)
+        sq = ((raw - t) ** 2) * mask * wm
+        active = mask[:, self._active_cols].sum().clamp(min=1)
+        self._va_err = getattr(self, "_va_err", 0.0) + sq.sum().item()
+        self._va_n = getattr(self, "_va_n", 0) + int(active.item())
         mb = mask[:, BIN_IDX]
         lb = F.binary_cross_entropy_with_logits(bl, t[:, BIN_IDX], reduction="none")
         self._va_bce = getattr(self, "_va_bce", 0.0) + float((lb * mb).sum().item())
@@ -200,7 +206,7 @@ class UMTM(models.MPNN):
 
     def on_validation_epoch_end(self):
         n = max(self._va_n, 1)
-        val = self._va_err / n + W_BIN * self._va_bce / max(self._va_bn, 1)
+        val = self._va_err / n + self._w_bin * self._va_bce / max(self._va_bn, 1)
         self.log("val_loss", val, prog_bar=True)
         parts = [f"ep{self.current_epoch + 1} train_mse={self._tr_sq / max(self._tr_m, 1):.4f}"
                  f" val={val:.4f}"]
@@ -225,10 +231,15 @@ class UMTM(models.MPNN):
                 y = raw * self._sc_scale + self._sc_mean  # explicit unscale
                 y[:, BIN_IDX] = torch.sigmoid(bl)
                 outs.append(y.detach().cpu().numpy())
-        return np.vstack(outs)
+        P = np.vstack(outs)
+        # alignment guarantee: one row per input SMILES (MoleculeDataset keeps
+        # unfeaturizable rows as zero graphs, but assert or a silent drop would
+        # corrupt OOF row alignment)
+        assert P.shape[0] == len(smiles_df), f"predict_frame rows {P.shape[0]} != {len(smiles_df)}"
+        return P
 
 
-def build_model(lineage, scaler, w_mse, stacked):
+def build_model(lineage, scaler, w_mse, stacked, w_bin=W_BIN):
     if lineage == "L4":
         feat = featurizers.SimpleMoleculeMolGraphFeaturizer()
         mp = nn.BondMessagePassing(d_v=feat.atom_fdim, d_e=feat.bond_fdim, d_h=D_H_L4,
@@ -242,6 +253,7 @@ def build_model(lineage, scaler, w_mse, stacked):
                            output_transform=nn.UnscaleTransform.from_standard_scaler(scaler))
     model = UMTM(mp, nn.MeanAggregation(), ffn, stacked=stacked)
     model._w_mse = w_mse
+    model._w_bin = float(w_bin)
     model.register_buffer("_wm_t", torch.tensor(w_mse, dtype=torch.float))
     model.register_buffer("_active_cols", torch.tensor(w_mse > 0))
     model.register_buffer("_sc_mean", torch.tensor(scaler.mean_, dtype=torch.float).unsqueeze(0))
@@ -258,7 +270,11 @@ def train_model(fit_df, ev_df, lineage, tag, seed, weights, stacked, max_epochs=
     ev_dset.normalize_targets(scaler)
     tr_loader = data.build_dataloader(tr_dset, batch_size=BATCH, num_workers=0)
     ev_loader = data.build_dataloader(ev_dset, batch_size=BATCH, num_workers=0, shuffle=False)
-    model = build_model(lineage, scaler, head_weights(weights, fit_df), stacked)
+    # gate modes (ext/primary): bin heads fully inactive - no BCE gradient and
+    # no stack module (closest possible shape match to the legacy recipe).
+    w_bin_eff = W_BIN if weights == "plan" else 0.0
+    stacked_eff = bool(stacked and weights == "plan")
+    model = build_model(lineage, scaler, head_weights(weights, fit_df), stacked_eff, w_bin_eff)
     print(f"[{tag}] trainable {sum(p.numel() for p in model.parameters() if p.requires_grad)/1e6:.1f}M",
           flush=True)
     es = EarlyStopping(monitor="val_loss", patience=PATIENCE, mode="min")
@@ -291,7 +307,7 @@ def fold_inputs(master, weights, fold_col, seed, f):
     return fit_df, tr_pool.iloc[vi], va_idx
 
 
-def run(lineage, seed, weights, fold, smoke=False, stacked=True):
+def run(lineage, seed, weights, fold, smoke=False, stacked=True, no_test=False):
     t0 = time.time()
     s = "" if seed == 0 else f"_s{seed}"
     tag = f"{lineage}{'' if weights == 'plan' else '_' + weights}{s}" + ("_smoke" if smoke else "")
@@ -305,7 +321,9 @@ def run(lineage, seed, weights, fold, smoke=False, stacked=True):
         fit_df, ev_df, va_idx = fold_inputs(master, weights, fold_col, seed, f)
         model = train_model(fit_df, ev_df, lineage, f"{tag} fold{f}", seed, weights,
                             stacked, max_epochs=2 if smoke else MAX_EPOCHS)
-        oof.iloc[va_idx, :] = model.predict_frame(ev_df[["SMILES"]])
+        # ft_ext semantics: ev_df is only the EarlyStopping split; the OOF rows
+        # are predictions on the fold's own rows (va_idx), predicted after training.
+        oof.iloc[va_idx, :] = model.predict_frame(ch.iloc[va_idx][["SMILES"]])
         del model
         torch.cuda.empty_cache()
         print(f"[{tag}] fold {f} done {time.time()-t0:.0f}s", flush=True)
@@ -315,6 +333,9 @@ def run(lineage, seed, weights, fold, smoke=False, stacked=True):
     oof.insert(0, "SMILES", ch.SMILES.values)
     oof.insert(1, "fold", ch[fold_col].values)
     oof.to_csv(os.path.join(CACHE, f"umtm_oof_{tag}.csv"), index=False)
+    if no_test:  # gate runs: OOF only, skip the all-data model (ft_ext --skip-folds mirror)
+        print("DONE-OOF-ONLY", tag, f"{time.time() - t0:.0f}s", flush=True)
+        return
 
     # all-data model for test predictions (ft_ext rng semantics: default_rng(99+seed))
     rng = np.random.default_rng(99 + seed)
@@ -345,6 +366,8 @@ if __name__ == "__main__":
     ap.add_argument("--weights", default="plan", choices=["plan", "ext", "primary"])
     ap.add_argument("--fold", default="reg", choices=["reg", "tdi"])
     ap.add_argument("--smoke", action="store_true", help="fold 0 only, 2 epochs, no outputs")
+    ap.add_argument("--no-test", action="store_true", help="OOF only, skip all-data model + test preds")
     ap.add_argument("--no-stack", action="store_true", help="bin heads plain from FFN (ablation)")
     a = ap.parse_args()
-    run(a.lineage, a.seed, a.weights, a.fold, smoke=a.smoke, stacked=not a.no_stack)
+    run(a.lineage, a.seed, a.weights, a.fold, smoke=a.smoke, stacked=not a.no_stack,
+        no_test=a.no_test)

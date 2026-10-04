@@ -81,8 +81,9 @@ def main(paths, fold_col):
         fc = fold_col if fold_col in df.columns else ("fold_tdi" if "fold_tdi" in df.columns else "fold")
         out = {}
         for iso in TDI_ISO:
-            col = f"is_TDI_{iso}" if f"is_TDI_{iso}" in df.columns else f"{iso}_proba"
-            if col not in df.columns:
+            cands = [f"is_TDI_{iso}", f"is_TDI_{iso[3:]}", f"{iso}_proba"]
+            col = next((c for c in cands if c in df.columns), None)
+            if col is None:
                 continue
             d = df[[col, fc]].copy()
             d.index = df["SMILES"].values

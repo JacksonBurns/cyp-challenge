@@ -1,0 +1,43 @@
+[L2_smoke] rows: challenge 6145; fold col fold_reg; weights=plan
+[L2_smoke fold0] trainable 17.7M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+ep1 train_mse=0.0000 val=1.0095 CYP1A2_direct=1.0792 CYP2C9_direct=0.9726 CYP2D6_direct=1.0626 CYP3A4_direct=1.0342 CYP1A2_tdic=1.1667 CYP2C9_tdic=1.0477 CYP2D6_tdic=1.1309 CYP3A4_tdic=1.1003 is_TDI_2D6=0.2851 is_TDI_3A4=0.1899 CYP1A2_log2fc=0.7808 CYP2C9_log2fc=1.1312 CYP2D6_log2fc=0.9897 CYP3A4_log2fc=0.9852
+ep1 train_mse=0.4514 val=0.6872 CYP1A2_direct=0.7339 CYP2C9_direct=0.8886 CYP2D6_direct=0.9032 CYP3A4_direct=0.5011 CYP1A2_tdic=0.7894 CYP2C9_tdic=0.8228 CYP2D6_tdic=0.8691 CYP3A4_tdic=0.4757 is_TDI_2D6=0.3090 is_TDI_3A4=0.2147 CYP1A2_log2fc=0.5762 CYP2C9_log2fc=0.5578 CYP2D6_log2fc=0.7424 CYP3A4_log2fc=0.4856
+ep2 train_mse=0.3414 val=0.6778 CYP1A2_direct=0.7328 CYP2C9_direct=0.9710 CYP2D6_direct=0.8591 CYP3A4_direct=0.4949 CYP1A2_tdic=0.7799 CYP2C9_tdic=0.9376 CYP2D6_tdic=0.7612 CYP3A4_tdic=0.4527 is_TDI_2D6=0.3322 is_TDI_3A4=0.2234 CYP1A2_log2fc=0.5737 CYP2C9_log2fc=0.5805 CYP2D6_log2fc=0.6804 CYP3A4_log2fc=0.4695
+`Trainer.fit` stopped: `max_epochs=2` reached.
+Traceback (most recent call last):
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/internals/blocks.py", line 1135, in setitem
+    values[indexer] = casted
+    ~~~~~~^^^^^^^^^
+ValueError: shape mismatch: value array of shape (491,22) could not be broadcast to indexing result of shape (1229,22)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/umtm_module.py", line 350, in <module>
+    run(a.lineage, a.seed, a.weights, a.fold, smoke=a.smoke, stacked=not a.no_stack)
+  File "/home/jackson/cyp-challenge/src/umtm_module.py", line 308, in run
+    oof.iloc[va_idx, :] = model.predict_frame(ev_df[["SMILES"]])
+    ~~~~~~~~^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/indexing.py", line 938, in __setitem__
+    iloc._setitem_with_indexer(indexer, value, self.name)
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/indexing.py", line 1955, in _setitem_with_indexer
+    self._setitem_single_block(indexer, value, name)
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/indexing.py", line 2219, in _setitem_single_block
+    self.obj._mgr = self.obj._mgr.setitem(indexer=indexer, value=value)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/internals/managers.py", line 620, in setitem
+    return self.apply("setitem", indexer=indexer, value=value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/internals/managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/pandas/core/internals/blocks.py", line 1138, in setitem
+    raise ValueError(
+ValueError: setting an array element with a sequence.
+EXIT=1
