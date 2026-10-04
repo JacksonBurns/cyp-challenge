@@ -1,12 +1,11 @@
 {
   "CYP1A2": {
-    "pearson": 0.6148448281517305,
+    "pearson": 0.6170013532654345,
     "weights": {
       "gbm": 0.2,
       "ft_cpmed": 0.05,
-      "ft_admchm": 0.05,
       "ft_unimol": 0.05,
-      "ft_umtmL2": 0.4,
+      "ft_umtmL2": 0.45,
       "ft_umtmL3": 0.15,
       "ft_umtmL4": 0.1
     },
@@ -25,7 +24,7 @@
       "ft_admchm": 0.573,
       "ft_admmed": 0.53,
       "ft_unimol": 0.383,
-      "ft_umtmL2": 0.596,
+      "ft_umtmL2": 0.601,
       "ft_umtmL1": 0.563,
       "ft_umtmL3": 0.577,
       "ft_umtmL4": 0.535
@@ -33,9 +32,9 @@
     "gate": 0.5271836965525607
   },
   "CYP2C9": {
-    "pearson": 0.7260731893795718,
+    "pearson": 0.7261086069818637,
     "weights": {
-      "gbm": 0.05,
+      "emb": 0.05,
       "ft_cpmed": 0.4,
       "ft_admchm": 0.05,
       "ft_umtmL2": 0.15,
@@ -57,7 +56,7 @@
       "ft_admchm": 0.677,
       "ft_admmed": 0.658,
       "ft_unimol": 0.46,
-      "ft_umtmL2": 0.699,
+      "ft_umtmL2": 0.701,
       "ft_umtmL1": 0.698,
       "ft_umtmL3": 0.683,
       "ft_umtmL4": 0.64
@@ -65,14 +64,14 @@
     "gate": 0.6038552905926634
   },
   "CYP2D6": {
-    "pearson": 0.48502423295631536,
+    "pearson": 0.4875877331528331,
     "weights": {
-      "gbm": 0.1,
+      "gbm": 0.05,
       "emb": 0.15,
       "ft_cpmed": 0.05,
-      "ft_d2d6": 0.25,
+      "ft_d2d6": 0.2,
       "ft_admmed": 0.1,
-      "ft_umtmL2": 0.3,
+      "ft_umtmL2": 0.4,
       "ft_umtmL4": 0.05
     },
     "singles": {
@@ -90,7 +89,7 @@
       "ft_admchm": 0.435,
       "ft_admmed": 0.432,
       "ft_unimol": 0.235,
-      "ft_umtmL2": 0.458,
+      "ft_umtmL2": 0.466,
       "ft_umtmL1": 0.43,
       "ft_umtmL3": 0.42,
       "ft_umtmL4": 0.429
@@ -98,14 +97,14 @@
     "gate": 0.3993052655616538
   },
   "CYP3A4": {
-    "pearson": 0.8288475874324037,
+    "pearson": 0.82903744020962,
     "weights": {
       "gbm": 0.2,
       "ft_frozen": 0.05,
       "ft_cpmed": 0.25,
       "ft_d2d6": 0.05,
-      "ft_admchm": 0.15,
-      "ft_umtmL2": 0.2,
+      "ft_admchm": 0.1,
+      "ft_umtmL2": 0.25,
       "ft_umtmL3": 0.1
     },
     "singles": {
@@ -123,7 +122,7 @@
       "ft_admchm": 0.796,
       "ft_admmed": 0.778,
       "ft_unimol": 0.589,
-      "ft_umtmL2": 0.807,
+      "ft_umtmL2": 0.81,
       "ft_umtmL1": 0.796,
       "ft_umtmL3": 0.796,
       "ft_umtmL4": 0.774

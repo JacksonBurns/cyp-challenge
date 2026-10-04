@@ -1382,3 +1382,20 @@ tools/legacy_tdi_to_eval.py rebuilt legacy singles OOF as CSVs:
     any proba we own - documented at three levels (single heads, seed-avg,
     blend); v5_candidate ships 2D6 at the E[MCC] argmax 0.15 instead.
   * Revert spine intact: cp10 regression + tdi_v4_candidate files untouched.
+
+### PHASE 6 CLOSE: L2 EIGHT SEEDS (Oct 4, ~16:40)
+- L2 seeds 4-7 trained (1168/1295/~1150/~1160s), UMTM_L2_SEEDS_4567_COMPLETE.
+- 8-seed ft_umtmL2 (zavg over ft_oof_umtmL2* incl s4-s7): cp15 naive nested
+  0.4548 -> **0.4565**; blendN test-pred macro 0.4582; 3A4 single ft_umtmL2
+  now 0.810 (best 3A4 single in pool). family-block audit re-run: paranoid
+  merge umtm gain +0.0058 (was +0.0041) - still beyond lineage re-draw.
+- TDI audit4 re-run w/ 8-seed umtm_L2 npz: v6b capped macro **0.3448** (was
+  0.3404), 2D6 capped nested 0.2192 (was 0.212), 3A4 0.4703.
+- fraction v7 refreshed: v6b_cap argmax 2D6 0.16 (E 0.196), 3A4 0.31 (E 0.4024)
+  vs shipped 0.15/0.24 -> deltas <=0.0002 inside plateau [0.15-0.18]/[0.23-0.31];
+  fractions UNCHANGED (chasing grid noise).
+- REBUILT + VERIFIED both candidates (regression max |diff| vs pre-refresh
+  0.346, tdi flip 0.9%): regression_final_cp15_submission.csv
+  md5 cb04fa9ccbeb7c43f09b011fe762b483; tdi_submission_v5_candidate.csv
+  md5 c8ab0626b7c5bb10fe58eace5e2f0055. These supersede the 96d60315/2abbe052
+  copies sent to the user at the earlier report.
