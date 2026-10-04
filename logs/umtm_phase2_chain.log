@@ -1,1 +1,27 @@
 === GATE ext (zeroed new heads; must reproduce ft_ext OOF within noise) ===
+umtm_oof_L2_ext              macro pearson 0.6034 | per-iso 1A2:0.549/0.867 2C9:0.660/0.588 2D6:0.425/0.839 3A4:0.780/0.685
+ft_oof_ext                   macro pearson 0.5759 | per-iso 1A2:0.534/0.878 2C9:0.630/0.608 2D6:0.378/0.870 3A4:0.761/0.710
+
+per-iso detail:
+  CYP1A2  umtm_oof_L2_ext              r=0.5488 rmse=0.8673
+  CYP1A2  ft_oof_ext                   r=0.5344 rmse=0.8775
+  CYP2C9  umtm_oof_L2_ext              r=0.6601 rmse=0.5875
+  CYP2C9  ft_oof_ext                   r=0.6304 rmse=0.6077
+  CYP2D6  umtm_oof_L2_ext              r=0.4248 rmse=0.8385
+  CYP2D6  ft_oof_ext                   r=0.3777 rmse=0.8696
+  CYP3A4  umtm_oof_L2_ext              r=0.7800 rmse=0.6850
+  CYP3A4  ft_oof_ext                   r=0.7613 rmse=0.7102
+=== GATE primary (direct-only; must reproduce ft_fullft OOF within noise) ===
+umtm_oof_L2_primary          macro pearson 0.6087 | per-iso 1A2:0.556/0.867 2C9:0.667/0.588 2D6:0.422/0.845 3A4:0.789/0.678
+ft_oof_fullft                macro pearson 0.5791 | per-iso 1A2:0.527/0.889 2C9:0.640/0.610 2D6:0.383/0.867 3A4:0.766/0.707
+
+per-iso detail:
+  CYP1A2  umtm_oof_L2_primary          r=0.5560 rmse=0.8665
+  CYP1A2  ft_oof_fullft                r=0.5274 rmse=0.8892
+  CYP2C9  umtm_oof_L2_primary          r=0.6667 rmse=0.5882
+  CYP2C9  ft_oof_fullft                r=0.6403 rmse=0.6101
+  CYP2D6  umtm_oof_L2_primary          r=0.4225 rmse=0.8448
+  CYP2D6  ft_oof_fullft                r=0.3829 rmse=0.8671
+  CYP3A4  umtm_oof_L2_primary          r=0.7894 rmse=0.6778
+  CYP3A4  ft_oof_fullft                r=0.7657 rmse=0.7070
+=== PHASE 2: L2 plan seed 0 ===

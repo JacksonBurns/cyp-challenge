@@ -1,0 +1,12 @@
+umtm_oof_L2_primary          macro pearson 0.6087 | per-iso 1A2:0.556/0.867 2C9:0.667/0.588 2D6:0.422/0.845 3A4:0.789/0.678
+ft_oof_fullft                macro pearson 0.5791 | per-iso 1A2:0.527/0.889 2C9:0.640/0.610 2D6:0.383/0.867 3A4:0.766/0.707
+
+per-iso detail:
+  CYP1A2  umtm_oof_L2_primary          r=0.5560 rmse=0.8665
+  CYP1A2  ft_oof_fullft                r=0.5274 rmse=0.8892
+  CYP2C9  umtm_oof_L2_primary          r=0.6667 rmse=0.5882
+  CYP2C9  ft_oof_fullft                r=0.6403 rmse=0.6101
+  CYP2D6  umtm_oof_L2_primary          r=0.4225 rmse=0.8448
+  CYP2D6  ft_oof_fullft                r=0.3829 rmse=0.8671
+  CYP3A4  umtm_oof_L2_primary          r=0.7894 rmse=0.6778
+  CYP3A4  ft_oof_fullft                r=0.7657 rmse=0.7070

@@ -1,0 +1,12 @@
+umtm_oof_L2_ext              macro pearson 0.6034 | per-iso 1A2:0.549/0.867 2C9:0.660/0.588 2D6:0.425/0.839 3A4:0.780/0.685
+ft_oof_ext                   macro pearson 0.5759 | per-iso 1A2:0.534/0.878 2C9:0.630/0.608 2D6:0.378/0.870 3A4:0.761/0.710
+
+per-iso detail:
+  CYP1A2  umtm_oof_L2_ext              r=0.5488 rmse=0.8673
+  CYP1A2  ft_oof_ext                   r=0.5344 rmse=0.8775
+  CYP2C9  umtm_oof_L2_ext              r=0.6601 rmse=0.5875
+  CYP2C9  ft_oof_ext                   r=0.6304 rmse=0.6077
+  CYP2D6  umtm_oof_L2_ext              r=0.4248 rmse=0.8385
+  CYP2D6  ft_oof_ext                   r=0.3777 rmse=0.8696
+  CYP3A4  umtm_oof_L2_ext              r=0.7800 rmse=0.6850
+  CYP3A4  ft_oof_ext                   r=0.7613 rmse=0.7102

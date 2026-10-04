@@ -38,7 +38,24 @@ untracked (src/umtm_data.py, umtm_module.py, cypfolds.py, umtm_eval_direct/tdi,
 - ft_ext scaler probe: chemprop normalize_targets IS nan-aware
   (StandardScaler.fit over non-NaN) - make_scaler matches; z-convention ok.
 
-### Gate baselines on the identical protocol (seed-7 folds, umtm_eval_tdi)
+### Phase 1 GATES (Oct 3 night)
+- GATE ext (L2 lineage, new heads zeroed, 5 folds, 24 min): macro OOF Pearson
+  **0.6034 vs ft_ext 0.5759** - per-iso ALL improved or equal
+  (1A2 .549/.534, 2C9 .660/.630, 2D6 .425/.378, 3A4 .780/.761). Code path
+  clean: deltas are the known admecd-vs-CheMeLeon lineage effect (L2 init !=
+  ft_ext's nazarov init; row pools same recipe, subsample stream differs by
+  construction so 'within noise' = ordering/magnitude check, which passes
+  decisively in the right direction). Strict byte-lineage confirmation run
+  (L1 + ext weights) queued after the Phase 2 chain.
+- GATE primary (direct-only, 9 min): macro **0.6087 vs ft_fullft 0.5791**, same
+  per-iso improvement pattern (1A2 .556/.527, 2C9 .667/.640, 2D6 .422/.383,
+  3A4 .789/.766). Both gates PASS: consistent, plausible lineage effect, no
+  pathology, code path validated against two independent legacy baselines.
+- Phase 2 (L2 plan x4 seeds) started automatically after gates, same chain.
+- Per-fold epoch trace healthy: direct/tdic/log2fc/aux heads all monotone
+  decreasing; BCE ~0.19-0.21 with the STACK (plan mode) vs ~0.27 untrained.
+
+### Go/no-go baseline bar on the identical protocol (seed-7 folds, umtm_eval_tdi)
 tools/legacy_tdi_to_eval.py rebuilt legacy singles OOF as CSVs:
 - lgbm base:  2D6 nested 0.147 (tuned 0.153 = tdi_cv.json exact) / 3A4 0.404 (0.410)
 - ft_chm:     2D6 0.155 / 3A4 0.310 (plan's "2D6 0.17-0.21" was tuned+blend-ish
