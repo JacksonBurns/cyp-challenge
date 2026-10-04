@@ -1,0 +1,19 @@
+[L3_s3] rows: challenge 6145; fold col fold_reg; weights=plan
+[L3_s3 fold0] trainable 6.4M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 3
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+ep1 train_mse=0.0000 val=0.4563 CYP1A2_direct=1.3011 CYP2C9_direct=0.5470 CYP2D6_direct=1.4807 CYP3A4_direct=0.9903 CYP1A2_tdic=1.2484 CYP2C9_tdic=0.5314 CYP2D6_tdic=1.3778 CYP3A4_tdic=1.1002 is_TDI_2D6=0.1744 is_TDI_3A4=0.2264 CYP1A2_log2fc=1.0079 CYP2C9_log2fc=0.9175 CYP2D6_log2fc=0.8975 CYP3A4_log2fc=0.9792
+ep1 train_mse=0.4495 val=0.3011 CYP1A2_direct=0.6388 CYP2C9_direct=0.4650 CYP2D6_direct=0.9896 CYP3A4_direct=0.5158 CYP1A2_tdic=0.6958 CYP2C9_tdic=0.4878 CYP2D6_tdic=0.8782 CYP3A4_tdic=0.6776 is_TDI_2D6=0.1938 is_TDI_3A4=0.1965 CYP1A2_log2fc=0.7520 CYP2C9_log2fc=0.5162 CYP2D6_log2fc=0.7689 CYP3A4_log2fc=0.6397
+ep2 train_mse=0.3752 val=0.2816 CYP1A2_direct=0.5757 CYP2C9_direct=0.4873 CYP2D6_direct=1.0049 CYP3A4_direct=0.3571 CYP1A2_tdic=0.5799 CYP2C9_tdic=0.5063 CYP2D6_tdic=0.8776 CYP3A4_tdic=0.5000 is_TDI_2D6=0.1771 is_TDI_3A4=0.2037 CYP1A2_log2fc=0.7123 CYP2C9_log2fc=0.4977 CYP2D6_log2fc=0.7119 CYP3A4_log2fc=0.6147
+ep3 train_mse=0.3397 val=0.2942 CYP1A2_direct=0.4993 CYP2C9_direct=0.7939 CYP2D6_direct=0.9429 CYP3A4_direct=0.4745 CYP1A2_tdic=0.5251 CYP2C9_tdic=0.7828 CYP2D6_tdic=0.7776 CYP3A4_tdic=0.7168 is_TDI_2D6=0.1933 is_TDI_3A4=0.1958 CYP1A2_log2fc=0.6615 CYP2C9_log2fc=0.6373 CYP2D6_log2fc=0.6425 CYP3A4_log2fc=0.7916
+ep4 train_mse=0.2935 val=0.2696 CYP1A2_direct=0.4860 CYP2C9_direct=0.4077 CYP2D6_direct=0.8973 CYP3A4_direct=0.4346 CYP1A2_tdic=0.5057 CYP2C9_tdic=0.4419 CYP2D6_tdic=0.7939 CYP3A4_tdic=0.4828 is_TDI_2D6=0.1789 is_TDI_3A4=0.2080 CYP1A2_log2fc=0.6729 CYP2C9_log2fc=0.4460 CYP2D6_log2fc=0.6278 CYP3A4_log2fc=0.5651
+ep5 train_mse=0.2660 val=0.2706 CYP1A2_direct=0.5585 CYP2C9_direct=0.4345 CYP2D6_direct=1.0127 CYP3A4_direct=0.3597 CYP1A2_tdic=0.5912 CYP2C9_tdic=0.4325 CYP2D6_tdic=0.9336 CYP3A4_tdic=0.4625 is_TDI_2D6=0.1926 is_TDI_3A4=0.1961 CYP1A2_log2fc=0.7128 CYP2C9_log2fc=0.4447 CYP2D6_log2fc=0.6536 CYP3A4_log2fc=0.5586
+ep6 train_mse=0.2281 val=0.2639 CYP1A2_direct=0.5800 CYP2C9_direct=0.4735 CYP2D6_direct=0.9226 CYP3A4_direct=0.3595 CYP1A2_tdic=0.6088 CYP2C9_tdic=0.4917 CYP2D6_tdic=0.8463 CYP3A4_tdic=0.4581 is_TDI_2D6=0.1796 is_TDI_3A4=0.2137 CYP1A2_log2fc=0.6669 CYP2C9_log2fc=0.4291 CYP2D6_log2fc=0.6496 CYP3A4_log2fc=0.5660
+ep7 train_mse=0.1978 val=0.2750 CYP1A2_direct=0.5863 CYP2C9_direct=0.4473 CYP2D6_direct=0.8841 CYP3A4_direct=0.3844 CYP1A2_tdic=0.6239 CYP2C9_tdic=0.4593 CYP2D6_tdic=0.7613 CYP3A4_tdic=0.4360 is_TDI_2D6=0.1839 is_TDI_3A4=0.2115 CYP1A2_log2fc=0.7157 CYP2C9_log2fc=0.4304 CYP2D6_log2fc=0.6132 CYP3A4_log2fc=0.5054
+ep8 train_mse=0.1793 val=0.2796 CYP1A2_direct=0.5087 CYP2C9_direct=0.4011 CYP2D6_direct=0.9659 CYP3A4_direct=0.4143 CYP1A2_tdic=0.5395 CYP2C9_tdic=0.4247 CYP2D6_tdic=0.8327 CYP3A4_tdic=0.5085 is_TDI_2D6=0.1834 is_TDI_3A4=0.2129 CYP1A2_log2fc=0.6468 CYP2C9_log2fc=0.4232 CYP2D6_log2fc=0.6696 CYP3A4_log2fc=0.5280
+ep9 train_mse=0.1550 val=0.2957 CYP1A2_direct=0.6325 CYP2C9_direct=0.4638 CYP2D6_direct=0.9393 CYP3A4_direct=0.3825 CYP1A2_tdic=0.6710 CYP2C9_tdic=0.4820 CYP2D6_tdic=0.8059 CYP3A4_tdic=0.4486 is_TDI_2D6=0.1861 is_TDI_3A4=0.2176 CYP1A2_log2fc=0.6745 CYP2C9_log2fc=0.4429 CYP2D6_log2fc=0.6102 CYP3A4_log2fc=0.5133
+ep10 train_mse=0.1377 val=0.3180 CYP1A2_direct=0.6880 CYP2C9_direct=0.4630 CYP2D6_direct=0.9831 CYP3A4_direct=0.3710 CYP1A2_tdic=0.7109 CYP2C9_tdic=0.4677 CYP2D6_tdic=0.8622 CYP3A4_tdic=0.4355 is_TDI_2D6=0.1808 is_TDI_3A4=0.2166 CYP1A2_log2fc=0.6686 CYP2C9_log2fc=0.4492 CYP2D6_log2fc=0.6459 CYP3A4_log2fc=0.5322

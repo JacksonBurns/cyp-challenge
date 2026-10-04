@@ -95,3 +95,13 @@ tools/legacy_tdi_to_eval.py rebuilt legacy singles OOF as CSVs:
 - tabicl:     2D6 0.067 / 3A4 0.364; dmpnn: 2D6 0.049 / 3A4 0.265
 - regression nested-honest bar: cp10 pool macro R2 0.4475 (blend_nested_all
   cp10; cp13 = cp12 + ft_umtmL2 family added for the phase-2 read).
+
+### L1 RESULTS (Oct 4, agent 3 pickup; 4 seeds ~22 min each)
+- Strict gate PASS: L1+ext weights vs ft_ext OOF = 0.5746 vs 0.5759 macro (per-iso all within +-0.018, 2D6 +0.018 the other way is seed noise) - module reproduces the ft_ext lineage on its OWN init.
+- L1 regression singles: best seed 0.5999 macro vs L2's 0.6185 and admchm 0.6059. L1 (nazarov init) weaker than L2 (admecd init) singles, consistent with sec 19 (admecd full-tuned > CheMeLeon ft).
+- L1 TDI heads: seed-avg macro 0.2492 (2D6 0.141/3A4 0.358) vs lgbm 0.2753. Same no-go as L2 standalone.
+- cp14 nested (cp13 + ft_umtmL1 family): **0.4552** vs cp13 0.4534 vs cp12 0.4471 (+0.0081 total over cp12). L1 enters blend w/ mean weight 0.079 (max 0.333) next to L2's 0.30/0.583.
+- family_block cp14 audit: LOFO[umtm_vs_adm] admecd-merge gain +0.0094 (dropping the merged admecd+UMTM family costs 0.0094; UMTM does NOT subsume admecd). LOFO[umtm_paranoid] merging L2/L3 into admecd + L1 into chemeleon + L4 into dmpnn: gain only -0.0006/-0.0006 -> UMTM families survive the paranoid merge; signal is beyond lineage re-draw. cpridge/cpall gain +0.0051 (unchanged story).
+- TDI blend-member test (tdi_blend_nested + UMTM seed-avg npz members via tools/umtm_to_tdi_npz.py): BASE nested 2D6 0.1857/3A4 0.4663.
+  +umtm_L2: 2D6 **0.2149** (+0.029) / 3A4 0.4648. +umtm_L1: 0.2083/0.4659. +both: 0.2203/0.4613 (macro avg 0.3408 vs 0.3260 base).
+  -> UMTM is_TDI is valuable as a BLEND MEMBER (esp. 2D6) even though it loses standalone. L3/L4 members pending; then fraction retune + candidate.

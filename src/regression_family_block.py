@@ -213,8 +213,11 @@ def concentration(hist, amap):
             if max(s.get(f, 0.0) for s in per) > 0}
 
 
+POOL_FILTER = [a for a in sys.argv[1:]] or None
 results = {}
 for pool_name, pool in POOLS.items():
+    if POOL_FILTER and pool_name not in POOL_FILTER:
+        continue
     names = [n for n in pool if FAMS.get(n)]
     oofs = {k: zavg(FAMS[k]) for k in names}
     ymaps = {}
@@ -273,6 +276,11 @@ for pool_name, pool in POOLS.items():
             print(f"   LOFO[{mapname}] {json.dumps(entry[f'lofo_{mapname}'])}")
             print(f"   conc[{mapname}]  {json.dumps(entry[f'concentration_{mapname}'])}")
 
-with open(os.path.join(CACHE, "regression_family_block_audit.json"), "w") as fh:
-    json.dump(results, fh, indent=2)
-print("saved cache/regression_family_block_audit.json")
+outpath = os.path.join(CACHE, "regression_family_block_audit.json")
+prev = {}
+if os.path.exists(outpath):
+    prev = json.load(open(outpath))
+prev.update(results)
+with open(outpath, "w") as fh:
+    json.dump(prev, fh, indent=2)
+print("saved", outpath)
