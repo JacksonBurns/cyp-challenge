@@ -1,4 +1,3 @@
-=== GATE L1 ext (strict lineage repro of ft_ext) ===
 umtm_oof_L1_ext              macro pearson 0.5746 | per-iso 1A2:0.529/0.882 2C9:0.628/0.609 2D6:0.396/0.853 3A4:0.745/0.730
 ft_oof_ext                   macro pearson 0.5759 | per-iso 1A2:0.534/0.878 2C9:0.630/0.608 2D6:0.378/0.870 3A4:0.761/0.710
 
@@ -11,9 +10,3 @@ per-iso detail:
   CYP2D6  ft_oof_ext                   r=0.3777 rmse=0.8696
   CYP3A4  ft_oof_ext                   r=0.7613 rmse=0.7102
   CYP3A4  umtm_oof_L1_ext              r=0.7454 rmse=0.7296
-=== UMTM L1 seed 0 ===
-=== UMTM L1 seed 1 ===
-=== UMTM L1 seed 2 ===
-=== UMTM L1 seed 3 ===
-UMTM_L1_CHAIN_COMPLETE
-=== UMTM L3 seed 0 ===

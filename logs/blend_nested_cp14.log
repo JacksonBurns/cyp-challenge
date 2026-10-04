@@ -1,0 +1,13 @@
+sim matrices in 1s
+== cp14 (gbm, emb, ft_frozen, ft_fullft, ft_ext, ft_pre, ft_dmpnn, ft_cpmed, ft_cpchm, ft_chmridge, ft_d2d6, ft_admchm, ft_admmed, ft_unimol, ft_umtmL2, ft_umtmL1)
+  CYP1A2: honest nested Pearson 0.613
+  CYP2C9: honest nested Pearson 0.727
+  CYP2D6: honest nested Pearson 0.486
+  CYP3A4: honest nested Pearson 0.825
+  macro R2 (honest): 0.4552
+== cp12 (gbm, emb, ft_frozen, ft_fullft, ft_ext, ft_pre, ft_dmpnn, ft_cpmed, ft_cpchm, ft_chmridge, ft_d2d6, ft_admchm, ft_admmed, ft_unimol)
+  CYP1A2: honest nested Pearson 0.605
+  CYP2C9: honest nested Pearson 0.716
+  CYP2D6: honest nested Pearson 0.481
+  CYP3A4: honest nested Pearson 0.823
+  macro R2 (honest): 0.4471
