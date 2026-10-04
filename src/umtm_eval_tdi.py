@@ -76,13 +76,23 @@ def _auc(y, p):
 def main(paths, fold_col, avg_group=None):
     lab = truth()
     if avg_group:
-        # average probability columns across same-lineage seeds before eval
-        dfs = [pd.read_csv(p) for p in paths]
-        base = dfs[0].copy()
-        cols = [c for c in base.columns if c.startswith("is_TDI_")]
-        for c in cols:
-            base[c] = np.mean([d[c].values.astype(float) for d in dfs], axis=0)
-        rows = [("~avg", base)]
+        # average probability columns across same-schema (same-lineage) seeds;
+        # files with different column sets pass through as separate rows
+        groups = {}
+        for p in paths:
+            d = pd.read_csv(p)
+            key = tuple(c for c in d.columns if c.startswith("is_TDI_"))
+            groups.setdefault(key, []).append((os.path.basename(p).replace(".csv", ""), d))
+        rows = []
+        for key, members in groups.items():
+            if len(members) == 1:
+                rows.append(members[0])
+                continue
+            base = members[0][1].copy()
+            for c in key:
+                base[c] = np.mean([d[c].values.astype(float) for _, d in members], axis=0)
+            nm = "~avg-" + os.path.basename(members[0][0]).replace(".csv", "")
+            rows.append((nm, base))
     else:
         rows = [(os.path.basename(p).replace(".csv", ""), pd.read_csv(p)) for p in paths]
     for name, df in rows:

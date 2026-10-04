@@ -25,3 +25,7 @@ per-iso detail:
   CYP3A4  umtm_oof_L2_primary          r=0.7894 rmse=0.6778
   CYP3A4  ft_oof_fullft                r=0.7657 rmse=0.7070
 === PHASE 2: L2 plan seed 0 ===
+=== PHASE 2: L2 plan seed 1 ===
+=== PHASE 2: L2 plan seed 2 ===
+=== PHASE 2: L2 plan seed 3 ===
+UMTM_L2_CHAIN_COMPLETE
