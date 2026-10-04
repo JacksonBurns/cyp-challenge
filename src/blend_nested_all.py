@@ -76,7 +76,10 @@ POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "cp12": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol"],
          "cp13": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2"],
          "cp14": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1"],
-         "cp15": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1", "ft_umtmL3", "ft_umtmL4"]}
+         "cp15": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1", "ft_umtmL3", "ft_umtmL4"],
+         "cp15a": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1", "ft_umtmL3"],
+         "cp15b": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1", "ft_umtmL4"],
+         "cp15c": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1"]}
 
 
 def greedy(zs, y, m, rounds=12):

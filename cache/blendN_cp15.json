@@ -1,0 +1,133 @@
+{
+  "CYP1A2": {
+    "pearson": 0.6148448281517305,
+    "weights": {
+      "gbm": 0.2,
+      "ft_cpmed": 0.05,
+      "ft_admchm": 0.05,
+      "ft_unimol": 0.05,
+      "ft_umtmL2": 0.4,
+      "ft_umtmL3": 0.15,
+      "ft_umtmL4": 0.1
+    },
+    "singles": {
+      "gbm": 0.527,
+      "emb": 0.514,
+      "ft_frozen": 0.449,
+      "ft_fullft": 0.54,
+      "ft_ext": 0.562,
+      "ft_pre": 0.541,
+      "ft_dmpnn": 0.462,
+      "ft_cpmed": 0.55,
+      "ft_cpchm": 0.548,
+      "ft_chmridge": 0.468,
+      "ft_d2d6": 0.506,
+      "ft_admchm": 0.573,
+      "ft_admmed": 0.53,
+      "ft_unimol": 0.383,
+      "ft_umtmL2": 0.596,
+      "ft_umtmL1": 0.563,
+      "ft_umtmL3": 0.577,
+      "ft_umtmL4": 0.535
+    },
+    "gate": 0.5271836965525607
+  },
+  "CYP2C9": {
+    "pearson": 0.7260731893795718,
+    "weights": {
+      "gbm": 0.05,
+      "ft_cpmed": 0.4,
+      "ft_admchm": 0.05,
+      "ft_umtmL2": 0.15,
+      "ft_umtmL1": 0.3,
+      "ft_umtmL3": 0.05
+    },
+    "singles": {
+      "gbm": 0.604,
+      "emb": 0.606,
+      "ft_frozen": 0.603,
+      "ft_fullft": 0.659,
+      "ft_ext": 0.665,
+      "ft_pre": 0.628,
+      "ft_dmpnn": 0.57,
+      "ft_cpmed": 0.701,
+      "ft_cpchm": 0.639,
+      "ft_chmridge": 0.585,
+      "ft_d2d6": 0.623,
+      "ft_admchm": 0.677,
+      "ft_admmed": 0.658,
+      "ft_unimol": 0.46,
+      "ft_umtmL2": 0.699,
+      "ft_umtmL1": 0.698,
+      "ft_umtmL3": 0.683,
+      "ft_umtmL4": 0.64
+    },
+    "gate": 0.6038552905926634
+  },
+  "CYP2D6": {
+    "pearson": 0.48502423295631536,
+    "weights": {
+      "gbm": 0.1,
+      "emb": 0.15,
+      "ft_cpmed": 0.05,
+      "ft_d2d6": 0.25,
+      "ft_admmed": 0.1,
+      "ft_umtmL2": 0.3,
+      "ft_umtmL4": 0.05
+    },
+    "singles": {
+      "gbm": 0.399,
+      "emb": 0.427,
+      "ft_frozen": 0.34,
+      "ft_fullft": 0.387,
+      "ft_ext": 0.42,
+      "ft_pre": 0.408,
+      "ft_dmpnn": 0.368,
+      "ft_cpmed": 0.407,
+      "ft_cpchm": 0.419,
+      "ft_chmridge": 0.344,
+      "ft_d2d6": 0.435,
+      "ft_admchm": 0.435,
+      "ft_admmed": 0.432,
+      "ft_unimol": 0.235,
+      "ft_umtmL2": 0.458,
+      "ft_umtmL1": 0.43,
+      "ft_umtmL3": 0.42,
+      "ft_umtmL4": 0.429
+    },
+    "gate": 0.3993052655616538
+  },
+  "CYP3A4": {
+    "pearson": 0.8288475874324037,
+    "weights": {
+      "gbm": 0.2,
+      "ft_frozen": 0.05,
+      "ft_cpmed": 0.25,
+      "ft_d2d6": 0.05,
+      "ft_admchm": 0.15,
+      "ft_umtmL2": 0.2,
+      "ft_umtmL3": 0.1
+    },
+    "singles": {
+      "gbm": 0.771,
+      "emb": 0.756,
+      "ft_frozen": 0.745,
+      "ft_fullft": 0.772,
+      "ft_ext": 0.781,
+      "ft_pre": 0.759,
+      "ft_dmpnn": 0.738,
+      "ft_cpmed": 0.8,
+      "ft_cpchm": 0.764,
+      "ft_chmridge": 0.723,
+      "ft_d2d6": 0.769,
+      "ft_admchm": 0.796,
+      "ft_admmed": 0.778,
+      "ft_unimol": 0.589,
+      "ft_umtmL2": 0.807,
+      "ft_umtmL1": 0.796,
+      "ft_umtmL3": 0.796,
+      "ft_umtmL4": 0.774
+    },
+    "gate": 0.7712192678192009
+  }
+}

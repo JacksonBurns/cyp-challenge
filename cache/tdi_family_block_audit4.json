@@ -1,0 +1,1894 @@
+{
+  "CYP2D6": {
+    "singles": {
+      "base": 0.1495,
+      "emb": 0.1099,
+      "tab": 0.1409,
+      "tabcp": 0.2057,
+      "tabcpext": 0.096,
+      "umtm_L1": 0.1744,
+      "umtm_L2": 0.1992,
+      "umtm_L3": 0.1667,
+      "umtm_L4": 0.1465
+    },
+    "v3": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext"
+        ],
+        "fold_nested": [
+          0.2193,
+          0.32
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.15,
+            "max": 0.25
+          },
+          "cp": {
+            "mean": 0.65,
+            "max": 0.833
+          },
+          "emb": {
+            "mean": 0.2,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.1878,
+          0.34
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.25,
+            "emb": 0.25,
+            "tabcp": 0.08,
+            "tabcpext": 0.42
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tabcp": 0.42,
+            "tabcpext": 0.08
+          },
+          {
+            "base": 0.08,
+            "emb": 0.08,
+            "tab": 0.33,
+            "tabcp": 0.25,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.08,
+            "emb": 0.33,
+            "tab": 0.17,
+            "tabcp": 0.42
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.233,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.483,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.283,
+            "max": 0.5
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.1838
+          ],
+          "-cp": [
+            0.118
+          ],
+          "-emb": [
+            0.1833
+          ]
+        },
+        "family_gain": {
+          "base": 0.0355,
+          "cp": 0.1013,
+          "emb": 0.036
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext"
+        ],
+        "fold_nested": [
+          0.2193,
+          0.32
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.15,
+            "max": 0.25
+          },
+          "cp": {
+            "mean": 0.65,
+            "max": 0.833
+          },
+          "emb": {
+            "mean": 0.2,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.1878,
+          0.34
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.25,
+            "emb": 0.25,
+            "tabcp": 0.08,
+            "tabcpext": 0.42
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tabcp": 0.42,
+            "tabcpext": 0.08
+          },
+          {
+            "base": 0.08,
+            "emb": 0.08,
+            "tab": 0.33,
+            "tabcp": 0.25,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.08,
+            "emb": 0.33,
+            "tab": 0.17,
+            "tabcp": 0.42
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.233,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.483,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.283,
+            "max": 0.5
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.1838
+          ],
+          "-cp": [
+            0.118
+          ],
+          "-emb": [
+            0.1833
+          ]
+        },
+        "family_gain": {
+          "base": 0.0355,
+          "cp": 0.1013,
+          "emb": 0.036
+        }
+      }
+    },
+    "v6a": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.2046,
+          0.31
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.183,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.4,
+            "max": 0.583
+          },
+          "emb": {
+            "mean": 0.133,
+            "max": 0.333
+          },
+          "umtmL1": {
+            "mean": 0.133,
+            "max": 0.25
+          },
+          "umtmL2": {
+            "mean": 0.15,
+            "max": 0.167
+          }
+        },
+        "fold_nested_capped": [
+          0.2062,
+          0.21
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "tabcp": 0.25,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.25,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.25,
+            "tabcp": 0.33,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.17,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.08,
+            "emb": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.33,
+            "umtm_L1": 0.17,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.08,
+            "emb": 0.33,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.217,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.133,
+            "max": 0.333
+          },
+          "umtmL1": {
+            "mean": 0.15,
+            "max": 0.25
+          },
+          "umtmL2": {
+            "mean": 0.117,
+            "max": 0.167
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.2064
+          ],
+          "-cp": [
+            0.1708
+          ],
+          "-emb": [
+            0.217
+          ],
+          "-umtmL1": [
+            0.2102
+          ],
+          "-umtmL2": [
+            0.1984
+          ]
+        },
+        "family_gain": {
+          "base": -0.0018,
+          "cp": 0.0338,
+          "emb": -0.0124,
+          "umtmL1": -0.0056,
+          "umtmL2": 0.0062
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.2046,
+          0.31
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.183,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.55,
+            "max": 0.75
+          },
+          "emb": {
+            "mean": 0.267,
+            "max": 0.417
+          }
+        },
+        "fold_nested_capped": [
+          0.2016,
+          0.23
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.25,
+            "tabcp": 0.25,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.33,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tabcp": 0.33,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.08,
+            "emb": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.33,
+            "umtm_L2": 0.25
+          },
+          {
+            "base": 0.25,
+            "tab": 0.08,
+            "tabcp": 0.17,
+            "umtm_L1": 0.33,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.17,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.5,
+            "umtm_L2": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.233,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.417,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.35,
+            "max": 0.5
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.2064
+          ],
+          "-cp": [
+            0.1459
+          ],
+          "-emb": [
+            0.2255
+          ]
+        },
+        "family_gain": {
+          "base": -0.0018,
+          "cp": 0.0587,
+          "emb": -0.0209
+        }
+      }
+    },
+    "v6b": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2",
+          "umtm_L3",
+          "umtm_L4"
+        ],
+        "fold_nested": [
+          0.2057,
+          0.27
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.133,
+            "max": 0.25
+          },
+          "cp": {
+            "mean": 0.35,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.167,
+            "max": 0.333
+          },
+          "umtmL1": {
+            "mean": 0.033,
+            "max": 0.083
+          },
+          "umtmL2": {
+            "mean": 0.133,
+            "max": 0.167
+          },
+          "umtmL3": {
+            "mean": 0.1,
+            "max": 0.167
+          },
+          "umtmL4": {
+            "mean": 0.083,
+            "max": 0.167
+          }
+        },
+        "fold_nested_capped": [
+          0.212,
+          0.19
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.08,
+            "emb": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08,
+            "umtm_L3": 0.17,
+            "umtm_L4": 0.08
+          },
+          {
+            "base": 0.25,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L2": 0.17,
+            "umtm_L4": 0.17
+          },
+          {
+            "base": 0.08,
+            "emb": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.33,
+            "umtm_L2": 0.17,
+            "umtm_L3": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.08,
+            "emb": 0.25,
+            "tabcp": 0.33,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08,
+            "umtm_L3": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.167,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.367,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.167,
+            "max": 0.25
+          },
+          "umtmL1": {
+            "mean": 0.05,
+            "max": 0.083
+          },
+          "umtmL2": {
+            "mean": 0.117,
+            "max": 0.167
+          },
+          "umtmL3": {
+            "mean": 0.083,
+            "max": 0.167
+          },
+          "umtmL4": {
+            "mean": 0.05,
+            "max": 0.167
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.2117
+          ],
+          "-cp": [
+            0.1652
+          ],
+          "-emb": [
+            0.2102
+          ],
+          "-umtmL1": [
+            0.2007
+          ],
+          "-umtmL2": [
+            0.1901
+          ],
+          "-umtmL3": [
+            0.2081
+          ],
+          "-umtmL4": [
+            0.2149
+          ]
+        },
+        "family_gain": {
+          "base": -0.006,
+          "cp": 0.0405,
+          "emb": -0.0045,
+          "umtmL1": 0.005,
+          "umtmL2": 0.0156,
+          "umtmL3": -0.0024,
+          "umtmL4": -0.0092
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2",
+          "umtm_L3",
+          "umtm_L4"
+        ],
+        "fold_nested": [
+          0.2057,
+          0.27
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.133,
+            "max": 0.25
+          },
+          "cp": {
+            "mean": 0.583,
+            "max": 0.75
+          },
+          "dmpnn": {
+            "mean": 0.083,
+            "max": 0.167
+          },
+          "emb": {
+            "mean": 0.2,
+            "max": 0.417
+          }
+        },
+        "fold_nested_capped": [
+          0.2054,
+          0.23
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.17,
+            "emb": 0.17,
+            "tabcp": 0.08,
+            "umtm_L1": 0.25,
+            "umtm_L2": 0.17,
+            "umtm_L3": 0.17
+          },
+          {
+            "base": 0.08,
+            "emb": 0.17,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.25,
+            "umtm_L4": 0.25
+          },
+          {
+            "base": 0.08,
+            "emb": 0.08,
+            "tabcp": 0.17,
+            "umtm_L1": 0.33,
+            "umtm_L2": 0.17,
+            "umtm_L3": 0.17
+          },
+          {
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08,
+            "umtm_L3": 0.08,
+            "umtm_L4": 0.25
+          },
+          {
+            "base": 0.08,
+            "emb": 0.25,
+            "tab": 0.08,
+            "tabcp": 0.08,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08,
+            "umtm_L3": 0.08,
+            "umtm_L4": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.083,
+            "max": 0.167
+          },
+          "cp": {
+            "mean": 0.45,
+            "max": 0.5
+          },
+          "dmpnn": {
+            "mean": 0.117,
+            "max": 0.25
+          },
+          "emb": {
+            "mean": 0.35,
+            "max": 0.417
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.2117
+          ],
+          "-cp": [
+            0.1611
+          ],
+          "-dmpnn": [
+            0.2149
+          ],
+          "-emb": [
+            0.2169
+          ]
+        },
+        "family_gain": {
+          "base": -0.006,
+          "cp": 0.0446,
+          "dmpnn": -0.0092,
+          "emb": -0.0112
+        }
+      }
+    },
+    "v6c": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.2102,
+          0.15
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.217,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.383,
+            "max": 0.583
+          },
+          "emb": {
+            "mean": 0.183,
+            "max": 0.333
+          },
+          "umtmL2": {
+            "mean": 0.217,
+            "max": 0.25
+          }
+        },
+        "fold_nested_capped": [
+          0.2034,
+          0.14
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tabcp": 0.25,
+            "umtm_L2": 0.25
+          },
+          {
+            "base": 0.25,
+            "emb": 0.08,
+            "tabcp": 0.42,
+            "umtm_L2": 0.25
+          },
+          {
+            "base": 0.33,
+            "tabcp": 0.33,
+            "tabcpext": 0.17,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.17,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.42,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.17,
+            "emb": 0.25,
+            "tabcp": 0.33,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.17
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.25,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.4,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.15,
+            "max": 0.25
+          },
+          "umtmL2": {
+            "mean": 0.2,
+            "max": 0.25
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.202
+          ],
+          "-cp": [
+            0.1673
+          ],
+          "-emb": [
+            0.2255
+          ],
+          "-umtmL2": [
+            0.2193
+          ]
+        },
+        "family_gain": {
+          "base": 0.0082,
+          "cp": 0.0429,
+          "emb": -0.0153,
+          "umtmL2": -0.0091
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.2102,
+          0.15
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.217,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.6,
+            "max": 0.75
+          },
+          "emb": {
+            "mean": 0.183,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.2038,
+          0.3
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.25
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tabcp": 0.33,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tab": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.17,
+            "emb": 0.25,
+            "tab": 0.08,
+            "tabcp": 0.25,
+            "umtm_L2": 0.25
+          },
+          {
+            "base": 0.17,
+            "emb": 0.25,
+            "tab": 0.17,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.17
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.283,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.467,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.25,
+            "max": 0.417
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.202
+          ],
+          "-cp": [
+            0.118
+          ],
+          "-emb": [
+            0.2255
+          ]
+        },
+        "family_gain": {
+          "base": 0.0082,
+          "cp": 0.0922,
+          "emb": -0.0153
+        }
+      }
+    }
+  },
+  "CYP3A4": {
+    "singles": {
+      "base": 0.4066,
+      "emb": 0.3967,
+      "tab": 0.3717,
+      "tabcp": 0.4363,
+      "tabcpext": 0.3252,
+      "umtm_L1": 0.3832,
+      "umtm_L2": 0.38,
+      "umtm_L3": 0.3953,
+      "umtm_L4": 0.3776
+    },
+    "v3": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext"
+        ],
+        "fold_nested": [
+          0.468,
+          0.26
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.367,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.25,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.468,
+          0.26
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.35,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.383,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.267,
+            "max": 0.333
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4413
+          ],
+          "-cp": [
+            0.4191
+          ],
+          "-emb": [
+            0.4584
+          ]
+        },
+        "family_gain": {
+          "base": 0.0267,
+          "cp": 0.0489,
+          "emb": 0.0096
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext"
+        ],
+        "fold_nested": [
+          0.468,
+          0.26
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.367,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.25,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.468,
+          0.26
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.35,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.383,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.267,
+            "max": 0.333
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4413
+          ],
+          "-cp": [
+            0.4191
+          ],
+          "-emb": [
+            0.4584
+          ]
+        },
+        "family_gain": {
+          "base": 0.0267,
+          "cp": 0.0489,
+          "emb": 0.0096
+        }
+      }
+    },
+    "v6a": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.4567,
+          0.36
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.333,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.367,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.167,
+            "max": 0.417
+          },
+          "umtmL1": {
+            "mean": 0.117,
+            "max": 0.25
+          },
+          "umtmL2": {
+            "mean": 0.017,
+            "max": 0.083
+          }
+        },
+        "fold_nested_capped": [
+          0.4638,
+          0.31
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.08,
+            "emb": 0.25,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08
+          },
+          {
+            "base": 0.42,
+            "tabcp": 0.17,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.25
+          },
+          {
+            "base": 0.33,
+            "tabcp": 0.17,
+            "tabcpext": 0.25,
+            "umtm_L1": 0.17,
+            "umtm_L2": 0.08
+          },
+          {
+            "base": 0.42,
+            "tab": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08
+          },
+          {
+            "base": 0.25,
+            "emb": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.25,
+            "umtm_L1": 0.25
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.3,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.4,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.117,
+            "max": 0.417
+          },
+          "umtmL1": {
+            "mean": 0.167,
+            "max": 0.25
+          },
+          "umtmL2": {
+            "mean": 0.017,
+            "max": 0.083
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4521
+          ],
+          "-cp": [
+            0.432
+          ],
+          "-emb": [
+            0.4644
+          ],
+          "-umtmL1": [
+            0.4648
+          ],
+          "-umtmL2": [
+            0.4548
+          ]
+        },
+        "family_gain": {
+          "base": 0.0046,
+          "cp": 0.0247,
+          "emb": -0.0077,
+          "umtmL1": -0.0081,
+          "umtmL2": 0.0019
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.4567,
+          0.36
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.333,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.283,
+            "max": 0.5
+          }
+        },
+        "fold_nested_capped": [
+          0.4598,
+          0.29
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.08,
+            "emb": 0.25,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08
+          },
+          {
+            "base": 0.42,
+            "tabcp": 0.17,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.25
+          },
+          {
+            "base": 0.17,
+            "emb": 0.08,
+            "tabcp": 0.08,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.33,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.42,
+            "tab": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08
+          },
+          {
+            "base": 0.25,
+            "emb": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.25,
+            "umtm_L1": 0.25
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.267,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.4,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.333,
+            "max": 0.5
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4521
+          ],
+          "-cp": [
+            0.4291
+          ],
+          "-emb": [
+            0.4445
+          ]
+        },
+        "family_gain": {
+          "base": 0.0046,
+          "cp": 0.0276,
+          "emb": 0.0122
+        }
+      }
+    },
+    "v6b": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2",
+          "umtm_L3",
+          "umtm_L4"
+        ],
+        "fold_nested": [
+          0.4612,
+          0.28
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.25,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.367,
+            "max": 0.583
+          },
+          "emb": {
+            "mean": 0.067,
+            "max": 0.167
+          },
+          "umtmL1": {
+            "mean": 0.067,
+            "max": 0.167
+          },
+          "umtmL2": {
+            "mean": 0.033,
+            "max": 0.083
+          },
+          "umtmL3": {
+            "mean": 0.017,
+            "max": 0.083
+          },
+          "umtmL4": {
+            "mean": 0.2,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.4688,
+          0.28
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.17,
+            "emb": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.17,
+            "umtm_L4": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tabcp": 0.08,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08,
+            "umtm_L3": 0.08,
+            "umtm_L4": 0.17
+          },
+          {
+            "base": 0.08,
+            "tabcp": 0.08,
+            "tabcpext": 0.42,
+            "umtm_L1": 0.08,
+            "umtm_L2": 0.08,
+            "umtm_L4": 0.25
+          },
+          {
+            "base": 0.42,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.17,
+            "umtm_L3": 0.08,
+            "umtm_L4": 0.08
+          },
+          {
+            "base": 0.25,
+            "emb": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L3": 0.17,
+            "umtm_L4": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.25,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.367,
+            "max": 0.5
+          },
+          "emb": {
+            "mean": 0.083,
+            "max": 0.167
+          },
+          "umtmL1": {
+            "mean": 0.067,
+            "max": 0.167
+          },
+          "umtmL2": {
+            "mean": 0.017,
+            "max": 0.083
+          },
+          "umtmL3": {
+            "mean": 0.067,
+            "max": 0.167
+          },
+          "umtmL4": {
+            "mean": 0.15,
+            "max": 0.25
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4577
+          ],
+          "-cp": [
+            0.4323
+          ],
+          "-emb": [
+            0.4608
+          ],
+          "-umtmL1": [
+            0.4651
+          ],
+          "-umtmL2": [
+            0.4598
+          ],
+          "-umtmL3": [
+            0.4643
+          ],
+          "-umtmL4": [
+            0.4477
+          ]
+        },
+        "family_gain": {
+          "base": 0.0035,
+          "cp": 0.0289,
+          "emb": 0.0004,
+          "umtmL1": -0.0039,
+          "umtmL2": 0.0014,
+          "umtmL3": -0.0031,
+          "umtmL4": 0.0135
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L1",
+          "umtm_L2",
+          "umtm_L3",
+          "umtm_L4"
+        ],
+        "fold_nested": [
+          0.4612,
+          0.28
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.25,
+            "max": 0.333
+          },
+          "cp": {
+            "mean": 0.417,
+            "max": 0.583
+          },
+          "dmpnn": {
+            "mean": 0.2,
+            "max": 0.333
+          },
+          "emb": {
+            "mean": 0.133,
+            "max": 0.25
+          }
+        },
+        "fold_nested_capped": [
+          0.4688,
+          0.28
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.17,
+            "emb": 0.08,
+            "tabcp": 0.25,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.17,
+            "umtm_L4": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tabcp": 0.08,
+            "tabcpext": 0.17,
+            "umtm_L1": 0.08,
+            "umtm_L3": 0.08,
+            "umtm_L4": 0.17
+          },
+          {
+            "base": 0.08,
+            "emb": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.33,
+            "umtm_L1": 0.08,
+            "umtm_L4": 0.25
+          },
+          {
+            "base": 0.42,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.17,
+            "umtm_L3": 0.08,
+            "umtm_L4": 0.08
+          },
+          {
+            "base": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25,
+            "umtm_L1": 0.17,
+            "umtm_L4": 0.33
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.233,
+            "max": 0.417
+          },
+          "cp": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "dmpnn": {
+            "mean": 0.2,
+            "max": 0.333
+          },
+          "emb": {
+            "mean": 0.183,
+            "max": 0.25
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4577
+          ],
+          "-cp": [
+            0.4416
+          ],
+          "-dmpnn": [
+            0.4477
+          ],
+          "-emb": [
+            0.4756
+          ]
+        },
+        "family_gain": {
+          "base": 0.0035,
+          "cp": 0.0196,
+          "dmpnn": 0.0135,
+          "emb": -0.0144
+        }
+      }
+    },
+    "v6c": {
+      "merged": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.4648,
+          0.33
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.367,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.333,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.233,
+            "max": 0.333
+          },
+          "umtmL2": {
+            "mean": 0.067,
+            "max": 0.167
+          }
+        },
+        "fold_nested_capped": [
+          0.458,
+          0.41
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.5,
+            "tab": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tab": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.17,
+            "umtm_L2": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.35,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.217,
+            "max": 0.333
+          },
+          "umtmL2": {
+            "mean": 0.05,
+            "max": 0.167
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4518
+          ],
+          "-cp": [
+            0.4249
+          ],
+          "-emb": [
+            0.4445
+          ],
+          "-umtmL2": [
+            0.468
+          ]
+        },
+        "family_gain": {
+          "base": 0.013,
+          "cp": 0.0399,
+          "emb": 0.0203,
+          "umtmL2": -0.0032
+        }
+      },
+      "paranoid": {
+        "members": [
+          "base",
+          "emb",
+          "tab",
+          "tabcp",
+          "tabcpext",
+          "umtm_L2"
+        ],
+        "fold_nested": [
+          0.4648,
+          0.33
+        ],
+        "family_share_free": {
+          "base": {
+            "mean": 0.367,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.4,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.233,
+            "max": 0.333
+          }
+        },
+        "fold_nested_capped": [
+          0.458,
+          0.41
+        ],
+        "fold_nested_capped_weights": [
+          {
+            "base": 0.33,
+            "emb": 0.17,
+            "tab": 0.17,
+            "tabcp": 0.08,
+            "tabcpext": 0.25
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.5,
+            "tab": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.08,
+            "umtm_L2": 0.17
+          },
+          {
+            "base": 0.33,
+            "emb": 0.08,
+            "tab": 0.17,
+            "tabcp": 0.25,
+            "tabcpext": 0.17
+          },
+          {
+            "base": 0.42,
+            "emb": 0.08,
+            "tab": 0.08,
+            "tabcp": 0.17,
+            "tabcpext": 0.17,
+            "umtm_L2": 0.08
+          }
+        ],
+        "family_share_capped": {
+          "base": {
+            "mean": 0.383,
+            "max": 0.5
+          },
+          "cp": {
+            "mean": 0.4,
+            "max": 0.417
+          },
+          "emb": {
+            "mean": 0.217,
+            "max": 0.333
+          }
+        },
+        "lofo": {
+          "-base": [
+            0.4518
+          ],
+          "-cp": [
+            0.4191
+          ],
+          "-emb": [
+            0.4445
+          ]
+        },
+        "family_gain": {
+          "base": 0.013,
+          "cp": 0.0457,
+          "emb": 0.0203
+        }
+      }
+    }
+  },
+  "_macro": {
+    "v3_merged": {
+      "fold_nested_macro": 0.3437,
+      "capped_macro": 0.3279
+    },
+    "v3_paranoid": {
+      "fold_nested_macro": 0.3437,
+      "capped_macro": 0.3279
+    },
+    "v6a_merged": {
+      "fold_nested_macro": 0.3306,
+      "capped_macro": 0.335
+    },
+    "v6a_paranoid": {
+      "fold_nested_macro": 0.3306,
+      "capped_macro": 0.3307
+    },
+    "v6b_merged": {
+      "fold_nested_macro": 0.3335,
+      "capped_macro": 0.3404
+    },
+    "v6b_paranoid": {
+      "fold_nested_macro": 0.3335,
+      "capped_macro": 0.3371
+    },
+    "v6c_merged": {
+      "fold_nested_macro": 0.3375,
+      "capped_macro": 0.3307
+    },
+    "v6c_paranoid": {
+      "fold_nested_macro": 0.3375,
+      "capped_macro": 0.3309
+    }
+  }
+}
