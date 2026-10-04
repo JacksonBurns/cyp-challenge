@@ -71,6 +71,10 @@ FAMS = {
     "ft_admchm": g("admchm"),
     "ft_admmed": g("admmed"),
     "ft_unimol": g("unimol"),
+    "ft_umtmL1": g("umtmL1"),
+    "ft_umtmL2": g("umtmL2"),
+    "ft_umtmL3": g("umtmL3"),
+    "ft_umtmL4": g("umtmL4"),
 }
 POOLS = {
     "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
@@ -89,6 +93,12 @@ POOLS = {
     "cp12": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
              "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
              "ft_admchm", "ft_admmed", "ft_unimol"],
+    "cp13": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2"],
+    "cp14": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1"],
 }
 FAMAPS = {
     "cp": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge"},
@@ -105,6 +115,18 @@ FAMAPS = {
                    "ft_admchm": "admecd", "ft_admmed": "admecd"},
     "adm_cpall": {"ft_cpmed": "cpall", "ft_cpchm": "cpall",
                   "ft_admchm": "cpall", "ft_admmed": "cpall"},
+    # Sec 22 (UMTM): L2/L3 init from adme_pretrain ckpts, L1 from nazarov
+    # CheMeLeon, L4 from-scratch D-MPNN. paranoid maps merge UMTM into its
+    # corpus-lineage family: if nested survives the merge, UMTM brings signal
+    # beyond lineage diversity (not just another admecd/CheMeLeon draw).
+    "umtm_vs_adm": {"ft_umtmL2": "admecd", "ft_umtmL3": "admecd",
+                    "ft_admchm": "admecd", "ft_admmed": "admecd"},
+    "umtm_paranoid": {"ft_umtmL2": "umtm", "ft_umtmL3": "umtm",
+                      "ft_umtmL1": "chemeleon", "ft_umtmL4": "dmpnn",
+                      "ft_admchm": "admecd", "ft_admmed": "admecd",
+                      "ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
+                      "ft_dmpnn": "dmpnn", "ft_d2d6": "dmpnn",
+                      "ft_ext": "fullft", "ft_near": "fullft"},
 }
 
 
