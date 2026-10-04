@@ -29,7 +29,10 @@ CHMRIDGE_FLOOR = {"CYP1A2": 0.468, "CYP2C9": 0.585, "CYP2D6": 0.344, "CYP3A4": 0
 def main():
     ft = pd.read_csv(os.path.join(CACHE, "ft_data.csv"))
     test = pd.read_csv(os.path.join(CACHE, "ft_test_smiles.csv"))
-    dall = pd.read_parquet(os.path.join(CACHE, "monroe_emb.parquet")).set_index("SMILES")
+    dall = pd.read_parquet(os.path.join(CACHE, "monroe_emb.parquet"))
+    if "SMILES" not in dall.columns:
+        dall = dall.reset_index()
+    dall = dall.set_index("SMILES")
     cols = list(dall.columns)
     Etr = dall[cols].reindex(ft["SMILES"]).fillna(0.0).values
     Ete = dall[cols].reindex(test["SMILES"]).fillna(0.0).values
