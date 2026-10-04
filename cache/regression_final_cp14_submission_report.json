@@ -1,0 +1,60 @@
+{
+  "CYP1A2": {
+    "weights": {
+      "gbm": 0.25,
+      "ft_cpmed": 0.15,
+      "ft_admchm": 0.1,
+      "ft_umtmL2": 0.5
+    },
+    "oof_pearson": 0.6119351194831159,
+    "rho_blind_assumed": 0.807754357717713,
+    "f_spread": 0.6,
+    "placed_mean": 4.412,
+    "placed_sd": 0.7526655105213649
+  },
+  "CYP2C9": {
+    "weights": {
+      "gbm": 0.05,
+      "ft_cpmed": 0.4,
+      "ft_admchm": 0.05,
+      "ft_umtmL2": 0.2,
+      "ft_umtmL1": 0.3
+    },
+    "oof_pearson": 0.7258944586014585,
+    "rho_blind_assumed": 0.892850184079794,
+    "f_spread": 0.6,
+    "placed_mean": 4.830000000000001,
+    "placed_sd": 0.5898168316031119
+  },
+  "CYP2D6": {
+    "weights": {
+      "gbm": 0.1,
+      "emb": 0.15,
+      "ft_cpmed": 0.1,
+      "ft_d2d6": 0.25,
+      "ft_admmed": 0.1,
+      "ft_umtmL2": 0.3
+    },
+    "oof_pearson": 0.4850627771727156,
+    "rho_blind_assumed": 0.8052042101067078,
+    "f_spread": 1.0,
+    "placed_mean": 3.57,
+    "placed_sd": 0.9
+  },
+  "CYP3A4": {
+    "weights": {
+      "gbm": 0.2,
+      "ft_frozen": 0.05,
+      "ft_cpmed": 0.25,
+      "ft_d2d6": 0.05,
+      "ft_admchm": 0.15,
+      "ft_admmed": 0.05,
+      "ft_umtmL2": 0.25
+    },
+    "oof_pearson": 0.8284829591323598,
+    "rho_blind_assumed": 0.8864767662716251,
+    "f_spread": 0.7,
+    "placed_mean": 4.88,
+    "placed_sd": 0.7893189126882549
+  }
+}

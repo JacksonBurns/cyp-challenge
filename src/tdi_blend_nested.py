@@ -140,7 +140,8 @@ def main(cand_csv=None):
                     "fold_weights": w_hist}
         print(iso, json.dumps({k: v for k, v in out[iso].items() if k != 'fold_weights'}), flush=True)
 
-    with open(os.path.join(CACHE, "tdi_blend_nested.json"), "w") as fh:
+    outfile = os.environ.get("TDI_OUT", "tdi_blend_nested.json")
+    with open(os.path.join(CACHE, outfile), "w") as fh:
         json.dump(out, fh, indent=2)
 
 
