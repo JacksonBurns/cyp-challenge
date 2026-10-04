@@ -38,6 +38,37 @@ untracked (src/umtm_data.py, umtm_module.py, cypfolds.py, umtm_eval_direct/tdi,
 - ft_ext scaler probe: chemprop normalize_targets IS nan-aware
   (StandardScaler.fit over non-NaN) - make_scaler matches; z-convention ok.
 
+### Phase 2 L2 RESULTS (Oct 4, 4 seeds plan, ~21 min each)
+- **GO on the regression track.** Direct-head singles (seed-avg and per-seed):
+  best seed 0.6185 macro Pearson vs best legacy single ft_admchm 0.6059 and
+  ft_fullft 0.5791 — every isoform improved (1A2 .570/.562, 2C9 .678/.657,
+  2D6 .435/.417, 3A4 .791/.787). cp13 nested blend (ft_umtmL2 family added to
+  cp12): **macro R2 0.4534 vs cp12 0.4471** (honest, nested; all four isoforms
+  up: .613/.605, .721/.716, .486/.481, .826/.823). That +0.006 is a real
+  nested-blend gain — the shipped-bar level.
+- **TDI track: no-go for standalone replacement.** Seed-avg is_TDI OOF nested:
+  2D6 0.149 / 3A4 0.363 vs legacy lgbm singles 0.147/0.404 and the
+  already-shipped TDI blend (0.186/0.35 nested in tdi_blend_nested.json).
+  Best single L2 seed hit 2D6 0.204 (s2) — inside the 0.17-0.21 user bar, but
+  seed-avg washes to 0.149 (seed noise; per-seed 0.146-0.204). 3A4 ~0.35-0.37
+  under the 0.38-0.44 standalone bar. Verdict: UMTM is_TDI is competitive
+  juice but does NOT beat the existing lgbm/blend singles on nested eval ->
+  keep legacy TDI path; UMTM enters TDI only as *blend member* material if
+  later lineages add diversity (test in cp13-style TDI blend later).
+- Precision-floored fractions (umtm_fraction_opt.py, seed-avg L2, pi prior
+  0.08-0.25): 3A4 argmax f=0.26 E[MCC]=0.330, CONSTRAINED f=0.08 E[MCC]=0.266
+  (floor costs 0.064); 2D6 argmax f=0.17 E[MCC]=0.175 but NO f meets the 0.45
+  precision floor (max E[P]=0.39 at f=0.05) -> 2D6 proba quality too low for
+  the floor; ships must stay on the legacy 2D6 path. (Legacy shipped
+  fractions live in tdi_fraction_optima_v6.json.)
+
+### Queued (GPU chain one-at-a-time, tools/run_umtm_rest.sh, Oct 4)
+- L1 --weights ext strict gate (must reproduce ft_ext OOF within noise; L2
+  gates already passed: ext 0.6034 vs 0.5759, primary 0.6087 vs 0.5791 —
+  consistent +0.03 lineage-level improvement, likely data mix, see sec 20 note)
+- L1 plan x4 seeds -> eval both tracks; then L3 x4; then L4 x4 (from-scratch
+  D-MPNN d_h 300). Logs logs/umtm_<lin>_s*.log; chain log logs/umtm_rest_chain.log.
+
 ### Phase 1 GATES (Oct 3 night)
 - GATE ext (L2 lineage, new heads zeroed, 5 folds, 24 min): macro OOF Pearson
   **0.6034 vs ft_ext 0.5759** - per-iso ALL improved or equal
