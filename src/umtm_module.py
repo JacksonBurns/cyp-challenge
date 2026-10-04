@@ -332,6 +332,10 @@ def run(lineage, seed, weights, fold, smoke=False, stacked=True, no_test=False):
             return
     oof.insert(0, "SMILES", ch.SMILES.values)
     oof.insert(1, "fold", ch[fold_col].values)
+    # both fold vectors ride along: production runs use fold_reg, but the TDI
+    # nested-threshold eval must nest on seed-7 folds to match legacy protocol.
+    if "fold_tdi" in ch.columns and fold_col != "fold_tdi":
+        oof.insert(2, "fold_tdi", ch["fold_tdi"].values)
     oof.to_csv(os.path.join(CACHE, f"umtm_oof_{tag}.csv"), index=False)
     if no_test:  # gate runs: OOF only, skip the all-data model (ft_ext --skip-folds mirror)
         print("DONE-OOF-ONLY", tag, f"{time.time() - t0:.0f}s", flush=True)
