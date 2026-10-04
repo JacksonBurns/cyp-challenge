@@ -73,11 +73,19 @@ def _auc(y, p):
         return float("nan")
 
 
-def main(paths, fold_col):
+def main(paths, fold_col, avg_group=None):
     lab = truth()
-    for path in paths:
-        df = pd.read_csv(path)
-        name = os.path.basename(path).replace(".csv", "")
+    if avg_group:
+        # average probability columns across same-lineage seeds before eval
+        dfs = [pd.read_csv(p) for p in paths]
+        base = dfs[0].copy()
+        cols = [c for c in base.columns if c.startswith("is_TDI_")]
+        for c in cols:
+            base[c] = np.mean([d[c].values.astype(float) for d in dfs], axis=0)
+        rows = [("~avg", base)]
+    else:
+        rows = [(os.path.basename(p).replace(".csv", ""), pd.read_csv(p)) for p in paths]
+    for name, df in rows:
         fc = fold_col if fold_col in df.columns else ("fold_tdi" if "fold_tdi" in df.columns else "fold")
         out = {}
         for iso in TDI_ISO:
@@ -99,5 +107,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("paths", nargs="+")
     ap.add_argument("--fold-col", default="fold_tdi")
+    ap.add_argument("--avg", action="store_true", help="average is_TDI cols across all paths, eval once")
     a = ap.parse_args()
-    main(a.paths, a.fold_col)
+    main(a.paths, a.fold_col, avg_group=a.avg)

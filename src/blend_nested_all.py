@@ -55,6 +55,13 @@ FAMS = {
     "ft_admchm": g("admchm"),
     "ft_admmed": g("admmed"),
     "ft_unimol": g("unimol"),
+    # UMTM members land via tools/umtm_to_ftoof.py; L2 lineage families with
+    # admecd in the family-block audit (FINAL_PUSH_PLAN 2), but for the naive
+    # nested blend check they enter as their own seed-averaged family.
+    "ft_umtmL2": g("umtmL2"),
+    "ft_umtmL1": g("umtmL1"),
+    "ft_umtmL3": g("umtmL3"),
+    "ft_umtmL4": g("umtmL4"),
 }
 POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "all7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn"],
@@ -66,7 +73,8 @@ POOLS = {"ext2": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext"],
          "cp9": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_near"],
          "cp10": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed"],
          "cp11": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_unimol"],
-         "cp12": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol"]}
+         "cp12": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol"],
+         "cp13": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre", "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6", "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2"]}
 
 
 def greedy(zs, y, m, rounds=12):
