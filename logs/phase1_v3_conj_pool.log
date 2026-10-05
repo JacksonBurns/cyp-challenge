@@ -1,0 +1,47 @@
+Loading features...
+
+Building conjunction members (feat=bu)...
+  [bu] CYP2D6: gate OOF on 1497 rows, shift OOF on 1493 rows
+  [bu] CYP3A4: gate OOF on 3583 rows, shift OOF on 2334 rows
+
+Building conjunction members (feat=cu)...
+  [cu] CYP2D6: gate OOF on 1497 rows, shift OOF on 1493 rows
+  [cu] CYP3A4: gate OOF on 3583 rows, shift OOF on 2334 rows
+  saved tdi_conj_conj_bu.npz
+  saved tdi_conj_conjmin_bu.npz
+  saved tdi_conj_conj_cu.npz
+  saved tdi_conj_conjmin_cu.npz
+
+======================================================================
+FAMILY-BLOCK AUDIT: v6b + conjunction members
+======================================================================
+
+  CYP2D6:
+    v6b:        merged {'nested': 0.2053, 'capped': 0.2192, 'frac_capped': 0.17, 'lofo_conj': None}
+    v6b:        paranoid {'nested': 0.2053, 'capped': 0.1995, 'frac_capped': 0.33, 'lofo_conj': None}
+    v6b+conj:   merged {'nested': 0.2049, 'capped': 0.2111, 'frac_capped': 0.13, 'lofo_conj': 0.2053}
+    v6b+conj:   paranoid {'nested': 0.2049, 'capped': 0.1896, 'frac_capped': 0.3, 'lofo_conj': None}
+
+  CYP3A4:
+    v6b:        merged {'nested': 0.4598, 'capped': 0.4703, 'frac_capped': 0.28, 'lofo_conj': None}
+    v6b:        paranoid {'nested': 0.4598, 'capped': 0.4688, 'frac_capped': 0.28, 'lofo_conj': None}
+    v6b+conj:   merged {'nested': 0.472, 'capped': 0.4721, 'frac_capped': 0.27, 'lofo_conj': 0.4598}
+    v6b+conj:   paranoid {'nested': 0.472, 'capped': 0.4905, 'frac_capped': 0.27, 'lofo_conj': None}
+
+======================================================================
+MACRO (capped nested) - v6b vs v6b+conjunction
+======================================================================
+  v6b          merged    macro 0.3448  (2D6 0.2192 / 3A4 0.4703)
+  v6b          paranoid  macro 0.3342  (2D6 0.1995 / 3A4 0.4688)
+  v6b+conj     merged    macro 0.3416  (2D6 0.2111 / 3A4 0.4721)
+  v6b+conj     paranoid  macro 0.3400  (2D6 0.1896 / 3A4 0.4905)
+
+  v6b paranoid baseline macro: 0.3342
+  v6b+conj paranoid macro:     0.3400  (delta +0.0059)
+  bar: macro 0.3448, 2D6 0.219, 3A4 0.470
+  2D6 0.1896 vs 0.219 -> FAIL
+  3A4 0.4905 vs 0.470 -> PASS
+
+  *** BELOW gate ***
+
+Saved phase1_t1_v3_conj_pool_audit.json

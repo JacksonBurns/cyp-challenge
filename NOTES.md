@@ -1527,4 +1527,33 @@ Files: src/tdi_phase1_shift_gate.py, src/tdi_phase1_v2_classifier.py,
 src/tdi_phase1_v3_conj_pool.py; cache/phase1_t1_*.json, tdi_conj_*.npz.
 No candidate file built (gate not cleared). No submits, no GPU.
 
+### Phase 3 regression R4 + R5 (Oct 5) - both DEAD
+
+**R4 dead-zone ST-RAE refit (src/reg_deadzone.py, src/reg_deadzone_strae.py):
+NEUTRAL.** Trained a LightGBM member (objective=regression_l1) on the
+clip(cp16-OOF, lo, hi) target (the cp16 nested blend placed to pIC50 scale,
+clipped to the DRC band - the self-target trap avoided by using the HONEST OOF,
+not the model's own in-fold train preds).
+- R2 check: cp17 (cp16+deadzone) nested macro 0.4583 vs cp16 0.4584 (-0.0002).
+  Deadzone standalone 0.3234 (weaker than the pool).
+- ST-RAE check (the metric R4 actually targets, official
+  rae_soft_threshold_absolute_error on train, pIC50 scale): cp17 0.7633 vs
+  cp16 0.7631 (+0.0002); deadzone standalone 0.9177 (much worse).
+- The "cp16 clipped (oracle) = 0.0000" is degenerate - the DRC band is the CI
+  AROUND the truth, so snapping into it is trivially zero; not a real target.
+- VERDICT: Lizard Wizard's +0.02 dead-zone gain does NOT transfer to our pool.
+  cp16 is already strong and largely in-band; a weaker ranker (0.32 standalone)
+  fitted to the clipped target adds no in-band accuracy. DEAD.
+
+**R5 band-width placement: INFEASIBLE.** The blind test set
+(data/cyp-challenge-TEST-BLINDED.csv) has ONLY Molecule_Name + SMILES - NO DRC
+bands. Per-compound band-width placement (isotonic-regress the band width, place
+spread per-compound) is impossible without the blind bands. Our constant F_SPREAD
+placement is the only option. DEAD.
+
+=> Both "cheap CPU placement" regression levers are dead. Live regression levers
+now: R1 (qHTS-only-DA, GPU, best 2D6), R2 (TabPFN, token unblocked, inference-
+only, decorrelated reader), R3 (SMILES-transformer new family, shared w/ T3).
+
+
 

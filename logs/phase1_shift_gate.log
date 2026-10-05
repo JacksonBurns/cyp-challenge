@@ -1,0 +1,66 @@
+Loading features...
+  base: (6145, 3456)
+  cpmed: (6145, 600)
+  umtm heads: (6145, 22)
+  combined X: (6145, 4078)
+  folds: [1229 1229 1229 1229 1229]
+
+============================================================
+  CYP2D6
+============================================================
+  gate target: n=1497, mean=5.050, std=0.775
+  shift target: n=1493, mean=0.267, std=0.408
+  Training shift regressor (OOF)...
+  shift OOF: n=1493
+  Training gate regressor (OOF)...
+  gate OOF: n=1497
+
+  Eval set (both-arms + labeled): n=1493, pos=0.217
+  Eval set (gate + labeled):       n=1497, pos=0.216
+
+  CYP2D6 RESULTS (nested-honest MCC, both-arms set):
+    gate  pearson=-0.1136  nested=0.0000  tuned=0.0000
+    shift pearson=0.1336  nested=0.0783  tuned=0.1328
+    product (k=0.5):        nested=0.1331  tuned=0.1331
+    conj_margin:                nested=0.0000  tuned=0.0000
+
+============================================================
+  CYP3A4
+============================================================
+  gate target: n=3583, mean=4.708, std=1.173
+  shift target: n=2334, mean=0.339, std=0.364
+  Training shift regressor (OOF)...
+  shift OOF: n=2334
+  Training gate regressor (OOF)...
+  gate OOF: n=3583
+
+  Eval set (both-arms + labeled): n=2334, pos=0.327
+  Eval set (gate + labeled):       n=3583, pos=0.213
+
+  CYP3A4 RESULTS (nested-honest MCC, both-arms set):
+    gate  pearson=0.4995  nested=0.0000  tuned=0.0000
+    shift pearson=0.2478  nested=0.4230  tuned=0.4230
+    product (k=0.5):        nested=0.4053  tuned=0.4053
+    conj_margin:                nested=0.0000  tuned=0.0000
+
+==================================================================
+PHASE 1 T1 FRESH SHIFT/GATE - NESTED-HONEST MACRO MCC
+==================================================================
+  score                2D6      3A4    macro    v6b bar
+  gate              0.0000   0.0000   0.0000          -
+  shift             0.0783   0.4230   0.2507          -
+  product           0.1331   0.4053   0.2692     0.3448
+  conj_margin       0.0000   0.0000   0.0000     0.3448
+
+  v6b capped bar: macro 0.3448 (2D6 0.219, 3A4 0.470)
+  product macro: 0.2692
+  conj_margin macro: 0.0000
+  BEST macro: 0.2692
+  CYP2D6 product: 0.1331 vs bar 0.219 -> FAIL
+  CYP2D6 conj_margin: 0.0000 vs bar 0.219 -> FAIL
+  CYP3A4 product: 0.4053 vs bar 0.47 -> FAIL
+  CYP3A4 conj_margin: 0.0000 vs bar 0.47 -> FAIL
+
+  *** BELOW the bar by 0.0756 ***
+
+Saved /home/jackson/cyp-challenge/src/../cache/phase1_t1_fresh_shift_gate.json

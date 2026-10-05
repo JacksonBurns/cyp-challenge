@@ -1,0 +1,44 @@
+Loading features...
+  feat set 'umtm': (6145, 22)
+  feat set 'base_umtm': (6145, 3478)
+  feat set 'cpmed_umtm': (6145, 622)
+  [umtm] CYP2D6: n=1493 pos=0.217 gate 0.0214(auc 0.481) shift 0.0755(auc 0.589) product 0.1029(auc 0.595) conj_min 0.0755
+  [umtm] CYP3A4: n=2334 pos=0.327 gate 0.3193(auc 0.700) shift 0.2101(auc 0.672) product 0.3840(auc 0.770) conj_min 0.3066
+  [base_umtm] CYP2D6: n=1493 pos=0.217 gate 0.0128(auc 0.496) shift 0.1229(auc 0.592) product 0.1564(auc 0.596) conj_min 0.1229
+  [base_umtm] CYP3A4: n=2334 pos=0.327 gate 0.3339(auc 0.710) shift 0.2356(auc 0.681) product 0.3960(auc 0.777) conj_min 0.3629
+  [cpmed_umtm] CYP2D6: n=1493 pos=0.217 gate -0.0008(auc 0.489) shift 0.1312(auc 0.612) product 0.1361(auc 0.617) conj_min 0.1312
+  [cpmed_umtm] CYP3A4: n=2334 pos=0.327 gate 0.3263(auc 0.717) shift 0.3003(auc 0.708) product 0.4023(auc 0.789) conj_min 0.4033
+
+======================================================================
+PHASE 1 T1 v2 - CLASSIFIER CONJUNCTION (nested-honest macro MCC)
+======================================================================
+
+  Feature set: umtm
+  score             2D6      3A4    macro    v6b bar
+  gate           0.0214   0.3193   0.1703          -
+  shift          0.0755   0.2101   0.1428          -
+  product        0.1029   0.3840   0.2435     0.3448
+  conj_min       0.0755   0.3066   0.1910          -
+
+  Feature set: base_umtm
+  score             2D6      3A4    macro    v6b bar
+  gate           0.0128   0.3339   0.1733          -
+  shift          0.1229   0.2356   0.1792          -
+  product        0.1564   0.3960   0.2762     0.3448
+  conj_min       0.1229   0.3629   0.2429          -
+
+  Feature set: cpmed_umtm
+  score             2D6      3A4    macro    v6b bar
+  gate          -0.0008   0.3263   0.1628          -
+  shift          0.1312   0.3003   0.2157          -
+  product        0.1361   0.4023   0.2692     0.3448
+  conj_min       0.1312   0.4033   0.2673          -
+
+  BEST feature set: base_umtm (product macro 0.2762)
+  v6b capped bar: macro 0.3448 (2D6 0.219, 3A4 0.470)
+  CYP2D6 product: 0.1564 vs bar 0.219 -> FAIL
+  CYP3A4 product: 0.3960 vs bar 0.47 -> FAIL
+
+  *** BELOW the bar by 0.0686 ***
+
+Saved /home/jackson/cyp-challenge/src/../cache/phase1_t1_v2_classifier.json
