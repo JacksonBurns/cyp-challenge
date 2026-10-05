@@ -76,6 +76,7 @@ FAMS = {
     "ft_umtmL3": g("umtmL3"),
     "ft_umtmL4": g("umtmL4"),
     "ft_monridge": [os.path.join(CACHE, "ft_oof_monridge.csv")],
+    "ft_tabpfn_cpmed": [os.path.join(CACHE, "ft_oof_tabpfn_cpmed.csv")],
 }
 POOLS = {
     "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
@@ -108,6 +109,10 @@ POOLS = {
              "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
              "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
              "ft_umtmL3", "ft_umtmL4", "ft_monridge"],
+    "cp17": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
+             "ft_umtmL3", "ft_umtmL4", "ft_monridge", "ft_tabpfn_cpmed"],
 }
 FAMAPS = {
     "cp": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge"},
@@ -136,6 +141,17 @@ FAMAPS = {
                       "ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
                       "ft_dmpnn": "dmpnn", "ft_d2d6": "dmpnn",
                       "ft_ext": "fullft", "ft_near": "fullft"},
+    # R2 (sec 23): TabPFN on frozen cpmed embeddings. Paranoid: merge it into
+    # the cpridge family (SAME embeddings as the ft_cpmed/ft_cpchm ridge). If
+    # the cp17 gain survives that merge, TabPFN brings signal beyond a
+    # same-embedding ridge re-draw (a genuinely different reader).
+    "tp_paranoid": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
+                    "ft_tabpfn_cpmed": "cpridge", "ft_chmridge": "cpridge",
+                    "ft_admchm": "admecd", "ft_admmed": "admecd",
+                    "ft_umtmL2": "umtm", "ft_umtmL3": "umtm",
+                    "ft_umtmL1": "chemeleon", "ft_umtmL4": "dmpnn",
+                    "ft_dmpnn": "dmpnn", "ft_d2d6": "dmpnn",
+                    "ft_ext": "fullft", "ft_near": "fullft"},
 }
 
 

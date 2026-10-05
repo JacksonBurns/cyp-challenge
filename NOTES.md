@@ -1555,5 +1555,49 @@ placement is the only option. DEAD.
 now: R1 (qHTS-only-DA, GPU, best 2D6), R2 (TabPFN, token unblocked, inference-
 only, decorrelated reader), R3 (SMILES-transformer new family, shared w/ T3).
 
+### Phase 3 regression R2 TabPFN (Oct 5) - WIN, verified candidate
+
+TabPFN UNBLOCKED: the plan's "v2.5 401" was a WRONG repo name. v2 weights are
+public on HF (Prior-Labs/TabPFN-v2-reg, and v2_default.ckpt was already cached
+locally from April); v2.5 is public in Prior-Labs/tabpfn_2_5. Fresh conda env
+`tabpfn` (python 3.11, tabpfn 9.1.0, torch cu130, pyarrow). NOTE: the GPU was in
+an ERR state during Phase 0/1 (nvidia-smi fan/temp/perf all ERR, no env could
+see CUDA) - Jackson repaired it; the NVMe conda-envs disk unmounted on the
+reboot and was remounted (udisksctl mount -b /dev/nvme0n1p1). TabPFN ran on
+CUDA once the GPU was back.
+
+src/tabpfn_probe.py: TabPFN-v2 (in-context, inference-only) on PCA-128 frozen
+chemprop_medium embeddings (jeremy's best recipe), OOF scaffold seed-0 folds
+(folds.npy), per isoform. cache/ft_oof_tabpfn_cpmed.csv.
+- STANDALONE nested: 1A2 0.6021 / 2C9 0.7211 / 2D6 0.4587 / 3A4 0.8183,
+  macro R2 0.4406 - a competitive, genuinely decorrelated reader (beats every
+  legacy single except the UMTM/admchm top; well above chmridge 0.468 floor on
+  3A4, near it on 1A2/2C9).
+- cp17 = cp16 + ft_tabpfn_cpmed: nested macro **0.4682** vs cp16 0.4584
+  (**+0.0098**), winning on ALL FOUR isoforms (1A2 +0.0095, 2C9 +0.0082,
+  2D6 +0.0054, 3A4 +0.0060). The biggest honest regression gain since the
+  whole UMTM program (+0.0094).
+
+Family-block paranoid (src/regression_family_block.py cp17, new tp_paranoid map
+merging TabPFN into the cpridge family - the SAME embeddings as the ft_cpmed
+ridge, the exact paranoia to check):
+- cp16 cpridge LOFO gain 0.0014 (cpmed+cpchm ridge alone ~worthless)
+- cp17 cpridge LOFO gain **0.0112** (with TabPFN merged in)
+- delta 0.0112 - 0.0014 = 0.0098 = EXACTLY the cp16->cp17 gain.
+=> TabPFN adds NEW non-linear signal from the same embeddings the linear ridge
+missed. It is a genuinely different reader, NOT a same-embedding re-draw.
+PARANOID-MERGE CLEAN.
+
+GATE: nested macro 0.4682 > 0.4569, per-isoform all-up (no regression),
+paranoid clean. PASS. cp17 is a VERIFIED regression candidate. TabPFN takes
+0.358 mean / 0.5 max weight in the cpridge family; capped == nested 0.4682 (no
+over-concentration).
+
+Blind-transfer expectation: this is a new-family, family-block-clean gain of
++0.0098 nested. Regression nested->blind k ~ 1.04-1.06 (3 scored points), so
+expected blind macro R2 ~ 0.487-0.496 vs the on-board cp15/cp16 ~0.49-0.52.
+Real but not a cliff-jump alone; R1 (qHTS-DA, best 2D6) is the next add.
+
+
 
 
