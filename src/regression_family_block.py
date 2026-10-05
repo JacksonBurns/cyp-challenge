@@ -78,6 +78,7 @@ FAMS = {
     "ft_monridge": [os.path.join(CACHE, "ft_oof_monridge.csv")],
     "ft_tabpfn_cpmed": [os.path.join(CACHE, "ft_oof_tabpfn_cpmed.csv")],
     "ft_qhtsda": [os.path.join(CACHE, "ft_oof_qhtsda.csv")],
+    "ft_smiles": [os.path.join(CACHE, "ft_oof_smiles.csv")],
 }
 POOLS = {
     "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
@@ -119,6 +120,11 @@ POOLS = {
              "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
              "ft_umtmL3", "ft_umtmL4", "ft_monridge", "ft_tabpfn_cpmed",
              "ft_qhtsda"],
+    "cp19": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
+             "ft_umtmL3", "ft_umtmL4", "ft_monridge", "ft_tabpfn_cpmed",
+             "ft_smiles"],
 }
 FAMAPS = {
     "cp": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge"},

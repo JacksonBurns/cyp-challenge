@@ -1630,6 +1630,44 @@ paranoid merge" - R1 clears the standalone gate but NOT the pool/paranoid add.)
 remaining untried lever for a bigger jump is R3/T3 (SMILES-sequence transformer
 new family) - the one representation class we genuinely lack.
 
+### Phase 3 regression R3 SMILES-transformer (Oct 5) - standalone NO-GO, POOL-REDUNDANT
+
+src/smiles_transformer_embed.py: FROZEN ChemBERTa-zinc-base-v1 (768-d,
+mean-pooled) on all 6895 SMILES -> cache/emb_smiles_all.parquet (GPU ~4s).
+Fresh env `smtransformer` (python 3.11, transformers, torch cu130, rdkit).
+src/smiles_ridge.py: ridge probe (same recipe as monroe_ridge).
+
+Standalone ridge (honest): 1A2 0.408 / 2C9 0.464 / 2D6 0.211 / 3A4 0.562 =
+**NO-GO on 0/4 isoforms** (floor 0.468/0.585/0.344/0.723). By the plan's gate
+that is a stop, but the standalone ridge is a conservative pre-filter (TabPFN
+was 0.44 standalone yet added +0.0098 in-pool), so I also tested it in the pool.
+
+POOL: cp19 = cp17 + ft_smiles = nested **0.4682, IDENTICAL to cp17** (0.4682).
+The SMILES transformer takes zero greedy weight in-pool - it is
+POOL-REDUNDANT. The one representation class we "genuinely lack" does NOT
+decorrelate enough on THIS data to add: the 2D-graph MPNN families (UMTM,
+admecd, cpmed) already capture the SMILES-transformer signal. (stir_bar/jeremy
+win with it inside a MUCH larger, more diverse stack + Butina folds + retrieval
++ non-negative stacking; our 19-member pool saturates what the frozen
+ChemBERTa adds.)
+
+VERDICT: R3 dead (standalone NO-GO + pool-redundant). This closes the LAST
+regression lever in the plan.
+
+### RANK-UP PLAN regression SUMMARY (Oct 5) - cp17 is the candidate
+- R1 qHTS-DA: standalone GO, pool-redundant (dead)
+- R2 TabPFN: **WIN +0.0098, paranoid-clean -> cp17 = 0.4682** (verified candidate)
+- R3 SMILES-transformer: standalone NO-GO, pool-redundant (dead)
+- R4 dead-zone: neutral (dead)
+- R5 band-width: infeasible (no blind DRC bands) (dead)
+
+cp17 (cp16 + TabPFN-on-cpmed) is the best regression candidate this cycle:
+nested 0.4682 vs cp16 0.4584, all 4 isoforms up, paranoid-merge clean. It does
+NOT jump the top-12 cliff (needs ~0.52+ R2 / Spearman 0.78); it is a real
++0.0098 climb toward rank 20-30, consistent with the plan's honest
+"two new families to land" expectation (only TabPFN landed).
+
+
 
 
 
