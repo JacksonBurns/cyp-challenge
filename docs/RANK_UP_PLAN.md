@@ -66,7 +66,8 @@ A3. **"Fine-tuning beats freezing."** Our own finding (ft_ext/full-FT > frozen)
    resolved this by running both and letting the data decide - that was right.
    BUT we never tried jeremy's specific winner: **TabPFN on FROZEN
    chemprop_medium embeddings**, his single best regression model. We are
-   401-blocked on TabPFN (no HF token). See lever R2 (unblock TabPFN) and R4.
+   401-blocked on TabPFN (original v1 weights now gated; current versions need a
+   free PriorLabs token, not an HF one). See lever R2 (unblock TabPFN) and R4.
 
 A4. **"External data helps only via the 29k-row multitask."** We tried
    ChEMBL+AID1851 MIXED pretrain (ft_pre) -> weak (population shift). We never
@@ -201,15 +202,28 @@ floor 0.468/0.585/0.344/0.723 on >=2 isoforms (same gate as Monroe L5), then
 family-block as a new family. Cost: 1 DA fine-tune (~30-60 min GPU) + ridge.
 
 **R2. Unblock TabPFN (A3) - the field's favorite reader.**
-jeremy's best single reg model is TabPFN on frozen chemprop_medium. We are 401
-on the gated TabPFN v2/v3 weights (no HF token). Action: ask Jackson to
-`hf auth login` (one command, his account) so we can pull the TabPFN weights;
-then run TabPFN on (a) frozen chemprop_medium, (b) frozen Monroe 720-d, (c) the
-UMTM intermediate embeddings. TabPFN is a genuinely different reader than our
-GBM/ridge/blend, and decorrelated. If the token is not available, R2 is blocked
-and we fall back to R4 (Mitra, open-source in-context learner, stir_bar found it
-comparable). Cost: gated on the token; then CPU/GPU inference only (TabPFN is
-inference-only, no training).
+jeremy's best single reg model is TabPFN on frozen chemprop_medium. We are
+401-blocked, and the block is now understood precisely (verified Oct 4):
+  - The ORIGINAL v1 weights (Prior-Labs/TabPFN-v1-reg/-clf, the token-free 2024
+    release) are now GATED (HTTP 401) - Prior Labs pulled them. That was the
+    source of our Sept 26 "401" note.
+  - The CURRENT versions (v2, v2.5, v2.6, v3, v3.5) are NOT gated (files
+    publicly listed on HF). The tabpfn package (v9.1.0) requires a FREE
+    PriorLabs account + license acceptance on first use, yielding a
+    TABPFN_TOKEN (from ux.priorlabs.ai). This is NOT an HF token (our notes
+    were imprecise).
+  - License: v2 weights = Apache 2.0 + attribution (fully permissive, even
+    commercial); v2.5/2.6/3/3.5 = non-commercial licenses. Code = Apache 2.0.
+    For this research/open-code/disclosed competition, the non-commercial
+    license is acceptable; v2 is even more permissive. No paywall.
+Action: ask Jackson to create a PriorLabs account at ux.priorlabs.ai, accept
+the license, and provide the TABPFN_TOKEN (one env var). Then run TabPFN v2 on
+(a) frozen chemprop_medium, (b) frozen Monroe 720-d, (c) the UMTM intermediate
+embeddings. TabPFN is a genuinely different reader than our GBM/ridge/blend,
+and decorrelated. If the token is not forthcoming, R2 is blocked and we fall
+back to R4 (Mitra, open-source in-context learner, stir_bar found it
+comparable). Cost: gated on the free PriorLabs token; then CPU/GPU inference
+only (TabPFN is inference-only, no training).
 
 **R3. SMILES-sequence transformer as a regression family (stir_bar's base).**
 Same embedder as T3, frozen, -> ridge/TabPFN on the embeddings as a NEW
@@ -265,7 +279,8 @@ Phase 3 (day 5-10, regression): R1 qHTS-only-DA (GPU) -> ridge gate; R4
    GATE: nested macro R2 > 0.4569 AND per-isoform non-regression AND
    paranoid-merge clean.
 Phase 4 (day 8-12, regression reader, token-gated): R2 TabPFN on
-   chemprop_medium + Monroe + UMTM embeddings IF Jackson provides an HF token;
+   chemprop_medium + Monroe + UMTM embeddings IF Jackson provides the free
+   PriorLabs TABPFN_TOKEN;
    else R3 transformer-ridge family. Fold survivors into cp17/cp18.
 Phase 5 (day 12-15): final blend/ES across everything that survived; both
    tracks family-block paranoid; build the final candidate pair; report honest
