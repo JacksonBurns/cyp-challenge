@@ -1468,3 +1468,63 @@ That is the entire gap. The gate (3A4 0.563 oracle) is also under-predicted
   family-block paranoid merge, gated at nested macro > 0.3448 with
   2D6 > 0.219 and 3A4 > 0.470.
 
+### Phase 1 (Oct 5) - FRESH shift/gate models: 3A4 lever, not a macro lever
+
+Built fresh gate + shift models (LightGBM, scaffold seed 7, OOF) and tested
+the conjunction THREE ways. CPU-only, no GPU, no submits.
+
+**(a) Fresh shift/gate REGRESSORS** (src/tdi_phase1_shift_gate.py, 4078-d
+base+cpmed+UMTM features): product macro 0.269 (2D6 0.133 / 3A4 0.405). 2D6
+shift pearson only 0.13 (worse than the UMTM subtraction's 0.16). Overfitting
+on 4078 features / ~1.5k rows. Gate pearson -0.11 (2D6) / 0.50 (3A4).
+
+**(b) Fresh gate/shift CLASSIFIERS** (src/tdi_phase1_v2_classifier.py, the
+Lizard Wizard recipe - classify pi_TDI>4.301 and delta>0.301, product the
+probs): best feature set base+UMTM product macro 0.276 (2D6 0.156 / 3A4
+0.396). Standalone, still below the 0.3448 bar on both isoforms.
+
+**(c) Conjunction as a NEW POOL MEMBER in v6b** (src/tdi_phase1_v3_conj_pool.py,
+the CORRECT test - does it add honest signal to the pool, like UMTM is_TDI did):
+members = p_gate * p_shift (product) and min (soft-AND), 6145-len OOF arrays,
+added to the v6b pool under the family-block audit (merged + paranoid maps,
+0.5 cap, LOFO). Reproduces v6b exactly (merged 0.3448 = sec 22).
+
+| pool | map | 2D6 capped | 3A4 capped | macro |
+| v6b | merged | 0.2192 | 0.4703 | 0.3448 |
+| v6b | paranoid | 0.1995 | 0.4688 | 0.3342 |
+| v6b+conj | merged | 0.2111 | 0.4721 | 0.3416 |
+| v6b+conj | paranoid | 0.1896 | **0.4905** | 0.3400 |
+
+**Verdict: the conjunction is a 3A4-specific lever, NOT a macro lever.**
+- 3A4 GAINS: paranoid 0.4688 -> 0.4905 (+0.022), family-block clean (survives
+  merging the conj family into the cp lineage). A real win.
+- 2D6 LOSES: paranoid 0.1995 -> 0.1896 (-0.010). The conj members hurt.
+- Net paranoid macro 0.3342 -> 0.3400 (+0.006). Does NOT clear the strict gate
+  (macro > 0.3448 AND 2D6 > 0.219 AND 3A4 > 0.470): macro 0.3400 < 0.3448,
+  2D6 0.1896 < 0.219 (FAIL), 3A4 0.4905 > 0.470 (PASS).
+
+**Structural reason (the key 3A4 fact):** of 3584 labeled 3A4 rows, only 2334
+(65%) have both arms; the other 1249 have NO direct arm and are ALL is_TDI=0.
+The conjunction holds 100% on both-arms rows, and "no direct arm -> 0" is a
+guaranteed-negative structure the monolith partially misses. So 3A4's true
+positive rate is 21.3% (diluted by ~1250 guaranteed negatives), not the 32.7%
+of the both-arms subset - and the conjunction captures that structure. On 2D6
+the gate is degenerate (94% open), so conj ~ shift, which does not beat the
+monolith; the 2D6 shift ceiling (oracle 0.90) is not reachable by any model we
+can build on these features (cached 0.13, fresh 0.13-0.25, oracle 0.90 - the
+delta is a 1D quantity our 2D features simply don't resolve).
+
+**Implication for the TDI track:** T1 as specified (a macro jump to top-10)
+is NOT delivered by the conjunction from our features. What it DOES deliver is
+a clean +0.022 3A4 pool member (paranoid 0.4905) that is family-block honest.
+That is a real but SUB-additive gain - it lifts 3A4 past 0.47 (the 3A4 bar)
+while leaving 2D6 at the monolith's 0.20-0.22. A 3A4-only conj member is worth
+considering as a pool addition (it does not regress 2D6 if we gate it to 3A4
+only), but it is not the macro jump the plan hoped for. The 2D6 head remains
+the binding constraint on TDI rank, and the conjunction does not fix it.
+
+Files: src/tdi_phase1_shift_gate.py, src/tdi_phase1_v2_classifier.py,
+src/tdi_phase1_v3_conj_pool.py; cache/phase1_t1_*.json, tdi_conj_*.npz.
+No candidate file built (gate not cleared). No submits, no GPU.
+
+

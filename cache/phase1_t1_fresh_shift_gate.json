@@ -1,0 +1,50 @@
+{
+  "CYP2D6": {
+    "n_both_arms": 1493,
+    "n_gate_labeled": 1497,
+    "pos_rate": 0.21701272605492297,
+    "gate_pearson": -0.1136489075056766,
+    "shift_pearson": 0.13361499113179762,
+    "gate": {
+      "nested": 0.0,
+      "tuned": 0.0
+    },
+    "shift": {
+      "nested": 0.078309575853833,
+      "tuned": 0.13282975940974573
+    },
+    "product": {
+      "nested": 0.1331033824449865,
+      "k": 0.5,
+      "tuned": 0.1331033824449865
+    },
+    "conj_margin": {
+      "nested": 0.0,
+      "tuned": 0.0
+    }
+  },
+  "CYP3A4": {
+    "n_both_arms": 2334,
+    "n_gate_labeled": 3583,
+    "pos_rate": 0.3273350471293916,
+    "gate_pearson": 0.4995097290957777,
+    "shift_pearson": 0.24775360024410104,
+    "gate": {
+      "nested": 0.0,
+      "tuned": 0.0
+    },
+    "shift": {
+      "nested": 0.42299985992116246,
+      "tuned": 0.42299985992116246
+    },
+    "product": {
+      "nested": 0.40528361344066205,
+      "k": 0.5,
+      "tuned": 0.40528361344066205
+    },
+    "conj_margin": {
+      "nested": 0.0,
+      "tuned": 0.0
+    }
+  }
+}

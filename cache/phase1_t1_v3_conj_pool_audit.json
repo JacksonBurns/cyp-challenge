@@ -1,0 +1,62 @@
+{
+  "CYP2D6": {
+    "v6b": {
+      "merged": {
+        "nested": 0.2053,
+        "capped": 0.2192,
+        "frac_capped": 0.17,
+        "lofo_conj": null
+      },
+      "paranoid": {
+        "nested": 0.2053,
+        "capped": 0.1995,
+        "frac_capped": 0.33,
+        "lofo_conj": null
+      }
+    },
+    "v6b+conj": {
+      "merged": {
+        "nested": 0.2049,
+        "capped": 0.2111,
+        "frac_capped": 0.13,
+        "lofo_conj": 0.2053
+      },
+      "paranoid": {
+        "nested": 0.2049,
+        "capped": 0.1896,
+        "frac_capped": 0.3,
+        "lofo_conj": null
+      }
+    }
+  },
+  "CYP3A4": {
+    "v6b": {
+      "merged": {
+        "nested": 0.4598,
+        "capped": 0.4703,
+        "frac_capped": 0.28,
+        "lofo_conj": null
+      },
+      "paranoid": {
+        "nested": 0.4598,
+        "capped": 0.4688,
+        "frac_capped": 0.28,
+        "lofo_conj": null
+      }
+    },
+    "v6b+conj": {
+      "merged": {
+        "nested": 0.472,
+        "capped": 0.4721,
+        "frac_capped": 0.27,
+        "lofo_conj": 0.4598
+      },
+      "paranoid": {
+        "nested": 0.472,
+        "capped": 0.4905,
+        "frac_capped": 0.27,
+        "lofo_conj": null
+      }
+    }
+  }
+}
