@@ -1399,3 +1399,72 @@ tools/legacy_tdi_to_eval.py rebuilt legacy singles OOF as CSVs:
   md5 cb04fa9ccbeb7c43f09b011fe762b483; tdi_submission_v5_candidate.csv
   md5 c8ab0626b7c5bb10fe58eace5e2f0055. These supersede the 96d60315/2abbe052
   copies sent to the user at the earlier report.
+
+## 23. RANK-UP PLAN PHASE 0 (Oct 5) - T1 conjunction from CACHED UMTM heads
+
+CPU-only prototype of the T1 conjunction-decomposed TDI score (RANK_UP_PLAN
+lever T1, assumption A1/A2). `src/tdi_conjunction.py` builds gate = (pi_TDI >
+4.301) and shift = (pi_TDI - pi_dir > 0.301) from the UMTM tdic/direct pIC50
+heads (all 20 seeds/lineages averaged, cache/umtm_oof_*.csv) and the ground-
+truth arms (oracle), scored with the nested-honest MCC protocol (threshold
+grid selected on folds != f, applied to fold f, pooled; scale-appropriate
+grids - gate on pIC50 scale, shift on delta scale, product on [0,1]).
+
+**Protocol validated:** the oracle numbers reproduce Lizard Wizard's published
+oracle MCC almost exactly - their 3A4 gate 0.567 vs ours 0.563; their 2D6
+shift 0.901 vs ours 0.898. The nested-MCC + threshold machinery is sound.
+
+### Oracle ceiling (ground-truth arms, both-arms rows: 2D6 n=1493, 3A4 n=2334)
+| score   | 2D6    | 3A4    | macro  |
+| gate    | 0.083  | 0.563  | 0.323  |
+| shift   | 0.898  | 0.687  | 0.792  |
+| product | 0.988  | 0.979  | **0.983** |
+| conj    | 1.000  | 1.000  | 1.000  |
+
+The conjunction is a near-perfect classifier when potency is predicted
+perfectly. 2D6 is almost pure shift (gate only 0.083); 3A4 needs BOTH
+(gate 0.563 + shift 0.687). The product (soft AND) recovers ~0.98 macro -
+the decomposition paradigm is validated overwhelmingly. This is the single
+biggest structural fact about TDI: the label is a boolean rule over two
+potency quantities, and potency is where we are strong.
+
+### UMTM-cached heads (the "free" Phase 0)
+| score   | 2D6    | 3A4    | macro  |
+| gate    | 0.036  | 0.168  | 0.102  |
+| shift   | 0.126  | 0.129  | 0.127  |
+| product | 0.180  | 0.207  | **0.194** |
+| product (matched both-arms) | 0.291 | - | 0.291 |
+
+**The cached heads do NOT beat the bar.** product macro 0.194 (0.291 on the
+matched both-arms set) vs the v6b capped bar 0.3448. Per-isoform: 2D6 0.180
+< 0.219, 3A4 0.207 < 0.470 - both FAIL non-regression.
+
+### Diagnosis - the bottleneck is the SHIFT (delta), not the gate
+The UMTM predicts each potency head individually at corr 0.48-0.82 with the
+truth, but the *difference* pi_TDI - pi_dir (the shift) is a small, noisy
+quantity (std ~0.11-0.14 in UMTM space vs ~0.36-0.41 in truth) and the
+correlation of the predicted delta with the true delta is only 0.16 (2D6) /
+0.35 (3A4). Oracle shift is 0.898/0.687; cached shift collapses to 0.126/0.129.
+That is the entire gap. The gate (3A4 0.563 oracle) is also under-predicted
+(cached 0.168) but the shift is the binding failure.
+
+### Verdict for Phase 1
+- The conjunction is the right paradigm (oracle 0.98 >> our monolith 0.34).
+- It is NOT free from the cached UMTM heads: subtracting two imperfect
+  potency predictions destroys the small delta signal. Phase 1 must build a
+  FRESH SHIFT model that predicts (pi_TDI - pi_dir) directly - not by
+  subtracting two separate heads - plus a fresh gate regressor on the TDI arm.
+  A direct delta regressor (single target, 1D) is the natural next step; it
+  attacks the actual signal (A2) and is where the oracle->cached gap is
+  largest (2D6 0.90 -> 0.13).
+- Expected ceiling for a good shift model: somewhere between the cached 0.13
+  and the oracle 0.80-0.90. Even a shift at 0.5-0.6 nested would, via the
+  product, likely clear the 0.3448 macro bar (the 3A4 gate at 0.56 oracle is
+  the other half; a gate at ~0.4-0.5 + shift at ~0.5-0.6 product -> ~0.4-0.5
+  macro). This is the highest-upside TDI bet and Phase 1 is where it is won.
+- No GPU, no submits, no candidate file built. This is a diagnostic number
+  only. Next: Phase 1 fresh shift/gate regressors (GPU-light: LightGBM on
+  existing features, no new encoder), then the product score + fraction +
+  family-block paranoid merge, gated at nested macro > 0.3448 with
+  2D6 > 0.219 and 3A4 > 0.470.
+
