@@ -5066,6 +5066,773 @@
         "mean": 0.308,
         "max": 0.5
       }
+    },
+    "lofo_r1_paranoid": {
+      "admecd": {
+        "nested_macro": 0.4686,
+        "gain_free": -0.0004,
+        "gain_vs_capped": -0.0004
+      },
+      "cpridge": {
+        "nested_macro": 0.457,
+        "gain_free": 0.0112,
+        "gain_vs_capped": 0.0112
+      },
+      "dmpnn": {
+        "nested_macro": 0.4677,
+        "gain_free": 0.0005,
+        "gain_vs_capped": 0.0005
+      },
+      "umtm": {
+        "nested_macro": 0.4638,
+        "gain_free": 0.0044,
+        "gain_vs_capped": 0.0044
+      }
+    },
+    "concentration_r1_paranoid": {
+      "admecd": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "chemeleon": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "cpridge": {
+        "mean": 0.367,
+        "max": 0.5
+      },
+      "dmpnn": {
+        "mean": 0.046,
+        "max": 0.25
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "umtm": {
+        "mean": 0.308,
+        "max": 0.5
+      }
+    }
+  },
+  "cp18": {
+    "nested": {
+      "CYP1A2": 0.6305,
+      "CYP2C9": 0.737,
+      "CYP2D6": 0.4917,
+      "CYP3A4": 0.8306
+    },
+    "nested_macro": 0.4681,
+    "capped": {
+      "CYP1A2": 0.6305,
+      "CYP2C9": 0.737,
+      "CYP2D6": 0.4917,
+      "CYP3A4": 0.8306
+    },
+    "capped_macro": 0.4681,
+    "capped_cp_macro": 0.468,
+    "capped_frozen_macro": 0.468,
+    "lofo_cp": {
+      "cpridge": {
+        "nested_macro": 0.4689,
+        "gain_free": -0.0008,
+        "gain_vs_capped": -0.0008
+      }
+    },
+    "concentration_cp": {
+      "cpridge": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_admchm": {
+        "mean": 0.037,
+        "max": 0.167
+      },
+      "ft_admmed": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_frozen": {
+      "ridge": {
+        "nested_macro": 0.4689,
+        "gain_free": -0.0008,
+        "gain_vs_capped": -0.0008
+      }
+    },
+    "concentration_frozen": {
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_admchm": {
+        "mean": 0.037,
+        "max": 0.167
+      },
+      "ft_admmed": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "ridge": {
+        "mean": 0.008,
+        "max": 0.083
+      }
+    },
+    "lofo_chem": {
+      "chemeleon": {
+        "nested_macro": 0.468,
+        "gain_free": 0.0001,
+        "gain_vs_capped": 0.0001
+      }
+    },
+    "concentration_chem": {
+      "chemeleon": {
+        "mean": 0.029,
+        "max": 0.083
+      },
+      "ft_admchm": {
+        "mean": 0.037,
+        "max": 0.167
+      },
+      "ft_admmed": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_cpchm": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_mpnn": {
+      "dmpnn": {
+        "nested_macro": 0.4669,
+        "gain_free": 0.0012,
+        "gain_vs_capped": 0.0012
+      }
+    },
+    "concentration_mpnn": {
+      "dmpnn": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_admchm": {
+        "mean": 0.037,
+        "max": 0.167
+      },
+      "ft_admmed": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_cpchm": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_adm_split": {
+      "cpridge": {
+        "nested_macro": 0.4689,
+        "gain_free": -0.0008,
+        "gain_vs_capped": -0.0008
+      }
+    },
+    "concentration_adm_split": {
+      "admchm": {
+        "mean": 0.037,
+        "max": 0.167
+      },
+      "admmed": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "cpridge": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_adm_merged": {
+      "admecd": {
+        "nested_macro": 0.4685,
+        "gain_free": -0.0004,
+        "gain_vs_capped": -0.0004
+      },
+      "cpridge": {
+        "nested_macro": 0.4689,
+        "gain_free": -0.0008,
+        "gain_vs_capped": -0.0008
+      }
+    },
+    "concentration_adm_merged": {
+      "admecd": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "cpridge": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_adm_cpall": {
+      "cpall": {
+        "nested_macro": 0.4692,
+        "gain_free": -0.0011,
+        "gain_vs_capped": -0.0011
+      }
+    },
+    "concentration_adm_cpall": {
+      "cpall": {
+        "mean": 0.054,
+        "max": 0.167
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL2": {
+        "mean": 0.263,
+        "max": 0.417
+      },
+      "ft_umtmL3": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_umtm_vs_adm": {
+      "admecd": {
+        "nested_macro": 0.4614,
+        "gain_free": 0.0067,
+        "gain_vs_capped": 0.0067
+      }
+    },
+    "concentration_umtm_vs_adm": {
+      "admecd": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_cpchm": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_d2d6": {
+        "mean": 0.042,
+        "max": 0.167
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "ft_umtmL1": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "ft_umtmL4": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      }
+    },
+    "lofo_umtm_paranoid": {
+      "admecd": {
+        "nested_macro": 0.4685,
+        "gain_free": -0.0004,
+        "gain_vs_capped": -0.0004
+      },
+      "cpridge": {
+        "nested_macro": 0.4689,
+        "gain_free": -0.0008,
+        "gain_vs_capped": -0.0008
+      },
+      "dmpnn": {
+        "nested_macro": 0.4674,
+        "gain_free": 0.0007,
+        "gain_vs_capped": 0.0007
+      },
+      "umtm": {
+        "nested_macro": 0.4637,
+        "gain_free": 0.0044,
+        "gain_vs_capped": 0.0044
+      }
+    },
+    "concentration_umtm_paranoid": {
+      "admecd": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "chemeleon": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "cpridge": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "dmpnn": {
+        "mean": 0.046,
+        "max": 0.25
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "ft_tabpfn_cpmed": {
+        "mean": 0.354,
+        "max": 0.5
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "umtm": {
+        "mean": 0.308,
+        "max": 0.5
+      }
+    },
+    "lofo_tp_paranoid": {
+      "admecd": {
+        "nested_macro": 0.4685,
+        "gain_free": -0.0004,
+        "gain_vs_capped": -0.0004
+      },
+      "cpridge": {
+        "nested_macro": 0.4566,
+        "gain_free": 0.0115,
+        "gain_vs_capped": 0.0115
+      },
+      "dmpnn": {
+        "nested_macro": 0.4674,
+        "gain_free": 0.0007,
+        "gain_vs_capped": 0.0007
+      },
+      "umtm": {
+        "nested_macro": 0.4637,
+        "gain_free": 0.0044,
+        "gain_vs_capped": 0.0044
+      }
+    },
+    "concentration_tp_paranoid": {
+      "admecd": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "chemeleon": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "cpridge": {
+        "mean": 0.363,
+        "max": 0.5
+      },
+      "dmpnn": {
+        "mean": 0.046,
+        "max": 0.25
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "ft_qhtsda": {
+        "mean": 0.004,
+        "max": 0.083
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "umtm": {
+        "mean": 0.308,
+        "max": 0.5
+      }
+    },
+    "lofo_r1_paranoid": {
+      "admecd": {
+        "nested_macro": 0.4685,
+        "gain_free": -0.0004,
+        "gain_vs_capped": -0.0004
+      },
+      "cpridge": {
+        "nested_macro": 0.457,
+        "gain_free": 0.0111,
+        "gain_vs_capped": 0.0111
+      },
+      "dmpnn": {
+        "nested_macro": 0.4674,
+        "gain_free": 0.0007,
+        "gain_vs_capped": 0.0007
+      },
+      "umtm": {
+        "nested_macro": 0.4637,
+        "gain_free": 0.0044,
+        "gain_vs_capped": 0.0044
+      }
+    },
+    "concentration_r1_paranoid": {
+      "admecd": {
+        "mean": 0.046,
+        "max": 0.167
+      },
+      "chemeleon": {
+        "mean": 0.058,
+        "max": 0.25
+      },
+      "cpridge": {
+        "mean": 0.367,
+        "max": 0.5
+      },
+      "dmpnn": {
+        "mean": 0.046,
+        "max": 0.25
+      },
+      "emb": {
+        "mean": 0.021,
+        "max": 0.083
+      },
+      "ft_frozen": {
+        "mean": 0.008,
+        "max": 0.083
+      },
+      "ft_monridge": {
+        "mean": 0.071,
+        "max": 0.25
+      },
+      "gbm": {
+        "mean": 0.075,
+        "max": 0.167
+      },
+      "umtm": {
+        "mean": 0.308,
+        "max": 0.5
+      }
     }
   }
 }

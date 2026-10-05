@@ -1,0 +1,12 @@
+rows: 20443 challenge: 6145 qhts-labeled: 13827
+  trainable 6.3M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+embedding 6895 SMILES...
+saved emb_qhtsda_all.parquet (6895, 601)
+DONE
+TOTAL 50s

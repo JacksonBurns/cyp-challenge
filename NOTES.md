@@ -1598,6 +1598,39 @@ Blind-transfer expectation: this is a new-family, family-block-clean gain of
 expected blind macro R2 ~ 0.487-0.496 vs the on-board cp15/cp16 ~0.49-0.52.
 Real but not a cliff-jump alone; R1 (qHTS-DA, best 2D6) is the next add.
 
+### Phase 3 regression R1 qHTS-DA (Oct 5) - standalone GO, POOL-REDUNDANT
+
+src/qhts_domain_adapt.py: start from the FROZEN chemprop_medium encoder
+(admecd_ckpt_med.pt), domain-adapt it on AID1851 qHTS ONLY (qHTS pIC50 as the
+adaptation task, NO challenge labels - the anti-leak design; the first version
+leaked challenge labels into the DA and produced a bogus 0.80-0.88 ridge, which
+is why the encoder must never see challenge labels), then freeze + extract the
+600-d mp+agg embeddings -> cache/emb_qhtsda_all.parquet. GPU ~50s.
+src/qhtsda_ridge.py: ridge probe, OOF scaffold folds.
+
+Standalone ridge (honest): 1A2 0.499 / 2C9 0.632 / 2D6 **0.378** / 3A4 0.709.
+GO gate (beat chmridge floor 0.468/0.585/0.344/0.723 on >=2): **3/4 PASS**
+(2D6 0.378 > 0.344, consistent with jeremy's "best-ever 2D6 single").
+
+BUT at the POOL level (the real test): cp18 = cp17 + ft_qhtsda = nested **0.4681**
+vs cp17 0.4682 (-0.0001, noise). Paranoid r1_paranoid (qhtsda merged into the
+cpridge lineage, same adme_pretrain/chemprop_medium encoder family): cpridge
+LOFO gain 0.0111 (cp18) vs 0.0112 (cp17) - UNCHANGED. The qHTS-DA member is
+BLEND-REDUNDANT: the 2D6 (and 1A2/2C9) signal it captures is already owned by
+the cpmed/cpchm/UMTM/TabPFN members. It clears the standalone ridge gate but
+adds no honest nested R2.
+
+VERDICT: R1 is a dead end at the pool level. The 2D6 head's signal is saturated
+by the existing members; qHTS domain adaptation of the same chemprop_medium
+encoder lineage does not decorrelate enough to add. (Matches the plan's honest
+expectation: a new family is worth +0.005-0.015 "IF it clears the gate AND the
+paranoid merge" - R1 clears the standalone gate but NOT the pool/paranoid add.)
+
+=> cp17 (TabPFN) stays the best regression candidate at 0.4682. The only
+remaining untried lever for a bigger jump is R3/T3 (SMILES-sequence transformer
+new family) - the one representation class we genuinely lack.
+
+
 
 
 

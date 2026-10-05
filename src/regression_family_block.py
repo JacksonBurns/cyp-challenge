@@ -77,6 +77,7 @@ FAMS = {
     "ft_umtmL4": g("umtmL4"),
     "ft_monridge": [os.path.join(CACHE, "ft_oof_monridge.csv")],
     "ft_tabpfn_cpmed": [os.path.join(CACHE, "ft_oof_tabpfn_cpmed.csv")],
+    "ft_qhtsda": [os.path.join(CACHE, "ft_oof_qhtsda.csv")],
 }
 POOLS = {
     "cp7": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
@@ -113,6 +114,11 @@ POOLS = {
              "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
              "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
              "ft_umtmL3", "ft_umtmL4", "ft_monridge", "ft_tabpfn_cpmed"],
+    "cp18": ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+             "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+             "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
+             "ft_umtmL3", "ft_umtmL4", "ft_monridge", "ft_tabpfn_cpmed",
+             "ft_qhtsda"],
 }
 FAMAPS = {
     "cp": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge"},
@@ -147,6 +153,18 @@ FAMAPS = {
     # same-embedding ridge re-draw (a genuinely different reader).
     "tp_paranoid": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
                     "ft_tabpfn_cpmed": "cpridge", "ft_chmridge": "cpridge",
+                    "ft_admchm": "admecd", "ft_admmed": "admecd",
+                    "ft_umtmL2": "umtm", "ft_umtmL3": "umtm",
+                    "ft_umtmL1": "chemeleon", "ft_umtmL4": "dmpnn",
+                    "ft_dmpnn": "dmpnn", "ft_d2d6": "dmpnn",
+                    "ft_ext": "fullft", "ft_near": "fullft"},
+    # R1 (sec 23): qhtsda = frozen qHTS-domain-adapted chemprop_medium encoder.
+    # Paranoid: merge it into cpridge (same adme_pretrain/chemprop_medium
+    # encoder LINEAGE as cpmed/cpchm). If the cp18 gain survives that merge,
+    # the qHTS domain adaptation adds signal beyond a same-lineage re-draw.
+    "r1_paranoid": {"ft_cpmed": "cpridge", "ft_cpchm": "cpridge",
+                    "ft_tabpfn_cpmed": "cpridge", "ft_chmridge": "cpridge",
+                    "ft_qhtsda": "cpridge",
                     "ft_admchm": "admecd", "ft_admmed": "admecd",
                     "ft_umtmL2": "umtm", "ft_umtmL3": "umtm",
                     "ft_umtmL1": "chemeleon", "ft_umtmL4": "dmpnn",
