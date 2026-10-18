@@ -1731,6 +1731,66 @@ parquet, cache/mordred_meta.json, cache/mordred_probe.json,
 cache/ft_oof_probe_{A_emb,B_emb_mordred,C_mordred}.csv. No GPU, no submits, no
 candidate file. Next: Phase 1 (GPU) chemprop D-MPNN V1-V4.
 
+### Phase 1 (Oct 15) - Chemprop D-MPNN x_d variants (GPU): GATE 1 NOT MET
+
+Built the 2x2 factorial (NEXT_ITER_PLAN sec 4): {challenge-only, +external aux
+heads} x {no x_d, +mordred x_d}. V2 (aux, no x_d) = the existing ft_dmpnn recipe
+(CACHED, seed 7). V1/V3/V4 trained fresh in src/chemprop_xd.py, IDENTICAL
+architecture/schedule to ft_dmpnn (D-MPNN d_h=500 depth=4, FFN 2560/2L, 60ep/
+patience10/batch64, EXT_CAP=9000) so the ONLY variables are aux heads and x_d.
+
+x_d mechanism (chemprop 2.3.1, verified): dp.x_d = tensor(1429) per datapoint;
+dataloader batches to X_d [B,1429]; MPNN.fingerprint returns cat(H, X_d) so the
+FFN input_dim = mp.output_dim(500) + 1429. Anti-leak: x_d imputed + z-scored on
+CHALLENGE TRAIN only (external rows use the SAME train-fit stats,
+src/mordred_features_ext.py -> cache/emb_mordred_ext.parquet 22983x1429).
+
+4-variant table (scaffold folds seed 7, repo honest nested macro R2):
+  variant       CYP1A2   CYP2C9   CYP2D6   CYP3A4   MACRO_R2
+  V1_control    0.4916   0.6107   0.4010   0.7420   0.3315
+  V2_aux        0.4692   0.5796   0.3774   0.7379   0.3107
+  V3_xd         0.4124   0.5516   0.2865   0.6949   0.2598
+  V4_aux_xd     COLLAPSED (constant predictor, pred_std 0.0 on all 5 folds)
+
+GATE 1: NOT MET, decisively.
+  - V3 (x_d) = 0.2598 vs V2 (aux baseline) = 0.3107  ->  -0.0509 (need >= +0.003).
+  - V4 (aux+x_d) collapsed to a constant predictor (no signal at all).
+  - x_d effect (V3-V1, challenge-only): 1A2 -0.079 / 2C9 -0.059 / 2D6 -0.115 /
+    3A4 -0.047  -> HURTS on ALL FOUR isoforms.
+  - aux effect (V2-V1): also negative (-0.004 to -0.031); our fresh seed-7 D-MPNN
+    aux run is slightly below the control here (the cached ft_dmpnn member that
+    earned pool weight was a different/seed-averaged build; not material to the
+    x_d verdict).
+
+DIAGNOSIS (honest): the 1429-d standardized mordred block, concatenated to the
+500-d graph embedding, OVERWHELMS the learned representation. The dense, mostly-
+low-signal descriptor dimensions dominate the FFN input: alone they degrade every
+isoform (V3), and combined with aux they fully collapse the model (V4 constant).
+This is consistent with Phase 0 (the linear ridge found NO descriptor gain on top
+of the cpmed embedding, macro -0.0034): the descriptor signal is simply not strong
+enough on top of the graph embedding to carry weight, even through a nonlinear
+FFN. The x_d channel as specified (raw concat of 1429 standardized descriptors) is
+a DEAD LEVER for our D-MPNN backbone.
+
+Caveat logged: this tests the RAW-concat x_d. A bottleneck/regularized x_d
+(e.g. PCA-reduce the 1429 -> ~32-64, or a learned descriptor embedding, or L2 on
+the x_d input) COULD in principle avoid the dimensionality collapse, but that is a
+new spec beyond NEXT_ITER_PLAN sec 4 (which specifies "mordred as x_d"), and the
+Phase 0 ridge probe (the plan's own cheap pre-filter) already showed no linear
+signal to rescue it. Not pursued here; logged as the only untested x_d variant.
+
+VERDICT: x_d descriptor channel DEAD (Phase 0 no linear gain + Phase 1 trained
+x_d hurts/collapses). The O2 lever (descriptors into the backbone) does NOT lift
+the backbone R2 as specified. cp17 (nested 0.4682) stands. This closes the
+primary accuracy lever of the iteration.
+
+Files: src/chemprop_xd.py, src/chemprop_xd_eval.py, src/mordred_features_ext.py;
+cache/emb_mordred_ext.parquet, cache/mordred_meta_ext.json, cache/ft_oof_xdV1.
+csv, ft_oof_xdV3.csv, ft_oof_xdV4.csv, cache/chemprop_xd_eval.json. No submits,
+no candidate file. Next: Phase 2 (simplified pool, O1) - the pool-simplification
+lever is independent of x_d and still untested.
+
+
 
 
 

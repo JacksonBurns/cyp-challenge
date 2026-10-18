@@ -1,0 +1,44 @@
+{
+  "variants": {
+    "V1_control": {
+      "CYP1A2": 0.4916,
+      "CYP2C9": 0.6107,
+      "CYP2D6": 0.401,
+      "CYP3A4": 0.742,
+      "macro_R2": 0.3315
+    },
+    "V2_aux": {
+      "CYP1A2": 0.4692,
+      "CYP2C9": 0.5796,
+      "CYP2D6": 0.3774,
+      "CYP3A4": 0.7379,
+      "macro_R2": 0.3107
+    },
+    "V3_xd": {
+      "CYP1A2": 0.4124,
+      "CYP2C9": 0.5516,
+      "CYP2D6": 0.2865,
+      "CYP3A4": 0.6949,
+      "macro_R2": 0.2598
+    },
+    "V4_aux_xd": {
+      "CYP1A2": NaN,
+      "CYP2C9": NaN,
+      "CYP2D6": NaN,
+      "CYP3A4": NaN,
+      "macro_R2": NaN
+    }
+  },
+  "gate1": {
+    "V2_macro": 0.3107,
+    "V3_macro": 0.2598,
+    "V4_macro": NaN,
+    "best_xd_variant": "V3_xd",
+    "best_xd_macro": 0.2598,
+    "delta_vs_V2": -0.0509,
+    "threshold": 0.003,
+    "pass": false
+  },
+  "folds": "ft_data.csv fold col (scaffold seed 7, K=5)",
+  "recipe": "per-isoform nested = Fisher-z avg of per-fold OOF Pearson; macro R2 = mean(per-isoform nested^2)"
+}

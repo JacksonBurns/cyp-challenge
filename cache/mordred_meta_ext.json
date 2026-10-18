@@ -1,0 +1,11 @@
+{
+  "n_external": 22983,
+  "n_unique_external": 22983,
+  "n_descriptors_kept": 1429,
+  "n_parse_fail": 0,
+  "stats_source": "cache/mordred_meta.json TRAIN (challenge) median/mean/std - anti-leak",
+  "column_consistency": "PASS (kept set subset of re-derived stable set on same 60 challenge-train SMILES)",
+  "all_finite": true,
+  "compute_seconds": 475.7,
+  "total_seconds": 483.2
+}
