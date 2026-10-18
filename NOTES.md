@@ -1790,6 +1790,77 @@ csv, ft_oof_xdV3.csv, ft_oof_xdV4.csv, cache/chemprop_xd_eval.json. No submits,
 no candidate file. Next: Phase 2 (simplified pool, O1) - the pool-simplification
 lever is independent of x_d and still untested.
 
+### Phase 2 (Oct 15) - O1 simplified pool (<=5 members): GATE 2 NOT MET
+
+src/pool_simplify.py: NESTED HONEST forward selection over the 19 cp17 members.
+Per scaffold fold (seed 0, K=5), starting empty, add the member (from 19) that
+best improves the TRAIN-fold z-corr, up to 5, score on VAL fold. Fisher-z avg
+per isoform, macro = mean(nested^2) - the exact repo honest metric. Selection is
+inside each fold on train data only -> no test leakage.
+
+Size sweep (honest forward selection, nested macro R2):
+  size 1: 0.4415  (top: ft_tabpfn_cpmed)
+  size 2: 0.4668  (ft_tabpfn_cpmed, ft_umtmL2)
+  size 3: 0.4624  (+ gbm)
+  size 4: 0.4653  (+ ft_umtmL3)
+  size 5: 0.4646  (+ ft_monridge)
+
+GATE 2: NOT MET. The 5-member pool (0.4646) is BELOW cp17 (0.4682) by -0.0036.
+The sweep PEAKS at size 2 then DECLINES - the 19-member pool's diversity is
+genuinely worth ~0.004 honest nested R2 beyond any 5-member subset. A small pool
+does NOT match the big one on THIS data.
+
+The post-hoc "consensus" 5-set (ft_umtmL2, ft_tabpfn_cpmed, gbm, ft_umtmL3,
+ft_monridge) with greedy reselect reaches 0.4692 (+0.0010 vs cp17), but that is
+WITHIN fold noise (the sweep varies +/-0.004) and comes from choosing the set by
+cross-fold pick-count (a mild post-hoc selection, not the clean nested estimate).
+NOT a defensible honest win - chasing it would be exactly the grid-noise
+overfitting the plan warns against. The honest forward-selection number (0.4646)
+is the gate-relevant one and it FAILS.
+
+LOFO on the consensus-5 (honest reselect): ft_umtmL2 +0.0076, ft_tabpfn_cpmed
++0.0131, gbm +0.0015, ft_monridge +0.0008, ft_umtmL3 -0.0001 (redundant).
+Paranoid family-block (tp_paranoid): the umtm family is genuinely decorrelated
+(+0.0179 gain) - a real, honest member, but it is ALREADY in cp17. So the
+simplified pool's best members are a SUBSET of what cp17 already has; nothing new
+is added by cutting to 5.
+
+VERDICT: O1 (pool simplification) does NOT beat cp17. The 19-member pool's
+diversity is honest signal, not redundancy, on this data. GATE 2 NOT MET.
+
+## 25. ITERATION SUMMARY (Oct 15) - NO-OP, cp17 stands
+
+NEXT_ITER_PLAN (O1 simplify + O2 descriptors-x_d) is CLOSED. All three gates
+failed in sequence, the plan's explicitly-anticipated honest outcome:
+  - GATE 0 (Phase 0, x_d linear ridge probe): NOT MET. B-A macro -0.0034.
+  - GATE 1 (Phase 1, x_d trained D-MPNN): NOT MET. V3 (x_d) 0.2598 vs V2 0.3107
+    (-0.0509); V4 (aux+x_d) COLLAPSED to a constant predictor. x_d hurts all 4
+    isoforms. The 1429-d standardized descriptor block overwhelms the 500-d graph
+    embedding. x_d channel as specified is DEAD.
+  - GATE 2 (Phase 2, O1 simplified pool): NOT MET. 5-member honest forward
+    selection 0.4646 < cp17 0.4682 (-0.0036); sweep peaks at size 2 then declines.
+    The 19-member pool's diversity is honest signal.
+
+CONCLUSION: both levers (O1, O2) are dead. No new regression member, no pool
+change. cp17 (nested 0.4682, the TabPFN-on-cpmed win from the prior cycle) STANDS
+as the regression candidate. NO regression resubmit is built (Phase 3 skipped per
+the plan: "a no-op is a valid, logged result. Do not force a submission.").
+
+Why the iteration fell short (honest, for the next plan): our pool is already
+saturated. The 19 members span 5 encoder/reader lineages (GBM, frozen-ridge,
+CheMeLeon, admecd/UMTM, TabPFN, Monroe) and the blend is at the point of
+diminishing returns - neither a smaller pool (O1) nor a new input channel into
+the D-MPNN backbone (O2) moves it. The next real jump likely needs a genuinely
+NEW representation family (the plan's own dead-lever list notes the 2D-graph MPNN
+families + SMILES-transformer + qHTS-DA are all saturated) OR a bigger accuracy
+lever on the laggard 2D6 isoform specifically, not a pool/feature reshuffle.
+
+No submits. No candidate file built. All Phase 0/1/2 artifacts committed.
+tdi_v5 (0.3422) also stands (Phase 7 TDI x_d not pursued: x_d is dead on the
+regression backbone, so the same channel is not expected to lift TDI; the 2D6 TDI
+shift ceiling remains the binding TDI constraint, unchanged).
+
+
 
 
 

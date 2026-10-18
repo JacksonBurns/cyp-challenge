@@ -1,0 +1,171 @@
+{
+  "bar_cp17": 0.4682,
+  "max_members": 5,
+  "size_sweep": {
+    "1": {
+      "nested": {
+        "CYP1A2": 0.6055,
+        "CYP2C9": 0.7211,
+        "CYP2D6": 0.4584,
+        "CYP3A4": 0.8183
+      },
+      "macro": 0.4415,
+      "sel_counts": {
+        "ft_umtmL2": 9,
+        "ft_tabpfn_cpmed": 11
+      }
+    },
+    "2": {
+      "nested": {
+        "CYP1A2": 0.6299,
+        "CYP2C9": 0.7356,
+        "CYP2D6": 0.4874,
+        "CYP3A4": 0.8318
+      },
+      "macro": 0.4668,
+      "sel_counts": {
+        "ft_umtmL1": 4,
+        "ft_umtmL2": 16,
+        "ft_tabpfn_cpmed": 20
+      }
+    },
+    "3": {
+      "nested": {
+        "CYP1A2": 0.6206,
+        "CYP2C9": 0.7332,
+        "CYP2D6": 0.4925,
+        "CYP3A4": 0.8271
+      },
+      "macro": 0.4624,
+      "sel_counts": {
+        "gbm": 6,
+        "ft_d2d6": 5,
+        "ft_umtmL1": 4,
+        "ft_umtmL2": 17,
+        "ft_umtmL3": 2,
+        "ft_monridge": 6,
+        "ft_tabpfn_cpmed": 20
+      }
+    },
+    "4": {
+      "nested": {
+        "CYP1A2": 0.6247,
+        "CYP2C9": 0.7379,
+        "CYP2D6": 0.493,
+        "CYP3A4": 0.8267
+      },
+      "macro": 0.4653,
+      "sel_counts": {
+        "gbm": 8,
+        "emb": 5,
+        "ft_d2d6": 5,
+        "ft_admchm": 2,
+        "ft_admmed": 1,
+        "ft_umtmL1": 4,
+        "ft_umtmL2": 20,
+        "ft_umtmL3": 8,
+        "ft_monridge": 7,
+        "ft_tabpfn_cpmed": 20
+      }
+    },
+    "5": {
+      "nested": {
+        "CYP1A2": 0.6232,
+        "CYP2C9": 0.735,
+        "CYP2D6": 0.4931,
+        "CYP3A4": 0.8287
+      },
+      "macro": 0.4646,
+      "sel_counts": {
+        "gbm": 10,
+        "emb": 5,
+        "ft_pre": 1,
+        "ft_cpmed": 6,
+        "ft_d2d6": 5,
+        "ft_admchm": 5,
+        "ft_admmed": 6,
+        "ft_umtmL1": 4,
+        "ft_umtmL2": 20,
+        "ft_umtmL3": 9,
+        "ft_monridge": 9,
+        "ft_tabpfn_cpmed": 20
+      }
+    }
+  },
+  "five_member": {
+    "nested": {
+      "CYP1A2": 0.6232,
+      "CYP2C9": 0.735,
+      "CYP2D6": 0.4931,
+      "CYP3A4": 0.8287
+    },
+    "macro": 0.4646,
+    "sel_counts": {
+      "gbm": 10,
+      "emb": 5,
+      "ft_frozen": 0,
+      "ft_fullft": 0,
+      "ft_ext": 0,
+      "ft_pre": 1,
+      "ft_dmpnn": 0,
+      "ft_cpmed": 6,
+      "ft_cpchm": 0,
+      "ft_chmridge": 0,
+      "ft_d2d6": 5,
+      "ft_admchm": 5,
+      "ft_admmed": 6,
+      "ft_unimol": 0,
+      "ft_umtmL1": 4,
+      "ft_umtmL2": 20,
+      "ft_umtmL3": 9,
+      "ft_umtmL4": 0,
+      "ft_monridge": 9,
+      "ft_tabpfn_cpmed": 20
+    },
+    "consensus_set": [
+      "ft_umtmL2",
+      "ft_tabpfn_cpmed",
+      "gbm",
+      "ft_umtmL3",
+      "ft_monridge"
+    ]
+  },
+  "fixed_greedy": {
+    "consensus5": 0.4692,
+    "full19": 0.4682
+  },
+  "lofo_consensus5": {
+    "ft_umtmL2": {
+      "gain": 0.0076,
+      "pool_wo": 0.4616
+    },
+    "ft_tabpfn_cpmed": {
+      "gain": 0.0131,
+      "pool_wo": 0.4561
+    },
+    "gbm": {
+      "gain": 0.0015,
+      "pool_wo": 0.4677
+    },
+    "ft_umtmL3": {
+      "gain": -0.0001,
+      "pool_wo": 0.4693
+    },
+    "ft_monridge": {
+      "gain": 0.0008,
+      "pool_wo": 0.4684
+    }
+  },
+  "paranoid_tp_lofo": {
+    "umtm": {
+      "gain": 0.0179,
+      "pool_wo": 0.4513
+    }
+  },
+  "gate2": {
+    "five_macro": 0.4646,
+    "delta_vs_cp17": -0.0036,
+    "pass": false
+  },
+  "recipe": "nested honest forward selection (per-fold, train-mask, up to MAX_MEMBERS, no replacement) + Fisher-z avg; macro = mean(nested^2); folds = ft_data seed 0 K=5"
+}
