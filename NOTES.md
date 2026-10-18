@@ -1667,6 +1667,70 @@ NOT jump the top-12 cliff (needs ~0.52+ R2 / Spearman 0.78); it is a real
 +0.0098 climb toward rank 20-30, consistent with the plan's honest
 "two new families to land" expectation (only TabPFN landed).
 
+## 24. NEXT_ITER PLAN (Oct 15+) - Descriptor-augmented Chemprop backbone
+
+Source of truth: docs/NEXT_ITER_PLAN.md. Diagnosis: reg rank 63 (ST-RAE 0.5133,
+R2 0.5219) / TDI rank 38 (MA-MCC 0.3422) after the Oct 14 cp17/tdi_v5 submit.
+Rank limiter on regression is R2, NOT placement (nested 0.4682 -> blind 0.5219,
+ratio ~1.11). Two observations drive the iteration: (O1) simplify the 19-member
+pool to ~3-5 strong decorrelated members; (O2) feed mordred descriptors into the
+chemprop backbone as x_d (a NEW input channel to the primary model, not a pool
+member - the channel that avoids the pool-redundancy failure mode that killed
+qHTS-DA / SMILES / CheMeLeon-ext).
+
+### Phase 0 (Oct 15) - mordred descriptor pipeline + tabular ridge probe (CPU)
+
+**Env** (fresh, isolated - never system python): conda `mordred` = python 3.11,
+mordred 1.2.0, rdkit 2026.09.1, numpy 1.26.4, pandas 3.0.6, pyarrow 16.1.0.
+NOTE: mordred 1.2.0 has a DIFFERENT API than the older get()/only_available
+(calc.register(desc_class, ignore_3D=True) -> 1613 expanded descriptors;
+calc.pandas(mols, nproc=1) -> failures as mordred.error.Error objects detected by
+mordred.is_missing). nproc=1 REQUIRED (the multiprocessing path corrupts at
+6895-mol scale: "not a Mol instance" TypeError). ~120 descriptors hit `np.float`
+(removed in numpy>=1.24; repo pins 1.26.4) and return all-NaN - detected on a
+60-mol sample and excluded to the STABLE subset (plan-sanctioned curated set,
+logged in meta).
+
+**src/mordred_features.py -> cache/emb_mordred_all.parquet (6895 x 1429) +
+cache/mordred_meta.json.** 1613 2D descriptors (ignore_3D=True, 3D set excluded
+up front - a no-conformer 2D mol leaves every 3D descriptor undefined) -> 1493
+stable (120 numpy-1.26-broken/undefined dropped) -> 1429 kept (64 more dropped by
+the train-NaN>0.15 anti-leak rule). Anti-leak policy: impute remaining NaNs with
+TRAIN column median, z-score with TRAIN mean/std ONLY. Alignment PASS: 1:1 SMILES
+index, SMILES-identical to ft_data.csv (6145) + ft_test_smiles.csv (750), unique
+index, all-finite. index=SMILES (mirrors monroe_emb.parquet).
+
+**src/mordred_probe.py** - cheap pre-filter, three ridge models on the SAME
+scaffold folds (ft_data.csv fold col, seed 0, K=5), per-fold StandardScaler+
+RidgeCV([100,1000,10000]) fit on the train-fold labeled rows only, nested =
+Fisher-z avg of per-fold OOF Pearson, macro R2 = mean(per-isoform nested^2) - the
+exact repo honest metric (tabpfn_probe.nested_pool / monroe_ridge):
+
+| variant         | CYP1A2 | CYP2C9 | CYP2D6 | CYP3A4 | macro R2 |
+| A  emb only     | 0.5544 | 0.7058 | 0.3810 | 0.8035 | 0.3991   |
+| B  emb+mordred  | 0.5415 | 0.7083 | 0.3896 | 0.7975 | 0.3957   |
+| C  mordred only | 0.4437 | 0.5972 | 0.3129 | 0.6794 | 0.2783   |
+
+**GATE 0: NOT MET.** (B)-(A) nested macro delta = -0.0034 (need >= +0.003);
+(B) beats (A) on 2/4 isoforms (2C9 +0.0025, 2D6 +0.0086) but DROPS on 1A2
+(-0.0129) and 3A4 (-0.0059). (C) mordred-only 0.2783 is weak - the cpmed graph
+embedding dominates the linear read.
+
+**Verdict (honest, per plan):** a LINEAR ridge finds NO honest descriptor gain on
+top of the cpmed embedding (slightly negative macro). This is a conservative
+pre-filter, NOT a kill: the plan's explicit path is that a TRAINED x_d FFN can
+capture nonlinear descriptor x graph interactions that ridge cannot (precedent:
+TabPFN was 0.44 standalone yet added +0.0098 in-pool; the standalone/linear
+number is not the whole story). The 2D6 +0.0086 lift is the one encouraging cell
+(2D6 is our laggard isoform), consistent with descriptors carrying information
+the MPNN graph under-expresses on the hard isoform. DO NOT kill the lever -
+proceed to Phase 1 and let the trained x_d chemprop be the real test.
+
+Files: src/mordred_features.py, src/mordred_probe.py; cache/emb_mordred_all.
+parquet, cache/mordred_meta.json, cache/mordred_probe.json,
+cache/ft_oof_probe_{A_emb,B_emb_mordred,C_mordred}.csv. No GPU, no submits, no
+candidate file. Next: Phase 1 (GPU) chemprop D-MPNN V1-V4.
+
 
 
 

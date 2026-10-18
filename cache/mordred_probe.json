@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "A_emb": {
+      "CYP1A2": 0.5544,
+      "CYP2C9": 0.7058,
+      "CYP2D6": 0.381,
+      "CYP3A4": 0.8035,
+      "macro_R2": 0.3991
+    },
+    "B_emb+mordred": {
+      "CYP1A2": 0.5415,
+      "CYP2C9": 0.7083,
+      "CYP2D6": 0.3896,
+      "CYP3A4": 0.7975,
+      "macro_R2": 0.3957
+    },
+    "C_mordred": {
+      "CYP1A2": 0.4437,
+      "CYP2C9": 0.5972,
+      "CYP2D6": 0.3129,
+      "CYP3A4": 0.6794,
+      "macro_R2": 0.2783
+    }
+  },
+  "gate0": {
+    "delta_macro_B_minus_A": -0.0034,
+    "n_isoforms_B_beats_A": 2,
+    "macro_delta_threshold": 0.003,
+    "n_isoform_threshold": 2,
+    "pass": false
+  },
+  "embedding": "cpmed 600-d (emb_cpmed_all.parquet)",
+  "mordred": "kept descriptors from emb_mordred_all.parquet",
+  "folds": "ft_data.csv fold col (scaffold seed 0, K=5)",
+  "recipe": "per-fold StandardScaler+RidgeCV([100,1000,10000]) fit on train-fold labeled rows; nested = Fisher-z avg of per-fold OOF Pearson; macro R2 = mean(per-isoform nested^2)"
+}
