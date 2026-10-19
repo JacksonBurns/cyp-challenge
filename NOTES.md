@@ -1906,6 +1906,79 @@ already cover), not another blend/specialist reshuffle. Do NOT spend GPU on more
 No submits, no candidate file. cp17 (0.4682) and tdi_v5 (0.3422) stand.
 Artifacts: src/d2d6_ceiling.py, cache/d2d6_ceiling.json. CPU-only, ~seconds.
 
+## 27. NEW-REPRESENTATION ITERATION (Oct 19) - 2 avenues
+
+Jackson's directive: "jump straight into the next iteration, add a new
+representation (unimol or otherwise); research what other teams used. ALSO a
+separate avenue: add your own chemistry-opinion predictions to the ensemble
+(you can hold all training structures in context, unlike a human)." Two
+independent avenues, both CPU/GPU, overnight autonomous.
+
+Research (subagent, arXiv): #1 = end-to-end 3D GNN (SchNet/PaiNN) on 3D
+conformers - arXiv:2606.08825 shows it beats 2D fingerprints by 21-42% and sits
+atop a 4-tier hierarchy; arXiv:2012.08452 confirms 3D/4D conformer-ensemble
+SchNet > 2D. #2 = multimodal 2D+3D fusion (SGGRL arXiv:2401.03369). #3 =
+Uni-Mol+ end-to-end fine-tune (arXiv:2303.16982). Key risk flagged: the 3D gain
+is PROPERTY-SELECTIVE - if 2D6 selectivity is driven by a heme-binding POSE
+rather than ligand conformation, raw-ligand 3D under-delivers.
+
+### Avenue 2 - LLM pharmacophore member (MY chemistry opinion, CPU) - DONE
+
+src/llm_pharmaco.py: a genuinely NEW representation family (no pool member is
+prior-knowledge based). Features = (A) 4 isoform anchor-similarities: Morgan-2D
+Tanimoto to curated canonical substrate chemotypes PER ISOFORM (my prior, fixed
+refs, not fit from labels) - 2D6=basic-amine+aromatic (dextromethorphan,
+propranolol, metoprolol, tamoxifen, haloperidol); 3A4=lipophilic/sp3/macrocycle
+(testosterone, midazolam, nifedipine, carbamazepine, verapamil); 2C9=carboxylate
++aromatic (warfarin, phenytoin, ibuprofen, naproxen, pioglitazone); 1A2=planar
+PAH/aromatic-amine (caffeine, theophylline, anthracene, naphthalene, aniline).
++ (B) 14 mechanistic prior features (basic-N, carboxyl, aromatic-ring count,
+MW, logP, TPSA, HBA/HBD, rot, sp3, + isoform-interaction terms). Learner =
+per-isoform Ridge (L1/ElasticNet collapsed to a constant on 3/4 isoforms -
+documented pitfall). Honest nested, anti-leak (train-fit impute+scale).
+
+Standalone honest nested: 1A2 0.461 | 2C9 0.577 | 2D6 0.249 | 3A4 0.646.
+macro 0.256. Genuinely isoform-selective in the PREDICTED way: my
+carboxylate-aromatic (2C9) and lipophilic-bulk (3A4) priors are strong; the
+basic-amine (2D6) prior is weak - consistent with 2D6 being the hard one.
+POOL TEST (src/new_member_pool_test.py, exact repo greedy recipe): cp18 ==
+cp17 (delta -0.0001). The greedy blend ignores it because a data-driven member
+beats it on every isoform. Decorrelation: |corr| vs pool = 2C9 0.025 (genuinely
+independent signal!), 3A4 0.131, 1A2 0.320, 2D6 0.356.
+
+VERDICT (Avenue 2): my chemistry priors produce a real, interpretable,
+decorrelated standalone model, but it does NOT lift the pool - the 5
+data-driven lineages are stronger on every isoform. Honest no-op for the pool.
+The 2C9 decorrelation (0.025) is the interesting seed: a prior-knowledge member
+is the ONLY family the pool lacks, so it would matter if it were strong on 2C9 -
+it isn't (0.577 vs the pool's 0.737). Logged as a clean negative.
+
+### Avenue 1 - 3D GNN member (SchNet, GPU) - in progress
+
+src/schnet_3d.py: end-to-end SchNet (torch_geometric 2.8.1) on MMFF94-minimized
+RDKit conformers. 3D graph via pure-torch radius graph (cutoff 10A; pyg-lib has
+no wheel for this torch/CUDA). Per-isoform single-task, exact repo honest nested
+recipe (5 scaffold folds, seed 0). Conformer cache: each of 6145 molecules
+embedded ONCE (was 20x redundant) -> single-conformer full run = ~11 min.
+
+SINGLE-CONFORMER RESULT (done): 1A2 -0.107 | 2C9 0.191 | 2D6 -0.014 | 3A4 0.185.
+macro 0.021 - AT CHANCE. 2D6 flat at -0.014 across all 5 folds (0.02, -0.07,
+0.06, -0.08, -0.00). Pool delta -0.0012 (no lift). This is EXACTLY the risk the
+research flagged: a vacuum MMFF conformer does NOT capture the enzyme binding
+pose, and 2D6 selectivity is pose-driven, not conformation-driven.
+
+5-CONFORMER ENSEMBLE (running, the fair/definitive 3D test): the research
+specifically credits conformer ENSEMBLES (3D/4D) as the variant that beats 2D -
+a single conformer could be a selection artifact. NCONF=5, MMFF lowest-energy
+5, predictions averaged. ~1-2h (conformer-gen 5x slower). If this is also
+~chance, 3D-on-vacuum-conformers is DEAD for this task (the binding-pose
+hypothesis wins) and the honest conclusion is that breaking the 2D6 ceiling
+needs 3D IN THE BINDING POSE (docking/Uni-Mol+ pose refinement), not
+vacuum conformers.
+
+No submits, no candidate file yet. cp17 (0.4682) and tdi_v5 (0.3422) stand
+until the ensemble run lands and clears the pool gate.
+
 
 
 
