@@ -68,7 +68,9 @@ def zavg(files):
             z = np.zeros(len(df))
             for d in dfs:
                 p = d[iso].values.astype(float)
-                z += (p - p.mean()) / p.std()
+                mu = np.nanmean(p)
+                sd = np.nanstd(p)
+                z += (p - mu) / (sd if sd > 0 else 1)
             df[iso] = z / len(dfs)
     return df
 
@@ -174,7 +176,10 @@ def decorrelation(tag, pool):
         for iso in ISO:
             a = newdf[iso].values.astype(float)
             b = pdf[iso].values.astype(float)
-            r = pearsonr(a, b).statistic
+            m = ~(np.isnan(a) | np.isnan(b))
+            if m.sum() < 3:
+                continue
+            r = pearsonr(a[m], b[m]).statistic
             if not np.isnan(r):
                 corrs[iso].append(abs(r))
     return {iso: float(np.mean(v)) if v else float("nan") for iso, v in corrs.items()}

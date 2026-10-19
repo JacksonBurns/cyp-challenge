@@ -1953,7 +1953,7 @@ The 2C9 decorrelation (0.025) is the interesting seed: a prior-knowledge member
 is the ONLY family the pool lacks, so it would matter if it were strong on 2C9 -
 it isn't (0.577 vs the pool's 0.737). Logged as a clean negative.
 
-### Avenue 1 - 3D GNN member (SchNet, GPU) - in progress
+### Avenue 1 - 3D GNN member (SchNet, GPU) - DONE (DEAD)
 
 src/schnet_3d.py: end-to-end SchNet (torch_geometric 2.8.1) on MMFF94-minimized
 RDKit conformers. 3D graph via pure-torch radius graph (cutoff 10A; pyg-lib has
@@ -1961,23 +1961,35 @@ no wheel for this torch/CUDA). Per-isoform single-task, exact repo honest nested
 recipe (5 scaffold folds, seed 0). Conformer cache: each of 6145 molecules
 embedded ONCE (was 20x redundant) -> single-conformer full run = ~11 min.
 
-SINGLE-CONFORMER RESULT (done): 1A2 -0.107 | 2C9 0.191 | 2D6 -0.014 | 3A4 0.185.
-macro 0.021 - AT CHANCE. 2D6 flat at -0.014 across all 5 folds (0.02, -0.07,
-0.06, -0.08, -0.00). Pool delta -0.0012 (no lift). This is EXACTLY the risk the
-research flagged: a vacuum MMFF conformer does NOT capture the enzyme binding
-pose, and 2D6 selectivity is pose-driven, not conformation-driven.
+SINGLE-CONFORMER RESULT: 1A2 -0.107 | 2C9 0.191 | 2D6 -0.014 | 3A4 0.185.
+macro 0.021 - AT CHANCE. Pool delta -0.0012 (no lift).
 
-5-CONFORMER ENSEMBLE (running, the fair/definitive 3D test): the research
-specifically credits conformer ENSEMBLES (3D/4D) as the variant that beats 2D -
-a single conformer could be a selection artifact. NCONF=5, MMFF lowest-energy
-5, predictions averaged. ~1-2h (conformer-gen 5x slower). If this is also
-~chance, 3D-on-vacuum-conformers is DEAD for this task (the binding-pose
-hypothesis wins) and the honest conclusion is that breaking the 2D6 ceiling
-needs 3D IN THE BINDING POSE (docking/Uni-Mol+ pose refinement), not
-vacuum conformers.
+5-CONFORMER ENSEMBLE RESULT (the fair/definitive 3D test, NCONF=5, MMFF
+lowest-energy 5, predictions averaged, ~50 min): 1A2 -0.083 | 2C9 0.191 |
+2D6 +0.017 | 3A4 0.177. macro 0.022 - AT CHANCE. 2D6 flat at 0.017 across
+all 5 folds (0.049, -0.025, 0.089, -0.047, 0.019). Essentially identical to
+single-conformer. Conformer ensembling did NOT help.
 
-No submits, no candidate file yet. cp17 (0.4682) and tdi_v5 (0.3422) stand
-until the ensemble run lands and clears the pool gate.
+POOL TEST (z-averaged single+c5 family): cp17 macro 0.4682 -> cp18 0.4677.
+delta -0.0006. Per-isoform: 1A2 +0.0000, 2C9 -0.0015, 2D6 +0.0000, 3A4
++0.0000. Decorrelation vs pool: 1A2 0.083, 2C9 0.197, 2D6 0.033, 3A4 0.182
+(low = well-decorrelated, confirming the 3D GNN is a genuinely independent
+signal, just too weak to matter). GATE 2 NOT MET.
+
+VERDICT (Avenue 1): 3D on vacuum MMFF conformers is DEAD for this task.
+Both single-conformer and 5-conformer ensemble are at chance level,
+especially on 2D6. This confirms the binding-pose hypothesis: 2D6 selectivity
+is driven by the specific heme-binding geometry that vacuum conformers do NOT
+capture. Breaking the 2D6 ceiling requires 3D IN THE BINDING POSE
+(docking / Uni-Mol+ pose refinement), not vacuum conformer ensembling.
+Honest no-op for the pool.
+
+Harness fix: src/new_member_pool_test.py had a latent bug where zavg() used
+numpy .mean()/.std() (not NaN-aware) on OOF columns with ~75% NaN (per-isoform
+subsets), producing all-NaN z-scores for multi-file families. Fixed to
+np.nanmean/np.nanstd + guarded pearsonr in decorrelation().
+
+No submits, no candidate file. cp17 (0.4682) and tdi_v5 (0.3422) stand.
 
 
 

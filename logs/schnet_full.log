@@ -1,0 +1,26 @@
+  CYP1A2 fold0: val Pearson -0.1076 [70s]
+  CYP1A2 fold1: val Pearson -0.1918 [83s]
+  CYP1A2 fold2: val Pearson -0.0544 [97s]
+  CYP1A2 fold3: val Pearson -0.1084 [111s]
+  CYP1A2 fold4: val Pearson -0.0736 [124s]
+  CYP2C9 fold0: val Pearson 0.3970 [185s]
+  CYP2C9 fold1: val Pearson 0.0737 [199s]
+  CYP2C9 fold2: val Pearson 0.0919 [213s]
+  CYP2C9 fold3: val Pearson 0.0611 [227s]
+  CYP2C9 fold4: val Pearson 0.3093 [240s]
+  CYP2D6 fold0: val Pearson 0.0246 [302s]
+  CYP2D6 fold1: val Pearson -0.0721 [318s]
+  CYP2D6 fold2: val Pearson 0.0604 [334s]
+  CYP2D6 fold3: val Pearson -0.0836 [350s]
+  CYP2D6 fold4: val Pearson -0.0001 [366s]
+  CYP3A4 fold0: val Pearson 0.3244 [461s]
+  CYP3A4 fold1: val Pearson 0.1034 [485s]
+  CYP3A4 fold2: val Pearson 0.0622 [510s]
+  CYP3A4 fold3: val Pearson 0.1483 [535s]
+  CYP3A4 fold4: val Pearson 0.2775 [560s]
+  CYP1A2: nested=-0.1074 R2=0.0115
+  CYP2C9: nested=0.1910 R2=0.0365
+  CYP2D6: nested=-0.0142 R2=0.0002
+  CYP3A4: nested=0.1852 R2=0.0343
+saved ft_oof_schnet.csv
+DONE 670s

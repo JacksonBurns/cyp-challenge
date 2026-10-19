@@ -1,0 +1,78 @@
+/home/jackson/miniforge3/envs/unimol/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([64])) that is different to the input size (torch.Size([64, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([12])) that is different to the input size (torch.Size([12, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP1A2 fold0: val Pearson -0.0872 [318s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([64])) that is different to the input size (torch.Size([64, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([47])) that is different to the input size (torch.Size([47, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP1A2 fold1: val Pearson -0.0087 [385s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([57])) that is different to the input size (torch.Size([57, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP1A2 fold2: val Pearson -0.0528 [424s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([33])) that is different to the input size (torch.Size([33, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP1A2 fold3: val Pearson -0.1143 [491s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([59])) that is different to the input size (torch.Size([59, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP1A2 fold4: val Pearson -0.1497 [559s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([15])) that is different to the input size (torch.Size([15, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2C9 fold0: val Pearson 0.2883 [842s]
+  CYP2C9 fold1: val Pearson 0.1661 [909s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([30])) that is different to the input size (torch.Size([30, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2C9 fold2: val Pearson 0.1498 [978s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([42])) that is different to the input size (torch.Size([42, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2C9 fold3: val Pearson 0.0629 [1047s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([44])) that is different to the input size (torch.Size([44, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2C9 fold4: val Pearson 0.2811 [1115s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([38])) that is different to the input size (torch.Size([38, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2D6 fold0: val Pearson 0.0488 [1404s]
+  CYP2D6 fold1: val Pearson -0.0251 [1461s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([26])) that is different to the input size (torch.Size([26, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2D6 fold2: val Pearson 0.0889 [1536s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([19])) that is different to the input size (torch.Size([19, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2D6 fold3: val Pearson -0.0467 [1617s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([34])) that is different to the input size (torch.Size([34, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP2D6 fold4: val Pearson 0.0188 [1699s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([28])) that is different to the input size (torch.Size([28, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP3A4 fold0: val Pearson 0.2924 [2136s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([12])) that is different to the input size (torch.Size([12, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP3A4 fold1: val Pearson 0.0792 [2207s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([20])) that is different to the input size (torch.Size([20, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP3A4 fold2: val Pearson 0.1314 [2283s]
+  CYP3A4 fold3: val Pearson 0.1843 [2370s]
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([14])) that is different to the input size (torch.Size([14, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+  CYP3A4 fold4: val Pearson 0.1909 [2493s]
+  CYP1A2: nested=-0.0827 R2=0.0068
+  CYP2C9: nested=0.1911 R2=0.0365
+  CYP2D6: nested=0.0170 R2=0.0003
+  CYP3A4: nested=0.1766 R2=0.0312
+saved ft_oof_schnet_c5.csv
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([64])) that is different to the input size (torch.Size([64, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([20])) that is different to the input size (torch.Size([20, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([64])) that is different to the input size (torch.Size([64, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([25])) that is different to the input size (torch.Size([25, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([41])) that is different to the input size (torch.Size([41, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+/home/jackson/cyp-challenge/src/schnet_3d.py:184: UserWarning: Using a target size (torch.Size([27])) that is different to the input size (torch.Size([27, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  loss = F.mse_loss(pred[m], b.y[m])
+DONE 2962s
