@@ -1860,6 +1860,52 @@ tdi_v5 (0.3422) also stands (Phase 7 TDI x_d not pursued: x_d is dead on the
 regression backbone, so the same channel is not expected to lift TDI; the 2D6 TDI
 shift ceiling remains the binding TDI constraint, unchanged).
 
+## 26. CYP2D6 CEILING DIAGNOSTIC (Oct 18) - 2D6 is a REPRESENTATION CEILING
+
+Follow-up on the iteration close: the summary (sec 25) named 2D6 as the binding
+constraint (nested ~0.49 vs 1A2 0.62 / 2C9 0.73 / 3A4 0.83; macro =
+mean(nested^2), so 2D6 at 0.49 contributes only 0.24 to the mean). This is a
+pure-CPU, honest-nested diagnostic to decide whether the 2D6 headroom is in the
+combiner, the member set, or a hard representation wall.
+
+src/d2d6_ceiling.py: per scaffold fold (seed 0, K=5), z-score each member's OOF
+with TRAIN-fold stats, fit the combiner on the train fold, score Pearson on val;
+nested = Fisher-z avg; R2 = nested^2. Exactly the repo recipe
+(blend_nested_all.py / pool_simplify.py). Three combiners on the 2D6 column over
+the 28 canonical families:
+
+  greedy    nested=0.4886  R2=0.2387   <- current repo combiner
+  rankavg   nested=0.4352  R2=0.1894
+  stack     nested=0.4854  R2=0.2356   (ridge, alpha=10)
+
+COMBINER: greedy is already optimal. rankavg and stack are both BELOW it
+(-0.0534 / -0.0032). There is NO headroom in the combiner itself.
+
+Per-member 2D6 honest nested Pearson (canonical, seed-averaged):
+  tabpfn_cpmed 0.4587 | umtmL2 0.4365 | cpchm 0.4260 | cpmed 0.4236
+  admmed 0.4202 | admchm 0.4182 | d2d6 0.4157 | qhtsda 0.4155 | umtmL1 0.4082
+  ... every lineage (GBM, ridge, CheMeLeon, UMTM, TabPFN, 2D6-slice D-MPNN,
+  mordred, unimol) clusters in 0.35-0.46.
+
+Two findings, both decisive:
+  1. ALL FIVE LINEAGES independently saturate 2D6 at ~0.42-0.46. This is not a
+     data-scarcity problem (2D6 has n=1493, the 2nd-most labels, balanced across
+     folds, no censoring) and not a single-model failure - it is a hard
+     representation ceiling for 2D6 chemistry on this data.
+  2. The dedicated d2d6 2D6-SLICE specialist (0.4157) UNDERPERFORMS the general
+     tabpfn_cpmed member (0.4587) on 2D6 itself. The slice-bias mechanism
+     (briford's lever, sec 14) does NOT help 2D6 here - a general reader is
+     better at 2D6 than a 2D6-biased one.
+
+VERDICT: 2D6 is a representation ceiling, NOT a combiner lever and NOT a
+member-set lever. The next real 2D6 jump needs a genuinely NEW representation
+family (3D / physics / a chemistry-specific encoder the dead-lever list does not
+already cover), not another blend/specialist reshuffle. Do NOT spend GPU on more
+2D6-slice D-MPNN variants - the slice mechanism is shown dead on 2D6.
+
+No submits, no candidate file. cp17 (0.4682) and tdi_v5 (0.3422) stand.
+Artifacts: src/d2d6_ceiling.py, cache/d2d6_ceiling.json. CPU-only, ~seconds.
+
 
 
 

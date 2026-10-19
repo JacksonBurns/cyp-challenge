@@ -1,0 +1,41 @@
+{
+  "nested": {
+    "greedy": 0.4885711784279275,
+    "rankavg": 0.43515968830805696,
+    "stack": 0.48540276409401917
+  },
+  "best": "greedy",
+  "delta_vs_greedy": 0.0,
+  "n_members": 28,
+  "members": [
+    "admchm",
+    "admmed",
+    "chmridge",
+    "cpchm",
+    "cpmed",
+    "d2d6",
+    "deadzone",
+    "dmpnn",
+    "ext",
+    "frozen",
+    "fullft",
+    "monridge",
+    "near",
+    "pre",
+    "probe_A_emb",
+    "probe_B_emb_mordred",
+    "probe_C_mordred",
+    "qhtsda",
+    "smiles",
+    "tabpfn_cpmed",
+    "umtmL1",
+    "umtmL2",
+    "umtmL3",
+    "umtmL4",
+    "unimol",
+    "xdV1",
+    "xdV3",
+    "xdV4"
+  ],
+  "verdict": "2D6 IS A REPRESENTATION CEILING (combiner not the lever)"
+}
