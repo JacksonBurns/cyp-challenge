@@ -1,0 +1,29 @@
+{
+  "dockfeat_standalone": {
+    "nested": {
+      "CYP1A2": 0.1951032924974172,
+      "CYP2C9": 0.2223195347013802,
+      "CYP2D6": 0.1812211361671053,
+      "CYP3A4": 0.320231256872095
+    },
+    "macro": 0.055720107081187284
+  },
+  "n_features": 13,
+  "feature_names": [
+    "vina_score",
+    "n_hbond",
+    "n_hydrophobic",
+    "n_pi_stack",
+    "n_cation_pi",
+    "n_salt",
+    "n_heme_contact",
+    "basicN_Fe_dist",
+    "basicN_acid_dist",
+    "basicN_arom_dist",
+    "pose_inbox_frac",
+    "n_heavy",
+    "has_basicN"
+  ],
+  "dock_fail_count": 216,
+  "n_docked": 6679
+}

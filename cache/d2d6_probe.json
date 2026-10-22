@@ -1,0 +1,57 @@
+{
+  "variants": {
+    "A_cpmed": {
+      "CYP1A2": 0.5544,
+      "CYP2C9": 0.7058,
+      "CYP2D6": 0.381,
+      "CYP3A4": 0.8035,
+      "macro_R2": 0.3991
+    },
+    "B_cpmed+new": {
+      "CYP1A2": 0.5524,
+      "CYP2C9": 0.7078,
+      "CYP2D6": 0.3834,
+      "CYP3A4": 0.8043,
+      "macro_R2": 0.4
+    },
+    "C_new": {
+      "CYP1A2": 0.3946,
+      "CYP2C9": 0.5348,
+      "CYP2D6": 0.2673,
+      "CYP3A4": 0.6045,
+      "macro_R2": 0.2197
+    }
+  },
+  "gate_2d6": {
+    "A_cpmed": 0.381,
+    "B_cpmed_new": 0.3834,
+    "C_new": 0.2673,
+    "delta_B_minus_A": 0.0024,
+    "pass": false
+  },
+  "n_features": 21,
+  "features": [
+    "n_basic_N",
+    "n_acidic_N",
+    "pKa_max",
+    "pKa_mean",
+    "frac_protonated_74",
+    "net_charge_74",
+    "n_tertiary_amine",
+    "n_secondary_amine",
+    "n_primary_amine",
+    "n_stereocenters",
+    "n_stereo_defined",
+    "n_stereo_undef",
+    "n_EZ_bonds",
+    "has_stereo",
+    "basic_amine_aromatic",
+    "n_aromatic_rings",
+    "logP",
+    "MW",
+    "TPSA",
+    "rotatable_bonds",
+    "sp3_fraction"
+  ],
+  "recipe": "per-fold median-imputer+StandardScaler+RidgeCV([100,1000,10000]) fit on train-fold labeled rows; nested = Fisher-z avg of per-fold OOF Pearson; macro R2 = mean(per-isoform nested^2)"
+}

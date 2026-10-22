@@ -1,0 +1,38 @@
+Loading features...
+  docking: 5930/6145 train SMILES docked, 13 features
+  'umtm': (6145, 22)
+  'base_umtm': (6145, 3478)
+  'cpmed_umtm': (6145, 622)
+  'umtm+dock': (6145, 35)
+  'base_umtm+dock': (6145, 3491)
+  'cpmed_umtm+dock': (6145, 635)
+  [umtm] CYP2D6: product nested=0.0794 tuned=0.1170
+  [umtm] CYP3A4: product nested=0.3561 tuned=0.3817
+  [base_umtm] CYP2D6: product nested=0.0897 tuned=0.1395
+  [base_umtm] CYP3A4: product nested=0.3795 tuned=0.3986
+  [cpmed_umtm] CYP2D6: product nested=0.1585 tuned=0.1709
+  [cpmed_umtm] CYP3A4: product nested=0.4281 tuned=0.4348
+  [umtm+dock] CYP2D6: product nested=0.1284 tuned=0.1284
+  [umtm+dock] CYP3A4: product nested=0.3649 tuned=0.3783
+  [base_umtm+dock] CYP2D6: product nested=0.0503 tuned=0.1394
+  [base_umtm+dock] CYP3A4: product nested=0.3635 tuned=0.3895
+  [cpmed_umtm+dock] CYP2D6: product nested=0.1531 tuned=0.1829
+  [cpmed_umtm+dock] CYP3A4: product nested=0.3818 tuned=0.4064
+
+======================================================================
+TDI DOCKFEAT EVAL - product nested MCC (macro = mean of 2D6, 3A4)
+======================================================================
+  feature set               2D6      3A4    macro    vs no-dock
+  umtm                   0.0794   0.3561   0.2178              
+  base_umtm              0.0897   0.3795   0.2346              
+  cpmed_umtm             0.1585   0.4281   0.2933              
+  umtm+dock              0.1284   0.3649   0.2467       +0.0289
+  base_umtm+dock         0.0503   0.3635   0.2069       -0.0277
+  cpmed_umtm+dock        0.1531   0.3818   0.2675       -0.0259
+
+  BEST: cpmed_umtm (macro 0.2933)
+  bar: macro 0.3448 (2D6 0.219, 3A4 0.470)
+  leaderboard best: 0.5346
+
+Saved /home/jackson/cyp-challenge/src/../cache/tdi_dockfeat_eval.json
+DONE

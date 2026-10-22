@@ -1,0 +1,58 @@
+Loaded ft_data.csv: 6145 molecules
+
+=== Computing pKa/stereo/chemical features ===
+  features: 1000/6145 (1.3s)
+  features: 2000/6145 (2.5s)
+  features: 3000/6145 (3.8s)
+  features: 4000/6145 (5.1s)
+  features: 5000/6145 (6.4s)
+  features: 6000/6145 (7.7s)
+  features done: 6145 rows, 0 parse failures, 7.9s
+  21 features: ['n_basic_N', 'n_acidic_N', 'pKa_max', 'pKa_mean', 'frac_protonated_74', 'net_charge_74', 'n_tertiary_amine', 'n_secondary_amine', 'n_primary_amine', 'n_stereocenters', 'n_stereo_defined', 'n_stereo_undef', 'n_EZ_bonds', 'has_stereo', 'basic_amine_aromatic', 'n_aromatic_rings', 'logP', 'MW', 'TPSA', 'rotatable_bonds', 'sp3_fraction']
+  saved cache/d2d6_probe_features.csv
+
+cpmed (6145, 600)  new_features (6145, 21)
+
+=== HONEST NESTED PROBE (5-fold scaffold OOF ridge) ===
+  CYP1A2 (n=1412)  | A_cpmed 0.5544  | B_cpmed+new 0.5524  | C_new 0.3946
+  CYP2C9 (n=1285)  | A_cpmed 0.7058  | B_cpmed+new 0.7078  | C_new 0.5348
+  CYP2D6 (n=1493)  | A_cpmed 0.3810  | B_cpmed+new 0.3834  | C_new 0.2673
+  CYP3A4 (n=2335)  | A_cpmed 0.8035  | B_cpmed+new 0.8043  | C_new 0.6045
+
+=== NESTED MACRO R2 (mean of per-isoform nested^2) ===
+variant         CYP1A2    CYP2C9    CYP2D6    CYP3A4    MACRO   
+A_cpmed         0.5544    0.7058    0.3810    0.8035    0.3991  
+B_cpmed+new     0.5524    0.7078    0.3834    0.8043    0.4000  
+C_new           0.3946    0.5348    0.2673    0.6045    0.2197  
+
+=== GATE (CYP2D6 focus) ===
+  (A) cpmed only:        0.3810
+  (B) cpmed + new:       0.3834  (delta +0.0024)
+  (C) new features only: 0.2673
+  GATE: (B)-(A) >= +0.003 on CYP2D6: NOT MET
+
+=== PER-FEATURE SIGNAL (variant C, CYP2D6) ===
+  TPSA                       coef=-0.2326
+  n_aromatic_rings           coef=+0.1222
+  rotatable_bonds            coef=+0.1132
+  logP                       coef=-0.0826
+  frac_protonated_74         coef=+0.0608
+  sp3_fraction               coef=+0.0525
+  n_stereocenters            coef=+0.0431
+  n_tertiary_amine           coef=-0.0380
+  basic_amine_aromatic       coef=+0.0361
+  n_secondary_amine          coef=-0.0327
+  net_charge_74              coef=+0.0324
+  n_stereo_undef             coef=+0.0303
+  n_basic_N                  coef=-0.0261
+  n_stereo_defined           coef=+0.0259
+  MW                         coef=-0.0233
+  pKa_mean                   coef=-0.0133
+  has_stereo                 coef=+0.0075
+  pKa_max                    coef=-0.0038
+  n_primary_amine            coef=+0.0019
+  n_acidic_N                 coef=+0.0000
+  n_EZ_bonds                 coef=+0.0000
+
+saved cache/d2d6_probe.json
+DONE
