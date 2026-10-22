@@ -2,12 +2,12 @@ Loaded ft_data.csv: 6145 molecules
 
 === Computing pKa/stereo/chemical features ===
   features: 1000/6145 (1.3s)
-  features: 2000/6145 (2.5s)
-  features: 3000/6145 (3.8s)
-  features: 4000/6145 (5.1s)
-  features: 5000/6145 (6.4s)
-  features: 6000/6145 (7.7s)
-  features done: 6145 rows, 0 parse failures, 7.9s
+  features: 2000/6145 (2.6s)
+  features: 3000/6145 (3.9s)
+  features: 4000/6145 (5.2s)
+  features: 5000/6145 (6.5s)
+  features: 6000/6145 (7.8s)
+  features done: 6145 rows, 0 parse failures, 8.0s
   21 features: ['n_basic_N', 'n_acidic_N', 'pKa_max', 'pKa_mean', 'frac_protonated_74', 'net_charge_74', 'n_tertiary_amine', 'n_secondary_amine', 'n_primary_amine', 'n_stereocenters', 'n_stereo_defined', 'n_stereo_undef', 'n_EZ_bonds', 'has_stereo', 'basic_amine_aromatic', 'n_aromatic_rings', 'logP', 'MW', 'TPSA', 'rotatable_bonds', 'sp3_fraction']
   saved cache/d2d6_probe_features.csv
 
@@ -18,6 +18,8 @@ cpmed (6145, 600)  new_features (6145, 21)
   CYP2C9 (n=1285)  | A_cpmed 0.7058  | B_cpmed+new 0.7078  | C_new 0.5348
   CYP2D6 (n=1493)  | A_cpmed 0.3810  | B_cpmed+new 0.3834  | C_new 0.2673
   CYP3A4 (n=2335)  | A_cpmed 0.8035  | B_cpmed+new 0.8043  | C_new 0.6045
+
+saved cache/ft_oof_pka2d6.csv (variant C, blend-ready)
 
 === NESTED MACRO R2 (mean of per-isoform nested^2) ===
 variant         CYP1A2    CYP2C9    CYP2D6    CYP3A4    MACRO   

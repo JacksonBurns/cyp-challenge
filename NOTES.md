@@ -1998,3 +1998,17 @@ No submits, no candidate file. cp17 (0.4682) and tdi_v5 (0.3422) stand.
 
 
 
+
+### Sec 28 (Oct 22) - 2D6 pKa/stereo probe - CLOSED (dead, clean negative)
+src/d2d6_probe.py fixed for rdkit 2026.09 (MolWt, CalcFractionCSP3) + train-fold
+median imputation for NaN pKa rows (SimpleImputer fit on train-fold only).
+21 features (pKa_max/mean, frac_protonated_74, net_charge_74, amine counts,
+stereo, basic_amine_aromatic, core physicochem). Honest nested probe (cpmed ridge):
+  A cpmed 0.3991 | B cpmed+new 0.4000 | C new-only 0.2197.
+  GATE (2D6 delta >= +0.003): NOT MET (+0.0024; 2D6 0.3810 -> 0.3834).
+Top 2D6 coefs: TPSA -0.23, n_aromatic_rings +0.12, rotatable +0.11,
+frac_protonated_74 +0.06 (real but tiny; cpmed already expresses it).
+POOL TEST (ft_oof_pka2d6.csv as 20th member): cp17 0.4682 -> 0.4682, delta
++0.0000 (greedy blend ignores it; |corr| vs pool 0.22-0.43, redundant-ish).
+VERDICT: protonation-state/stereo features do NOT break the 2D6 representation
+ceiling. Honest no-op. cp17 (0.4682) + tdi_v5 (0.3422) stand.
