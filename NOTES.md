@@ -2157,3 +2157,14 @@ vs cp18i: 2D6 improves +0.0078 from mae/mse members; 1A2/3A4 slightly lower
 queued). NEGATIVE mse weights = decorrelation trade, exactly as pool theory
 predicts. rank arm takes ~0 (pairwise term on noisy pairs = too weak a ranker).
 mae family seed-averaging queued (zoo_batch3) before any cp20 build.
+
+### Sec 31c (Oct 23) - auxw sweep + homarm standalone
+Aux-regularization dose-response (hinge arm, standalone macro ST-RAE):
+  auxw 0.0 -> 0.7832 | 0.3 (intarm) -> 0.6886 | 1.0 -> 0.7545 | 3.0 -> 0.7429
+Non-monotone: 0.3 is the sweet spot (0.783 at w=0 confirms aux heads carry
+~0.10 of standalone quality; w=3 over-regularizes). This is the effect-size
+measurement of multi-task aux strength we queued.
+homarm (12-aux incl. 4 ChEMBL homolog heads): macro 0.7595, 3/4 quarantined
+(2D6 fold3 1.088) - single seed, family=seed-avg is gate unit; seed 1/2 queued
+if zoo1b gate wants it.
+zoo1b gate (all 7 new families) running.
