@@ -16,10 +16,26 @@ Deadline: Nov 1. Board slots: 12h cooldown. Current standing: cp18 = 0.5119.
 - cp19 built+validated (md5 ca2aa784...), NOT submitted. Probes B/C built in
   cache/probes/. L2 blind-moment solve = src/blind_moment_solve.py (needs
   per-isoform R2 rows from user's submissions: cp19, B, C).
+- cp20 built+validated (md5 5a141f80), NOT submitted; cp19 first (marginally
+  better CV), cp20 candidate if probe evidence supports.
 - USER BOARD ACTIONS QUEUED: submit cp19 -> probe B -> probe C, send me
   per-isoform ST-RAE numbers after each. Cooldown expired ~8:52 AM EDT.
 
-## Results so far (Oct 23, 16:00)
+## Results so far (Oct 23, 17:30)
+- zoo2 seed-avg gate (mae/w3/homarm 3-seed families): ALL PASS. 1A2 5/5 +0.0235
+  (mae +0.215), 2C9 4/5 +0.008, 2D6 4/5 +0.021 (mae +0.245, mse -0.198), 3A4
+  5/5 +0.0175 (w3 +0.222). cp20 BUILT: ship 1A2+3A4, 2C9/2D6=cp18 bytes,
+  validator PASS, md5 5a141f80. vs cp19: 1A2 rho 0.987; 1A2 CV slightly below
+  cp19's (+0.0235 vs +0.026) = fitter variance of 27-family pool. SUBMISSION
+  ORDER: cp19 first, cp20 if probes support. auxw sweep: w=0 0.783, w=0.3
+  0.689, w=1 0.754, w=3 0.743 (aux carries ~0.10; 0.3 sweet spot standalone,
+  w=3 best decorrelator). Seed floors: w3 .740-.748, homarm .751-.766.
+- Transductive PT (item 4): src/pt_encoder.py masked-atom PT on 29252 SMILES
+  (test set + unlabeled ext + ChEMBL incl. homologs) from chemprop WEIGHTS
+  init; GPU running. loss_zoo --pt flag; batch5 = pt_{mae,w3,homarm} x3 seeds
+  (9 arms) queued behind; pt_* families in zoo1 pool.
+
+## Results (Oct 23, 16:00)
 - zoo1 pool gate (cp18i + zoo_mae/rank/mse seed-0): ALL 4 PASS. 1A2 5/5 +0.0217,
   2C9 4/5 +0.0058, 2D6 4/5 +0.0213 (was +0.0135 in cp18i: mae w=0.23, mse
   w=-0.138), 3A4 5/5 +0.0146. Loss-axis diversity CONFIRMED; mse anti-correlates

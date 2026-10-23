@@ -108,7 +108,8 @@ POOLS = {
               "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
               "ft_umtmL3", "ft_umtmL4", "ft_tabpfn_cpmed", "ft_intarm",
               "ft_zoo_mae", "ft_zoo_rank", "ft_zoo_mse", "ft_zoo_hinge_w0",
-              "ft_zoo_hinge_w1", "ft_zoo_hinge_w3", "ft_homarm"]
+              "ft_zoo_hinge_w1", "ft_zoo_hinge_w3", "ft_homarm",
+              "ft_pt_mae", "ft_pt_hinge_w3", "ft_pt_homarm"]
              ],
 }
 
