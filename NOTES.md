@@ -2038,3 +2038,37 @@ PL DEAD (-0.0015); placement NO-OP (ranking-metric optimal at shipped);
 dockfeat CLOSED Oct 20 (both tracks FAIL). cp17 (0.4682) + tdi_v5 (0.3422)
 stand. All levers in NEXT_ITER/DOCKFEAT plans are now closed. Repo cleaned
 for final push (see REPRODUCTION.md); Nov 3 = ship cp17 + tdi_v5.
+
+### Sec 30 (Oct 22) - L1 hinge-fit combiner + L4 confidence-NNLS (src/hinge_blend.py)
+Plan L1/L4 executed on the cp17 pool, raw-scale family OOF (cache/ft_oof_*.csv +
+oof_blend/oof_emb_concat), per-compound bounds from build_all {iso}_lo/_hi (verified
+finite on all labeled rows: 1A2 1412, 2C9 1285, 2D6 1493, 3A4 2335). Powell fit of
+member-delta weights w = w_inc + d minimizing sum(hinge(p,lo,hi)) + lam*||d||^2,
+lam swept {0.03,0.1,0.3} on rotation CV (fit 4/5 folds, score held 1/5). Gate:
+>=4/5 folds positive AND mean CV gain > 0.004.
+
+Results (incumbent -> fitted OOF ST-RAE; CV mean gain / pos folds):
+- CYP1A2 0.7241 -> 0.6849; CV +0.0287, 5/5 folds. PASS. lam=0.1.
+- CYP3A4 0.3999 -> 0.3756; CV +0.0134, 5/5 folds. PASS. lam=0.1.
+- CYP2C9 0.4951 -> 0.4745; CV +0.0040, 3/5 folds. FAIL (2 negative folds).
+- CYP2D6 0.8497 -> 0.8241; CV +0.0106, 3/5 folds. FAIL (signed folds
+  -0.031/-0.0006; matches the 2D6 signed -0.18 transfer record - strict bar held).
+No fold >0.085 off pooled on any isoform (tripwire clean).
+
+L4 (confidence-weighted non-negative deltas; conf = 1/std across incumbent-active
+members' z-aligned OOF preds, damped at 10th pct; L-BFGS-B d>=0; paired bootstrap
+500): all four isoforms show in-sample ST-RAE gain with 95% CI excluding 0 and
+direction agreeing with L1 (1A2 +0.0213 CI[0.011,0.032]; 2C9 +0.0115
+CI[0.005,0.019]; 2D6 +0.0059 CI[0.000,0.011]; 3A4 +0.0140 CI[0.009,0.019]).
+2C9/2D6 stay incumbent - L1 rotation gate is the ship gate; L4 alone does not
+override a failed CV (stir_bar CV-up/worse-blind caution).
+
+CANDIDATE SHIPPED: cache/regression_cp18_hinge_submission.csv - 1A2+3A4 columns
+rebuilt from hinge-fit weights, moment-restore affine to cp17 placed mean/sd
+(only reordering ships); 2C9/2D6 byte-identical to cp17. verify_submissions.py
+PASS (official validator True, row-for-row match). No ties (affine, floor 1.0
+not hit: min 1.60). Spearman 17-vs-18: 1A2 0.9895, 3A4 0.9941 (rho preserved by
+construction). md5 21e48ea3ac61086fda929f4c56d51c0a.
+Expected blind effect if OOF->blind transfers at CV rate: MA-ST-RAE
+-(0.0287+0.0134)/4 ~ -0.011 (rank ~47-48). REPRODUCTION.md has the rebuild line.
+READY FOR USER SUBMISSION (slot 1, regression; user action, 12h cooldown).
