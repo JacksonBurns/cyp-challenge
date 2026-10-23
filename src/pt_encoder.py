@@ -88,9 +88,9 @@ def main(epochs):
     seed_everything(0)
     trainer = pl.Trainer(max_epochs=epochs, accelerator="gpu", logger=False,
                          enable_checkpointing=False, enable_progress_bar=False,
-                         enable_model_summary=False, val_dataloaders=loader,
+                         enable_model_summary=False,
                          check_val_every_n_epoch=1)
-    trainer.fit(model, train_dataloaders=loader)
+    trainer.fit(model, train_dataloaders=loader, val_dataloaders=loader)
     torch.save(mp.state_dict(), os.path.join(CACHE, "pt_encoder.pt"))
     print("WROTE cache/pt_encoder.pt", flush=True)
 
