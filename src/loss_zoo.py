@@ -174,7 +174,7 @@ def build_points(df):
     return pts
 
 
-def train_fold(tr_df, va_df, seed, full_ft, mode, auxw):
+def train_fold(tr_df, va_df, seed, full_ft, mode, auxw, pt_init=False):
     featurizer = ft_ext.featurizers.SimpleMoleculeMolGraphFeaturizer()
     tr_dset = data.MoleculeDataset(build_points(tr_df), featurizer)
     from sklearn.preprocessing import StandardScaler
@@ -192,7 +192,13 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw):
                                       shuffle=False)
     st = torch.load(ft_ext.WEIGHTS, map_location="cpu", weights_only=False)
     mp = nn.BondMessagePassing(**st["hyper_parameters"])
-    mp.load_state_dict(st["state_dict"])
+    if pt_init:
+        ptp = os.path.join(CACHE, "pt_encoder.pt")
+        mp.load_state_dict(torch.load(ptp, map_location="cpu",
+                                      weights_only=True))
+        print(f"[pt] encoder init from {ptp}", flush=True)
+    else:
+        mp.load_state_dict(st["state_dict"])
     if not full_ft:
         for p in mp.parameters():
             p.requires_grad = False
@@ -218,13 +224,17 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw):
     return model
 
 
-def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False):
+def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
+     pt=False):
     global MAX_EPOCHS, PATIENCE, BATCH
     set_cols(hom)
     wtag = "" if abs(auxw - 0.3) < 1e-9 else f"_w{auxw:g}"
     sfx = "" if seed == 0 else f"_s{seed}"
-    tag = (f"homarm{wtag}{sfx}" if hom and mode == "hinge"
-           else f"zoo_{mode}{wtag}{sfx}")
+    base = (f"homarm{wtag}" if hom and mode == "hinge"
+            else f"zoo_{mode}{wtag}")
+    if pt:
+        base = "pt_" + base.replace("zoo_", "")
+    tag = base + sfx
     if smoke:
         MAX_EPOCHS, PATIENCE, BATCH = 2, 2, 64
         tag = f"{tag}_smoke"
@@ -266,7 +276,7 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False):
         fit_df = pd.concat([tr_pool.drop(index=vi), tr_extra], ignore_index=True)
         ev_df = tr_pool.iloc[vi].reset_index(drop=True)
         fit_df = fit_df.reset_index(drop=True)
-        model = train_fold(fit_df, ev_df, seed, full_ft, mode, auxw)
+        model = train_fold(fit_df, ev_df, seed, full_ft, mode, auxw, pt)
         P = ft_ext.predict(model, va_df)
         for j, iso in enumerate(ISO):
             oof.loc[va_idx, iso] = P[:, j]
@@ -293,7 +303,7 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False):
                     replace=False)
     model = train_fold(fit_all.drop(index=vi).reset_index(drop=True),
                        fit_all.iloc[vi].reset_index(drop=True), seed, full_ft,
-                       mode, auxw)
+                       mode, auxw, pt)
     Pte = ft_ext.predict(model, test)
     tsub = pd.DataFrame(Pte[:, :NPRIM], columns=ISO)
     tsub.insert(0, "SMILES", test["SMILES"])
@@ -325,5 +335,7 @@ if __name__ == "__main__":
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--hom", action="store_true",
                     help="add 4 ChEMBL homolog aux heads (2C19/2C8/2B6/2A6)")
+    ap.add_argument("--pt", action="store_true",
+                    help="init encoder from cache/pt_encoder.pt (transductive PT)")
     a = ap.parse_args()
-    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom)
+    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom, a.pt)
