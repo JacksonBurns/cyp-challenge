@@ -67,11 +67,11 @@ def soft_rae(y, yhat, lo, hi):
 
 ISO = ft_ext.ISO
 NPRIM = 4
-NAUX = 4
+NAUX = len(ft_ext.AUX)  # 8: 4 ChEMBL + 4 AID1851 pubchem
 BOUNDC = [f"{i}_bnd{t}" for i in ISO for t in ("lo", "hi")]  # interleaved
-COLS = ft_ext.COLS + BOUNDC  # 4 prim + 4 aux + 8 bounds = 16
+COLS = ft_ext.COLS + BOUNDC  # 4 prim + 8 aux + 8 bounds = 20
 NALL = len(COLS)
-# BOUNDC interleaved: cols 8,10,12,14 = lo; 9,11,13,15 = hi
+# BOUNDC interleaved: cols 12,14,16,18 = lo; 13,15,17,19 = hi
 LO_SL = slice(NPRIM + NAUX, NPRIM + NAUX + 8, 2)
 HI_SL = slice(NPRIM + NAUX + 1, NPRIM + NAUX + 8, 2)
 BATCH, VAL_FRAC, MAX_EPOCHS, PATIENCE = 128, 0.1, 40, 8
@@ -90,12 +90,16 @@ class IntervalHinge(MSE):
     z-space MSE. Aux cols 4-7: MSE. Bound cols: zero. Targets arrive
     nan_to_num(0)-ed; `mask` (pre-fill) carries the truth."""
 
-    def __init__(self, mu_p=None, sd_p=None, **kw):
+    def __init__(self, mu_p=None, sd_p=None, mu_a=None, sd_a=None, **kw):
         super().__init__(**kw)
         mu_p = np.zeros(NPRIM) if mu_p is None else np.asarray(mu_p, dtype=np.float32)
         sd_p = np.ones(NPRIM) if sd_p is None else np.asarray(sd_p, dtype=np.float32)
+        mu_a = np.zeros(NAUX) if mu_a is None else np.asarray(mu_a, dtype=np.float32)
+        sd_a = np.ones(NAUX) if sd_a is None else np.asarray(sd_a, dtype=np.float32)
         self.register_buffer("mu_p", torch.as_tensor(mu_p))
         self.register_buffer("sd_p", torch.as_tensor(sd_p))
+        self.register_buffer("mu_a", torch.as_tensor(mu_a))
+        self.register_buffer("sd_a", torch.as_tensor(sd_a))
 
     def _calc_unreduced_loss(self, preds, targets, mask, weights, lt_mask, gt_mask,
                              *args):
@@ -107,9 +111,14 @@ class IntervalHinge(MSE):
         if self.training:  # FFN transform identity in train: preds are z
             z = prim
             raw = prim * self.sd_p + self.mu_p
+            aux_z = preds[:, NPRIM:NPRIM + NAUX]
+            aux_t = targets[:, NPRIM:NPRIM + NAUX]
         else:              # eval: output_transform applied, preds RAW
             raw = prim
             z = (prim - self.mu_p) / self.sd_p
+            aux_raw = preds[:, NPRIM:NPRIM + NAUX]
+            aux_z = (aux_raw - self.mu_a) / self.sd_a
+            aux_t = targets[:, NPRIM:NPRIM + NAUX]
         lo_s = torch.where(hb, lo, raw)
         hi_s = torch.where(hb, hi, raw)
         hinge = (torch.clamp(raw - hi_s, min=0.0) ** 2
@@ -118,7 +127,7 @@ class IntervalHinge(MSE):
         hasb = hb.any(dim=1, keepdim=True).expand(-1, NPRIM) & m
         mse = (z - yprim) ** 2
         prim_loss = torch.where(hasb, hinge, mse)
-        aux = (z - targets[:, NPRIM:NPRIM + NAUX]) ** 2
+        aux = (aux_z - aux_t) ** 2
         bnd = torch.zeros_like(preds[:, NPRIM + NAUX:])
         return torch.cat([prim_loss, aux, bnd], dim=1)
 
@@ -170,10 +179,14 @@ def train_fold(tr_df, va_df, seed, full_ft):
     wts = np.concatenate([np.ones(NPRIM), np.full(NAUX, AUX_W), np.zeros(8)])
     mu_p = scaler.mean_[:NPRIM].astype(np.float32)
     sd_p = scaler.scale_[:NPRIM].astype(np.float32)
+    mu_a = scaler.mean_[NPRIM:NPRIM + NAUX].astype(np.float32)
+    sd_a = scaler.scale_[NPRIM:NPRIM + NAUX].astype(np.float32)
     ffn = nn.RegressionFFN(input_dim=mp.output_dim, hidden_dim=2048, n_layers=2,
                            n_tasks=NALL, dropout=0.1,
                            output_transform=nn.UnscaleTransform.from_standard_scaler(scaler),
-                           criterion=IntervalHinge(mu_p=mu_p, sd_p=sd_p, task_weights=wts))
+                           criterion=IntervalHinge(mu_p=mu_p, sd_p=sd_p,
+                                                   mu_a=mu_a, sd_a=sd_a,
+                                                   task_weights=wts))
     model = models.MPNN(mp, nn.MeanAggregation(), ffn, batch_norm=False)
     es = EarlyStopping(monitor="val_loss", patience=PATIENCE, mode="min")
     trainer = pl.Trainer(max_epochs=MAX_EPOCHS, accelerator="gpu", logger=False,

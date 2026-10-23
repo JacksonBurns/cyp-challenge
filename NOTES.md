@@ -2072,3 +2072,43 @@ construction). md5 21e48ea3ac61086fda929f4c56d51c0a.
 Expected blind effect if OOF->blind transfers at CV rate: MA-ST-RAE
 -(0.0287+0.0134)/4 ~ -0.011 (rank ~47-48). REPRODUCTION.md has the rebuild line.
 READY FOR USER SUBMISSION (slot 1, regression; user action, 12h cooldown).
+
+### Sec 30b (Oct 23) - cp18 SUBMITTED: 0.5119 (rank ~50, -0.0014 vs 0.5133)
+User submitted cache/regression_cp18_hinge_submission.csv (md5 21e48ea3).
+Board: MA-ST-RAE 0.5119 (from 0.5133). Direction correct, magnitude far
+under the CV expectation (-0.011): the 1A2/3A4 OOF gains (CV +0.0287/
++0.0134 -> /4 = -0.0105 MA) transferred at ~13% rate. Matches the field's
+CV->blind discount (stir_bar: 100% of submission-endpoint pairs worse on
+blind than CV, median MAE +0.208). Standing regression row = cp18 now;
+cp17 (11096b10) superseded. 2C9/2D6 columns byte-identical between the two.
+Lever read: per-isoform hinge-fit gains on 1A2/3A4 are real offline,
+attenuate ~0.13x blind -> future OOF gates need the discount priced in.
+
+### Sec 30c (Oct 23) - L2 probe machinery ready (src/blind_moment_solve.py)
+Probes B (1.15x spread about base centre) + C (centre +0.25 at 1.15x)
+built from the SCORED cp18 columns: cache/probes/probe_{B_spread,C_centre}.csv.
+cp18 = probe A (already scored). Solver: closed-form mu_y/var(y)/cov from
+the 3 R2 rows (exact briford quadratic), gates physical root 0.25<V<9,
+mu_y in [oof_mean-1.6,+0.5], rho_solved >= Spearman-0.07. Needs the
+per-isoform R2 from the submission feedback for A/B/C. SLOTS: B and C =
+2 of remaining ~22; after cooldown submit B, then C, then build_final
+(L2 placement on solved blind moments) = slot 3.
+L2 grid (placement_grid.py, offline, hinge surrogate on the cp18 fit):
+grid-opt centres sit ABOVE truth mean on 1A2 (+0.10)/2C9 (-0.15 mixed)/
+3A4 (+0.15); sd/k at k~0.8-0.9*rho_sd - consistent with briford k=rho.
+Predicted offline gains (surrogate 2.67->0.83 2D6 etc) are NOT to be
+believed at face value (surrogate = OOF distribution, blind = hit-
+expanded); the probe solve calibrates.
+
+### Sec 30d (Oct 23) - L3 arm script (src/interval_arm.py) in smoke
+ft_ext union table + primary-head SQUARED hinge outside RAW [lo,hi]
+(zero cost inside = the metric as loss), UNIFORM primary weights (ft_ext
+inverse-count -> flat 1.0 per Scigantic 2x2: interval+uniform 0.6895,
++0.0275 vs mae+invvar; interval at invvar HURTS, interaction -0.051).
+Bounds ride as 8 native dummy target cols (interleaved lo,hi), scaler
+rows pinned identity so bounds stay RAW while primary targets are z.
+Criterion is mode-aware: train preds are z (output_transform identity in
+train), eval preds RAW -> un-z for MSE/MSE-fallback, aux cols un-z with
+their own stats. 20 heads = 4 prim + 8 aux (4 chembl + 4 pubchem) + 8
+bounds. Per-fold ST-RAE + 0.085 tripwire in eval json. Smoke (1 fold,
+2 epochs) running; then 3 seeds, one job at a time.
