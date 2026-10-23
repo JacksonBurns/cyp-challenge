@@ -83,6 +83,9 @@ FAMS = {
     "ft_zoo_hinge_w1": g("zoo_hinge_w1"),
     "ft_zoo_hinge_w3": g("zoo_hinge_w3"),
     "ft_homarm": g("homarm"),
+    "ft_pt_mae": g("pt_mae"),
+    "ft_pt_hinge_w3": g("pt_hinge_w3"),
+    "ft_pt_homarm": g("pt_homarm"),
 }
 for _l in ("L1", "L2", "L3", "L4"):
     FAMS[f"ft_umtm{_l}"] = g(f"umtm{_l}")
