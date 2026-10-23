@@ -2145,3 +2145,15 @@ now has a mechanism.
 Homolog download: 2C19=1615/2C8=463/2B6=224/2A6=250 unique compounds
 (CHEMBL3622/3721/4729/5282, verified human SINGLE PROTEIN); --hom arm queued.
 GPU batch2: auxw sweep {0,1,3} + homarm, serial.
+
+### Sec 31b (Oct 23) - zoo1 pool gate: loss-axis diversity CONFIRMED
+Pool = cp18i + zoo_mae/rank/mse (seed 0 standalone families), L1 rotation-CV gate:
+  1A2 5/5 +0.0217 (mae +0.073, intarm +0.119)
+  2C9 4/5 +0.0058 (mse -0.14!, intarm +0.13, mae +0.076)
+  2D6 4/5 +0.0213 (intarm +0.262, mae +0.23, mse -0.138)  <- big: cp18i was +0.0135
+  3A4 5/5 +0.0146 (intarm +0.18)
+vs cp18i: 2D6 improves +0.0078 from mae/mse members; 1A2/3A4 slightly lower
+(bigger pool = fitter variance; seed-averaged families are the fix, mae s1/s2
+queued). NEGATIVE mse weights = decorrelation trade, exactly as pool theory
+predicts. rank arm takes ~0 (pairwise term on noisy pairs = too weak a ranker).
+mae family seed-averaging queued (zoo_batch3) before any cp20 build.
