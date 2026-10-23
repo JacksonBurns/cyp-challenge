@@ -2012,3 +2012,29 @@ POOL TEST (ft_oof_pka2d6.csv as 20th member): cp17 0.4682 -> 0.4682, delta
 +0.0000 (greedy blend ignores it; |corr| vs pool 0.22-0.43, redundant-ish).
 VERDICT: protonation-state/stereo features do NOT break the 2D6 representation
 ceiling. Honest no-op. cp17 (0.4682) + tdi_v5 (0.3422) stand.
+
+### Sec 28 (Oct 22) - PL pseudo-labeling probe - CLOSED (dead)
+src/pl_probe.py: transductive self-training on the 750 blinded test molecules
+(cross-model: per fold, ridge predicts test, refits with pseudo-labels, scores
+val). PCA128 cpmed, honest folds seed 0.
+  A_plain 0.3886 | PL_all 0.3871 (-0.0015) | PL_top 0.3868 (-0.0018).
+2D6 drops most (-0.0046): the ceiling is NOT a low-label-density problem - the
+representation, not the labels, is the wall. Clean negative; gate NOT MET.
+
+### Sec 28 (Oct 22) - placement recheck + leaderboard state (Oct 3 board)
+src/placement_probe.py rerun (global F_SPREAD multiplier sweep, sim truth+DRC
+bands): ST-RAE (the RANKING metric - Oct 3 board is monotone in MA-ST-RAE)
+best at f=0.95 (gain ~1% rel), R2-only best at f=1.35. Shipped f=1.0 is
+within noise of optimal for the ranking metric; NO change justified.
+Leaderboard Oct 3: regression rank 58/255 (MA-ST-RAE 0.5366, MA-R2 0.4961);
+classification rank 78/147 (MA-MCC 0.2833). Post-Oct-14 submits: reg rank 63
+(0.5133 - the board moved up around us), TDI rank 38 (0.3422; rank 30 is
+0.3596 - close, rank 1 0.5346). TDI v5 fractions (2D6 0.15 / 3A4 0.24) sit on
+the v7 E[MCC] plateau (2D6 0.15-0.19, 3A4 0.23-0.31); fresh gate/shift
+classifier FAILED the 0.3448 bar (0.2762 best). No TDI lever survives.
+
+SEC 28 SUMMARY (Oct 22): pKa/stereo probe DEAD (+0.0024 gate, pool +0.0000);
+PL DEAD (-0.0015); placement NO-OP (ranking-metric optimal at shipped);
+dockfeat CLOSED Oct 20 (both tracks FAIL). cp17 (0.4682) + tdi_v5 (0.3422)
+stand. All levers in NEXT_ITER/DOCKFEAT plans are now closed. Repo cleaned
+for final push (see REPRODUCTION.md); Nov 3 = ship cp17 + tdi_v5.

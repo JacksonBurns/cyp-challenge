@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "A_plain": {
+      "nested": {
+        "CYP1A2": 0.5154,
+        "CYP2C9": 0.6986,
+        "CYP2D6": 0.407,
+        "CYP3A4": 0.7968
+      },
+      "macro_R2": 0.3886
+    },
+    "PL_all": {
+      "nested": {
+        "CYP1A2": 0.5148,
+        "CYP2C9": 0.6978,
+        "CYP2D6": 0.4024,
+        "CYP3A4": 0.7965
+      },
+      "macro_R2": 0.3871
+    },
+    "PL_top": {
+      "nested": {
+        "CYP1A2": 0.5142,
+        "CYP2C9": 0.6975,
+        "CYP2D6": 0.4024,
+        "CYP3A4": 0.7964
+      },
+      "macro_R2": 0.3868
+    }
+  },
+  "gate": {
+    "PL_all": false,
+    "PL_top": false
+  },
+  "recipe": "PCA128(cpmed); per-fold RidgeCV base -> pseudo-label test rows -> refit -> val; folds seed0 K=5"
+}
