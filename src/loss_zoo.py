@@ -53,6 +53,10 @@ from interval_arm import bounds_by_smi, build_points_ext, soft_rae, ISO, NPRIM, 
 
 COLS = ft_ext.COLS + BOUNDC
 NALL = len(COLS)
+NAUXD = NAUX
+LO_SL = slice(NPRIM + NAUX, NPRIM + NAUX + 8, 2)
+HI_SL = slice(NPRIM + NAUX + 1, NPRIM + NAUX + 8, 2)
+LABCOLS = ft_ext.COLS
 HOM = ["CYP2C19_hom", "CYP2C8_hom", "CYP2B6_hom", "CYP2A6_hom"]
 HOM_CSV = os.path.join(HERE, "..", "external", "chembl_cyp_homolog_ic50.csv")
 BATCH, VAL_FRAC, MAX_EPOCHS, PATIENCE = 128, 0.1, 40, 8
@@ -150,19 +154,39 @@ class ZooLoss(MSE):
         return torch.cat([prim_loss, aux, bnd], dim=1)
 
 
+def set_cols(hom=False):
+    """Module-level column layout; bound cols always last (8, interleaved)."""
+    global COLS, NALL, LO_SL, HI_SL, NAUXD, LABCOLS
+    aux = ft_ext.AUX + (HOM if hom else [])
+    NAUXD = len(aux)
+    COLS = ft_ext.PRIMARY + aux + BOUNDC
+    NALL = len(COLS)
+    LO_SL = slice(NPRIM + NAUXD, NPRIM + NAUXD + 8, 2)
+    HI_SL = slice(NPRIM + NAUXD + 1, NPRIM + NAUXD + 8, 2)
+    LABCOLS = ft_ext.PRIMARY + aux
+
+
+def build_points(df):
+    pts = []
+    for _, row in df.iterrows():
+        t = [float(row[c]) if pd.notna(row[c]) else float("nan") for c in COLS]
+        pts.append(data.MoleculeDatapoint.from_smi(row["SMILES"], t))
+    return pts
+
+
 def train_fold(tr_df, va_df, seed, full_ft, mode, auxw):
     featurizer = ft_ext.featurizers.SimpleMoleculeMolGraphFeaturizer()
-    tr_dset = data.MoleculeDataset(build_points_ext(tr_df), featurizer)
+    tr_dset = data.MoleculeDataset(build_points(tr_df), featurizer)
     from sklearn.preprocessing import StandardScaler
     Yraw = np.asarray(tr_dset.Y, dtype=np.float64)
     scaler = StandardScaler().fit(Yraw)
-    for j in range(NPRIM + NAUX, NALL):
+    for j in range(NPRIM + NAUXD, NALL):
         scaler.mean_[j] = 0.0
         scaler.scale_[j] = 1.0
         scaler.var_[j] = 1.0
     tr_dset.Y = scaler.transform(Yraw)
     tr_loader = data.build_dataloader(tr_dset, batch_size=BATCH, num_workers=0)
-    va_dset = data.MoleculeDataset(build_points_ext(va_df), featurizer)
+    va_dset = data.MoleculeDataset(build_points(va_df), featurizer)
     va_dset.Y = scaler.transform(np.asarray(va_dset.Y, dtype=np.float64))
     va_loader = data.build_dataloader(va_dset, batch_size=BATCH, num_workers=0,
                                       shuffle=False)
@@ -172,16 +196,18 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw):
     if not full_ft:
         for p in mp.parameters():
             p.requires_grad = False
-    wts = np.concatenate([np.ones(NPRIM), np.full(NAUX, auxw), np.zeros(8)])
+    wts = np.concatenate([np.ones(NPRIM), np.full(NAUXD, auxw), np.zeros(8)])
     mu_p = scaler.mean_[:NPRIM].astype(np.float32)
     sd_p = scaler.scale_[:NPRIM].astype(np.float32)
-    mu_a = scaler.mean_[NPRIM:NPRIM + NAUX].astype(np.float32)
-    sd_a = scaler.scale_[NPRIM:NPRIM + NAUX].astype(np.float32)
+    mu_a = scaler.mean_[NPRIM:NPRIM + NAUXD].astype(np.float32)
+    sd_a = scaler.scale_[NPRIM:NPRIM + NAUXD].astype(np.float32)
     ffn = nn.RegressionFFN(input_dim=mp.output_dim, hidden_dim=2048, n_layers=2,
                            n_tasks=NALL, dropout=0.1,
                            output_transform=nn.UnscaleTransform.from_standard_scaler(scaler),
                            criterion=ZooLoss(mu_p=mu_p, sd_p=sd_p, mu_a=mu_a,
-                                             sd_a=sd_a, mode=mode, task_weights=wts))
+                                             sd_a=sd_a, mode=mode, n_aux=NAUXD,
+                                             lo_sl=LO_SL, hi_sl=HI_SL,
+                                             task_weights=wts))
     model = models.MPNN(mp, nn.MeanAggregation(), ffn, batch_norm=False)
     es = EarlyStopping(monitor="val_loss", patience=PATIENCE, mode="min")
     trainer = pl.Trainer(max_epochs=MAX_EPOCHS, accelerator="gpu", logger=False,
@@ -192,21 +218,31 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw):
     return model
 
 
-def main(mode, auxw, seed=0, full_ft=False, smoke=False):
+def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False):
     global MAX_EPOCHS, PATIENCE, BATCH
+    set_cols(hom)
     wtag = "" if abs(auxw - 0.3) < 1e-9 else f"_w{auxw:g}"
     sfx = "" if seed == 0 else f"_s{seed}"
-    tag = f"zoo_{mode}{wtag}{sfx}"
+    tag = (f"homarm{wtag}{sfx}" if hom and mode == "hinge"
+           else f"zoo_{mode}{wtag}{sfx}")
     if smoke:
         MAX_EPOCHS, PATIENCE, BATCH = 2, 2, 64
-        tag = f"zoo_{mode}_smoke"
+        tag = f"{tag}_smoke"
         ft_ext.EXT_CAP = 1200
     ft, test, allrows = ft_ext.load_tables()
+    if hom:
+        hdf = load_homolog()
+        hdf = hdf[~hdf["SMILES"].isin(set(ft["SMILES"]) | set(test["SMILES"]))]
+        for c in COLS:
+            if c not in hdf:
+                hdf[c] = np.nan
+        allrows = pd.concat([allrows, hdf.assign(_src="homolog")],
+                            ignore_index=True).drop_duplicates("SMILES")
     bb = bounds_by_smi()
     for c in BOUNDC:
         allrows[c] = allrows["SMILES"].map(bb[c])
     ch_mask = (allrows["_src"] == "challenge").values
-    lab = allrows[ft_ext.COLS].notna().any(axis=1)
+    lab = allrows[LABCOLS].notna().any(axis=1)
     oof = pd.DataFrame(np.nan, index=ft.index, columns=ISO)
     folds = ft["fold"].values
     yfull = {iso: ft[iso].values.astype(float) for iso in ISO}
@@ -224,7 +260,7 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False):
         if len(tr_extra) > ft_ext.EXT_CAP:
             keep = rng.choice(len(tr_extra), ft_ext.EXT_CAP, replace=False)
             tr_extra = tr_extra.iloc[keep]
-        lab_tr = tr_pool[ft_ext.COLS].notna().any(axis=1).values
+        lab_tr = tr_pool[LABCOLS].notna().any(axis=1).values
         vi = rng.choice(np.where(lab_tr)[0], size=int(lab_tr.sum() * VAL_FRAC),
                         replace=False)
         fit_df = pd.concat([tr_pool.drop(index=vi), tr_extra], ignore_index=True)
@@ -252,7 +288,7 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False):
     fit_all = pd.concat([allrows[ch_mask], allrows[~ch_mask & lab]],
                         ignore_index=True)
     rng = np.random.default_rng(1000 * seed + 99)
-    lab_all = fit_all[ft_ext.COLS].notna().any(axis=1).values
+    lab_all = fit_all[LABCOLS].notna().any(axis=1).values
     vi = rng.choice(np.where(lab_all)[0], size=int(lab_all.sum() * VAL_FRAC),
                     replace=False)
     model = train_fold(fit_all.drop(index=vi).reset_index(drop=True),
@@ -287,5 +323,7 @@ if __name__ == "__main__":
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--full-ft", action="store_true")
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--hom", action="store_true",
+                    help="add 4 ChEMBL homolog aux heads (2C19/2C8/2B6/2A6)")
     a = ap.parse_args()
-    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke)
+    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom)
