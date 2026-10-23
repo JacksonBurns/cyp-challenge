@@ -42,6 +42,17 @@ Pipeline (cyp env, repo root):
    predictions; official TDI validator PASS).
 4. Validation: built-in (`validation/tdi_validation.py`), prints `VALID: True`.
 
+## L1 candidate (Oct 22, not yet submitted): cp18_hinge
+
+1. `python src/hinge_blend.py --l4` -> `cache/hinge_blend_l1.json` (per-isoform
+   gate report) + `cache/hinge_w_cp18.json` (fitted weights; 1A2/3A4 pass).
+2. `python src/hinge_blend.py --emit` ->
+   `cache/regression_cp18_hinge_submission.csv` (1A2/3A4 hinge-fit columns,
+   moment-restore to cp17 placed mean/sd; 2C9/2D6 = cp17 columns).
+   md5 `21e48ea3ac61086fda929f4c56d51c0a` (Oct 22 build).
+3. `python src/verify_submissions.py cache/regression_cp18_hinge_submission.csv`
+   -> official validator True.
+
 ## Honest-eval harness (the metric every gate uses)
 
 - `src/new_member_pool_test.py <tag>`: adds `cache/ft_oof_<tag>*.csv` as a
