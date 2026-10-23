@@ -74,6 +74,7 @@ FAMS = {
     "ft_admmed": g("admmed"),
     "ft_unimol": g("unimol"),
     "ft_tabpfn_cpmed": g("tabpfn_cpmed"),
+    "ft_intarm": g("intarm"),
 }
 for _l in ("L1", "L2", "L3", "L4"):
     FAMS[f"ft_umtm{_l}"] = g(f"umtm{_l}")
@@ -82,6 +83,12 @@ POOLS = {
              "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
              "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
              "ft_umtmL3", "ft_umtmL4", "ft_tabpfn_cpmed"],
+    "cp18i": [n for n in
+              ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+               "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+               "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
+               "ft_umtmL3", "ft_umtmL4", "ft_tabpfn_cpmed", "ft_intarm"]
+              ],
 }
 
 ISO = R.ISOFORMS
@@ -170,10 +177,12 @@ def fit(P, lo, hi, w0, lam, nonneg=False):
     return res.x, float(res.fun)
 
 
-def main(emit, do_l4):
-    names = [n for n in POOLS[POOL] if FAMS.get(n)]
+def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_blend_l1.json'):
+    names = [n for n in POOLS[pool] if FAMS.get(n)]
     oofs = {k: raw_oof_fam(k) for k in names}
     inc = pd.read_csv(os.path.join(CACHE, INCUMBENT_CSV))
+    global WOUT, REPORT
+    WOUT, REPORT = wout, report_name
     report = {}
     new_w = {}
     for iso in ISO:
@@ -274,7 +283,7 @@ def main(emit, do_l4):
             }
         report[iso]["w_fitted"] = [round(float(v), 4) for v in w1]
 
-    json.dump(report, open(os.path.join(CACHE, "hinge_blend_l1.json"), "w"),
+    json.dump(report, open(os.path.join(CACHE, REPORT), "w"),
               indent=2, default=float)
     for iso in ISO:
         print(iso, json.dumps({k: v for k, v in report[iso].items()
@@ -287,7 +296,7 @@ def main(emit, do_l4):
                    "w_fitted": [float(v) for v in new_w[iso]["w1"]],
                    "members": names}
              for iso in ISO}
-    json.dump(wsave, open(os.path.join(CACHE, "hinge_w_cp18.json"), "w"), indent=2)
+    json.dump(wsave, open(os.path.join(CACHE, WOUT), "w"), indent=2)
 
     if emit:
         test_smiles = test["SMILES"].values
@@ -321,5 +330,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--emit", action="store_true")
     ap.add_argument("--l4", action="store_true")
+    ap.add_argument("--pool", default="cp17")
+    ap.add_argument("--wout", default="hinge_w_cp18.json")
+    ap.add_argument("--report", default="hinge_blend_l1.json")
     a = ap.parse_args()
-    main(a.emit, a.l4)
+    main(a.emit, a.l4, a.pool, a.wout, a.report)
