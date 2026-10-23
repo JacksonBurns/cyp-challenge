@@ -54,7 +54,8 @@ import run_regression as R  # noqa: E402
 # Family/pool definitions duplicated from src/blendN_all.py (that module
 # runs a blend at import time and cannot be imported). Keep in sync.
 def g(tag):
-    return sorted(glob.glob(os.path.join(CACHE, f"ft_oof_{tag}*.csv")))
+    return sorted(f for f in glob.glob(os.path.join(CACHE, f"ft_oof_{tag}*.csv"))
+                  if "smoke" not in os.path.basename(f))
 
 
 FAMS = {
