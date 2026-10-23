@@ -2112,3 +2112,8 @@ train), eval preds RAW -> un-z for MSE/MSE-fallback, aux cols un-z with
 their own stats. 20 heads = 4 prim + 8 aux (4 chembl + 4 pubchem) + 8
 bounds. Per-fold ST-RAE + 0.085 tripwire in eval json. Smoke (1 fold,
 2 epochs) running; then 3 seeds, one job at a time.
+
+### Sec 30c (Oct 23) - L3 seed-0 + cp18i pool gate
+intarm seed0 standalone: pooled OOF hinge 0.4358 vs cpmed 0.3908 (all 4 neg) - arm is a pool-member, not a member-level win (field-consistent).
+cp18i gate (intarm as 20th family, seed0 only): 1A2 0.0285 5/5 (vs cp17 0.0287, ~unchanged); 3A4 +0.0162 5/5 (intarm w +0.111, gain +0.003 over cp17); 2C9 +0.0061 3/5 FAIL; 2D6 +0.0110 4/5 PASS (marginal, intarm w +0.136, one fold -0.036, L4 CI lower bound 0.0004).
+Seed discipline: need seeds 1-2 arm runs, then re-gate before any 2D6 ship call. Seed 1 running on GPU.
