@@ -138,7 +138,8 @@ def raw_test_matrix(name, test_smiles):
         blend = np.load(os.path.join(CACHE, "blend_test_preds.npz"))
         return np.column_stack([blend[f"concat_{i}"] for i in ISO])
     tag = name[3:]
-    files = sorted(glob.glob(os.path.join(CACHE, f"ft_test_preds_{tag}*.csv")))
+    files = sorted(f for f in glob.glob(os.path.join(CACHE, f"ft_test_preds_{tag}*.csv"))
+                   if "smoke" not in os.path.basename(f))
     assert files, f"no test preds for {tag}"
     acc = np.full((len(test_smiles), len(ISO)), np.nan)
     cnt = np.zeros((len(test_smiles), len(ISO)))
@@ -178,12 +179,15 @@ def fit(P, lo, hi, w0, lam, nonneg=False):
     return res.x, float(res.fun)
 
 
-def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_blend_l1.json'):
+def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_blend_l1.json',
+         incumbent_csv=INCUMBENT_CSV, out_csv="regression_cp18_hinge_submission.csv",
+         ship_list=""):
     names = [n for n in POOLS[pool] if FAMS.get(n)]
     oofs = {k: raw_oof_fam(k) for k in names}
-    inc = pd.read_csv(os.path.join(CACHE, INCUMBENT_CSV))
+    inc = pd.read_csv(os.path.join(CACHE, incumbent_csv))
     global WOUT, REPORT
     WOUT, REPORT = wout, report_name
+    ship_only = set(ship_list.split(",")) if ship_list else None
     report = {}
     new_w = {}
     for iso in ISO:
@@ -220,7 +224,9 @@ def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_bl
         insample = st_rae(P @ w1, y_r, lo_r, hi_r)
         n_pos = int(sum(g > 0 for g in best_folds))
         l1_pass = n_pos >= 4 and best_mean > 0.004
-        new_w[iso] = {"w1": w1, "lam": best_lam, "pass": l1_pass}
+        new_w[iso] = {"w1": w1, "lam": best_lam,
+                      "pass": bool(l1_pass and (ship_only is None
+                                                or iso in ship_only))}
 
         report[iso] = {
             "n_rows": int(len(rows)),
@@ -321,8 +327,8 @@ def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_bl
                   round(float(spearmanr(placed, inc[f"{iso}_pIC50_direct_inhibition"]).statistic), 4),
                   "mean/sd", round(float(placed.mean()), 3), round(float(placed.std()), 3),
                   flush=True)
-        out.to_csv(os.path.join(CACHE, "regression_cp18_hinge_submission.csv"), index=False)
-        print("wrote cache/regression_cp18_hinge_submission.csv", flush=True)
+        out.to_csv(os.path.join(CACHE, out_csv), index=False)
+        print(f"wrote cache/{out_csv}", flush=True)
 
 
 R_FLOOR = 1.0
@@ -331,8 +337,12 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--emit", action="store_true")
     ap.add_argument("--l4", action="store_true")
-    ap.add_argument("--pool", default="cp17")
+    ap.add_argument("--pool", default=POOL)
     ap.add_argument("--wout", default="hinge_w_cp18.json")
     ap.add_argument("--report", default="hinge_blend_l1.json")
+    ap.add_argument("--incumbent", default=INCUMBENT_CSV)
+    ap.add_argument("--out", default="regression_cp18_hinge_submission.csv")
+    ap.add_argument("--ship", default="",
+                    help="comma list of isoforms to ship (gate AND ship-set)")
     a = ap.parse_args()
-    main(a.emit, a.l4, a.pool, a.wout, a.report)
+    main(a.emit, a.l4, a.pool, a.wout, a.report, a.incumbent, a.out, a.ship)
