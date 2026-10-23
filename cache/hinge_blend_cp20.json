@@ -1,0 +1,451 @@
+{
+  "CYP1A2": {
+    "n_rows": 1412,
+    "incumbent_oof_st_rae": 0.7241,
+    "fitted_oof_st_rae": 0.6762,
+    "lam": 0.03,
+    "rotation_cv": {
+      "0.03": {
+        "folds": [
+          0.0055,
+          0.0432,
+          0.051,
+          0.0009,
+          0.0171
+        ],
+        "mean": 0.0235,
+        "pos_folds": 5
+      },
+      "0.1": {
+        "folds": [
+          0.0091,
+          0.0484,
+          0.0415,
+          0.0034,
+          0.0145
+        ],
+        "mean": 0.0234,
+        "pos_folds": 5
+      },
+      "0.3": {
+        "folds": [
+          0.0078,
+          0.0483,
+          0.0411,
+          0.0066,
+          0.0137
+        ],
+        "mean": 0.0235,
+        "pos_folds": 5
+      }
+    },
+    "cv_mean_gain": 0.0235,
+    "cv_pos_folds": 5,
+    "gate_pass_L1": true,
+    "spearman_w_vs_incumbent_blend_oof": 0.9647,
+    "weights_fitted_top": {
+      "ft_tabpfn_cpmed": 0.423,
+      "ft_umtmL2": 0.379,
+      "ft_zoo_mae": 0.215,
+      "gbm": 0.177,
+      "ft_d2d6": -0.174,
+      "ft_zoo_hinge_w0": -0.162,
+      "ft_unimol": 0.146,
+      "ft_admchm": 0.141,
+      "ft_fullft": -0.14,
+      "ft_umtmL3": 0.14,
+      "ft_zoo_hinge_w3": 0.139,
+      "ft_umtmL4": 0.127,
+      "ft_chmridge": -0.112,
+      "ft_homarm": 0.092,
+      "ft_zoo_hinge_w1": -0.089,
+      "ft_umtmL1": -0.084,
+      "ft_admmed": -0.076,
+      "ft_pre": 0.07,
+      "emb": -0.062,
+      "ft_frozen": -0.044,
+      "ft_cpmed": -0.039,
+      "ft_zoo_mse": -0.035,
+      "ft_ext": -0.032,
+      "ft_intarm": 0.023,
+      "ft_zoo_rank": 0.01
+    },
+    "L4": {
+      "st_rae_L4": 0.7028,
+      "delta_vs_incumbent": 0.0213,
+      "bootstrap_mean": 0.0213,
+      "ci95": [
+        0.0112,
+        0.0318
+      ],
+      "ci_excludes_0": true,
+      "direction_agrees_L1": true
+    },
+    "w_fitted": [
+      0.1771,
+      -0.0615,
+      -0.0436,
+      -0.1403,
+      -0.0324,
+      0.0696,
+      -0.0095,
+      -0.0387,
+      0.0017,
+      -0.1119,
+      -0.1744,
+      0.1415,
+      -0.076,
+      0.1457,
+      0.3791,
+      -0.0836,
+      0.1399,
+      0.1269,
+      0.4228,
+      0.023,
+      0.215,
+      0.0101,
+      -0.0347,
+      -0.162,
+      -0.0887,
+      0.139,
+      0.0923
+    ]
+  },
+  "CYP2C9": {
+    "n_rows": 1285,
+    "incumbent_oof_st_rae": 0.4951,
+    "fitted_oof_st_rae": 0.4666,
+    "lam": 0.3,
+    "rotation_cv": {
+      "0.03": {
+        "folds": [
+          0.0228,
+          0.0038,
+          0.0138,
+          0.0036,
+          -0.0076
+        ],
+        "mean": 0.0073,
+        "pos_folds": 4
+      },
+      "0.1": {
+        "folds": [
+          0.0212,
+          0.0055,
+          0.0171,
+          0.0019,
+          -0.0086
+        ],
+        "mean": 0.0074,
+        "pos_folds": 4
+      },
+      "0.3": {
+        "folds": [
+          0.0247,
+          0.0027,
+          0.0162,
+          0.0047,
+          -0.0085
+        ],
+        "mean": 0.008,
+        "pos_folds": 4
+      }
+    },
+    "cv_mean_gain": 0.008,
+    "cv_pos_folds": 4,
+    "gate_pass_L1": true,
+    "spearman_w_vs_incumbent_blend_oof": 0.9859,
+    "weights_fitted_top": {
+      "ft_tabpfn_cpmed": 0.453,
+      "ft_umtmL1": 0.279,
+      "ft_umtmL2": 0.183,
+      "ft_zoo_hinge_w1": 0.166,
+      "ft_cpchm": 0.145,
+      "ft_ext": -0.132,
+      "ft_umtmL3": 0.105,
+      "ft_intarm": 0.104,
+      "ft_pre": -0.103,
+      "ft_zoo_hinge_w3": 0.09,
+      "ft_umtmL4": -0.079,
+      "ft_chmridge": -0.072,
+      "ft_zoo_mse": -0.068,
+      "emb": -0.059,
+      "gbm": 0.059,
+      "ft_homarm": 0.059,
+      "ft_dmpnn": -0.057,
+      "ft_admchm": 0.055,
+      "ft_fullft": -0.048,
+      "ft_d2d6": -0.035,
+      "ft_zoo_mae": -0.026,
+      "ft_admmed": 0.026,
+      "ft_zoo_rank": -0.024,
+      "ft_zoo_hinge_w0": -0.02,
+      "ft_frozen": 0.019,
+      "ft_unimol": -0.013
+    },
+    "L4": {
+      "st_rae_L4": 0.4834,
+      "delta_vs_incumbent": 0.0117,
+      "bootstrap_mean": 0.0115,
+      "ci95": [
+        0.0047,
+        0.0192
+      ],
+      "ci_excludes_0": true,
+      "direction_agrees_L1": true
+    },
+    "w_fitted": [
+      0.059,
+      -0.0591,
+      0.0186,
+      -0.0476,
+      -0.1317,
+      -0.1035,
+      -0.0573,
+      -0.0016,
+      0.145,
+      -0.0725,
+      -0.0354,
+      0.0547,
+      0.0257,
+      -0.0126,
+      0.1829,
+      0.2787,
+      0.1049,
+      -0.0794,
+      0.4532,
+      0.104,
+      -0.0259,
+      -0.0244,
+      -0.0681,
+      -0.0198,
+      0.1657,
+      0.0905,
+      0.059
+    ]
+  },
+  "CYP2D6": {
+    "n_rows": 1493,
+    "incumbent_oof_st_rae": 0.8497,
+    "fitted_oof_st_rae": 0.8073,
+    "lam": 0.3,
+    "rotation_cv": {
+      "0.03": {
+        "folds": [
+          0.0352,
+          0.01,
+          -0.0141,
+          -0.0116,
+          0.0603
+        ],
+        "mean": 0.016,
+        "pos_folds": 3
+      },
+      "0.1": {
+        "folds": [
+          0.0365,
+          0.0009,
+          -0.0117,
+          0.0057,
+          0.0566
+        ],
+        "mean": 0.0176,
+        "pos_folds": 4
+      },
+      "0.3": {
+        "folds": [
+          0.0432,
+          0.0026,
+          0.0001,
+          -0.0014,
+          0.0607
+        ],
+        "mean": 0.021,
+        "pos_folds": 4
+      }
+    },
+    "cv_mean_gain": 0.021,
+    "cv_pos_folds": 4,
+    "gate_pass_L1": true,
+    "spearman_w_vs_incumbent_blend_oof": 0.9571,
+    "weights_fitted_top": {
+      "ft_umtmL2": 0.578,
+      "ft_zoo_mae": 0.245,
+      "ft_fullft": -0.243,
+      "ft_cpchm": 0.201,
+      "ft_zoo_mse": -0.198,
+      "ft_chmridge": -0.18,
+      "ft_admchm": -0.174,
+      "ft_tabpfn_cpmed": 0.171,
+      "ft_d2d6": 0.151,
+      "ft_umtmL3": -0.137,
+      "ft_ext": 0.135,
+      "ft_unimol": 0.133,
+      "ft_zoo_hinge_w3": 0.129,
+      "ft_admmed": 0.128,
+      "ft_pre": 0.076,
+      "ft_cpmed": -0.066,
+      "ft_homarm": 0.062,
+      "ft_umtmL1": -0.058,
+      "ft_intarm": 0.057,
+      "ft_zoo_hinge_w0": 0.044,
+      "ft_zoo_rank": 0.043,
+      "ft_zoo_hinge_w1": -0.042,
+      "ft_dmpnn": -0.035,
+      "ft_umtmL4": -0.028,
+      "gbm": 0.028,
+      "emb": -0.011
+    },
+    "L4": {
+      "st_rae_L4": 0.8441,
+      "delta_vs_incumbent": 0.0056,
+      "bootstrap_mean": 0.0056,
+      "ci95": [
+        0.0002,
+        0.0108
+      ],
+      "ci_excludes_0": true,
+      "direction_agrees_L1": true
+    },
+    "w_fitted": [
+      0.0279,
+      -0.0111,
+      0.0031,
+      -0.2426,
+      0.1352,
+      0.0763,
+      -0.0346,
+      -0.0659,
+      0.2008,
+      -0.1796,
+      0.1515,
+      -0.1744,
+      0.1278,
+      0.1332,
+      0.5783,
+      -0.0576,
+      -0.1367,
+      -0.0282,
+      0.1713,
+      0.0567,
+      0.2454,
+      0.0429,
+      -0.1978,
+      0.0442,
+      -0.0419,
+      0.1287,
+      0.0624
+    ]
+  },
+  "CYP3A4": {
+    "n_rows": 2335,
+    "incumbent_oof_st_rae": 0.3999,
+    "fitted_oof_st_rae": 0.3714,
+    "lam": 0.1,
+    "rotation_cv": {
+      "0.03": {
+        "folds": [
+          0.036,
+          0.0144,
+          0.0028,
+          0.0208,
+          0.0089
+        ],
+        "mean": 0.0166,
+        "pos_folds": 5
+      },
+      "0.1": {
+        "folds": [
+          0.0404,
+          0.0151,
+          0.0019,
+          0.0195,
+          0.0106
+        ],
+        "mean": 0.0175,
+        "pos_folds": 5
+      },
+      "0.3": {
+        "folds": [
+          0.041,
+          0.0121,
+          -0.0023,
+          0.0183,
+          0.0088
+        ],
+        "mean": 0.0156,
+        "pos_folds": 4
+      }
+    },
+    "cv_mean_gain": 0.0175,
+    "cv_pos_folds": 5,
+    "gate_pass_L1": true,
+    "spearman_w_vs_incumbent_blend_oof": 0.9926,
+    "weights_fitted_top": {
+      "ft_umtmL2": 0.296,
+      "ft_zoo_hinge_w3": 0.222,
+      "ft_umtmL1": 0.188,
+      "ft_fullft": -0.187,
+      "ft_tabpfn_cpmed": 0.181,
+      "ft_cpmed": 0.169,
+      "ft_zoo_mae": -0.118,
+      "gbm": 0.109,
+      "ft_intarm": 0.107,
+      "ft_ext": -0.096,
+      "ft_cpchm": 0.086,
+      "ft_chmridge": -0.067,
+      "ft_dmpnn": -0.059,
+      "ft_frozen": 0.056,
+      "ft_umtmL4": -0.049,
+      "ft_pre": 0.044,
+      "ft_admchm": 0.042,
+      "ft_umtmL3": 0.041,
+      "ft_unimol": -0.035,
+      "ft_homarm": 0.03,
+      "ft_d2d6": 0.027,
+      "ft_zoo_hinge_w0": 0.019,
+      "ft_zoo_hinge_w1": -0.013,
+      "ft_admmed": 0.012
+    },
+    "L4": {
+      "st_rae_L4": 0.3855,
+      "delta_vs_incumbent": 0.0144,
+      "bootstrap_mean": 0.0144,
+      "ci95": [
+        0.0095,
+        0.0199
+      ],
+      "ci_excludes_0": true,
+      "direction_agrees_L1": true
+    },
+    "w_fitted": [
+      0.109,
+      0.0092,
+      0.0556,
+      -0.1871,
+      -0.0956,
+      0.0441,
+      -0.0595,
+      0.1686,
+      0.0861,
+      -0.0669,
+      0.027,
+      0.0419,
+      0.0123,
+      -0.035,
+      0.2956,
+      0.1879,
+      0.0406,
+      -0.0493,
+      0.181,
+      0.1073,
+      -0.1182,
+      -0.0035,
+      0.0013,
+      0.0191,
+      -0.0131,
+      0.2219,
+      0.0299
+    ]
+  }
+}

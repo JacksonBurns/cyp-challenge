@@ -2181,3 +2181,16 @@ weight (0.073-0.098) despite quarantine flags -> seeds 1/2 queued.
 Seed-averaging queue: mae s1/s2 (batch3, running), w3 s1/s2 + homarm s1/s2
 (batch4, queued). cp20 build = zoo1b pool with seed-averaged families, 5/5-clean
 ship set, moment-restore. GPU serial queue guarantees no overlap.
+
+### Sec 32 (Oct 23) - seed-averaged zoo2 gate + cp20 BUILT
+zoo2 gate (mae/w3/homarm now 3-seed families): ALL PASS, 1A2 5/5 +0.0235
+(mae +0.215, w3 +0.139, homarm +0.092), 2C9 4/5 +0.008, 2D6 4/5 +0.021
+(mae +0.245, mse -0.198), 3A4 5/5 +0.0175 (w3 +0.222). Seed floors: w3
+0.743/.748/.740, homarm .760/.751/.766 (stable; intarm 0.44-0.50 was the
+outlier). cp20 = ship 1A2+3A4 (5/5-clean), 2C9/2D6 = cp18 bytes. Validator
+PASS, md5 5a141f80. vs cp19: 1A2 rho 0.9873, 3A4 0.9975; 1A2 fit 0.6762
+(zoo2) vs 0.6772 (zoo1b); CV gain marginally below cp19's cp18i fit (+0.0235
+vs +0.026 1A2; +0.0175 vs +0.0188 3A4) = fitter variance of the 27-family
+pool; pool is strictly richer (loss + homolog + seed axes). Submission call:
+cp19 first (simpler, marginally better CV); cp20 is the promoted candidate
+if probe evidence supports. TDI queued; integration pass Nov 1.
