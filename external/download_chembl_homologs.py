@@ -24,7 +24,10 @@ KEEP = ["canonical_smiles", "molecule_chembl_id", "standard_relation", "standard
         "document_chembl_id", "target_pref_name", "activity_comment",
         "data_validity_comment", "potential_duplicate", "src_id", "standard_units",
         "target_organism", "bao_format"]
-HOMOLOGS = ["CYP2C19", "CYP2C8", "CYP2B6", "CYP2A6"]
+HOMOLOGS = {"CYP2C19": "CHEMBL3622", "CYP2C8": "CHEMBL3721",
+            "CYP2B6": "CHEMBL4729", "CYP2A6": "CHEMBL5282"}
+# resolved via target.json pref_name__iexact "Cytochrome P450 <n>", all
+# SINGLE PROTEIN / Homo sapiens (verified Oct 23); find_target kept as fallback
 
 
 def fetch(url, tries=5):
@@ -60,8 +63,8 @@ def main():
     with open(OUT, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=fields)
         w.writeheader()
-        for iso in HOMOLOGS:
-            tid = find_target(iso)
+        for iso, tid in HOMOLOGS.items():
+            tid = tid or find_target(iso)
             print(f"{iso} -> {tid}", flush=True)
             if not tid:
                 continue

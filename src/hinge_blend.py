@@ -76,6 +76,13 @@ FAMS = {
     "ft_unimol": g("unimol"),
     "ft_tabpfn_cpmed": g("tabpfn_cpmed"),
     "ft_intarm": g("intarm"),
+    "ft_zoo_mae": g("zoo_mae"),
+    "ft_zoo_rank": g("zoo_rank"),
+    "ft_zoo_mse": g("zoo_mse"),
+    "ft_zoo_hinge_w0": g("zoo_hinge_w0"),
+    "ft_zoo_hinge_w1": g("zoo_hinge_w1"),
+    "ft_zoo_hinge_w3": g("zoo_hinge_w3"),
+    "ft_homarm": g("homarm"),
 }
 for _l in ("L1", "L2", "L3", "L4"):
     FAMS[f"ft_umtm{_l}"] = g(f"umtm{_l}")
@@ -90,6 +97,16 @@ POOLS = {
                "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
                "ft_umtmL3", "ft_umtmL4", "ft_tabpfn_cpmed", "ft_intarm"]
               ],
+    # loss-zoo + homolog screening pool: families auto-included as their OOF
+    # files appear (FAMS.get filters empties)
+    "zoo1": [n for n in
+             ["gbm", "emb", "ft_frozen", "ft_fullft", "ft_ext", "ft_pre",
+              "ft_dmpnn", "ft_cpmed", "ft_cpchm", "ft_chmridge", "ft_d2d6",
+              "ft_admchm", "ft_admmed", "ft_unimol", "ft_umtmL2", "ft_umtmL1",
+              "ft_umtmL3", "ft_umtmL4", "ft_tabpfn_cpmed", "ft_intarm",
+              "ft_zoo_mae", "ft_zoo_rank", "ft_zoo_mse", "ft_zoo_hinge_w0",
+              "ft_zoo_hinge_w1", "ft_zoo_hinge_w3", "ft_homarm"]
+             ],
 }
 
 ISO = R.ISOFORMS
@@ -163,25 +180,39 @@ def st_rae(p, y, lo, hi):
     return hinge_sum(p, lo, hi) / base.sum()
 
 
-def obj(w, P, lo, hi, w0, lam):
+def obj(w, P, lo, hi, w0, lam, rw=None):
     p = P @ w
-    return hinge_sum(p, lo, hi) + lam * float(np.sum((w - w0) ** 2))
+    h = np.clip(p - hi, 0, None) + np.clip(lo - p, 0, None)
+    hs = float(h.sum() if rw is None else (rw * h).sum())
+    return hs + lam * float(np.sum((w - w0) ** 2))
 
 
-def fit(P, lo, hi, w0, lam, nonneg=False):
+def fit(P, lo, hi, w0, lam, nonneg=False, rw=None):
     if nonneg:
-        res = minimize(obj, w0 + np.ones(len(w0)) * 0.02, args=(P, lo, hi, w0, lam),
+        res = minimize(obj, w0 + np.ones(len(w0)) * 0.02,
+                       args=(P, lo, hi, w0, lam, rw),
                        method="L-BFGS-B", bounds=[(0.0, None)] * len(w0),
                        options={"maxiter": 2000})
         return res.x, float(res.fun)
-    res = minimize(obj, w0, args=(P, lo, hi, w0, lam), method="Powell",
+    res = minimize(obj, w0, args=(P, lo, hi, w0, lam, rw), method="Powell",
                    options={"maxiter": MAXEV, "xtol": 1e-6, "ftol": 1e-8})
     return res.x, float(res.fun)
 
 
+def conf_row_weights(lo, hi):
+    """Per-compound confidence from the credible-interval width: narrow
+    interval = high-confidence assay -> up-weight in the FIT objective
+    (never in the metric). Median-normalized so lam stays comparable;
+    clipped [0.25, 4]. Rows without bounds -> weight 1."""
+    w = hi - lo
+    med = np.nanmedian(w[np.isfinite(w) & (w > 0)])
+    rw = np.where(np.isfinite(w) & (w > 0), med / np.where(w > 0, w, np.nan), 1.0)
+    return np.clip(np.nan_to_num(rw, nan=1.0), 0.25, 4.0)
+
+
 def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_blend_l1.json',
          incumbent_csv=INCUMBENT_CSV, out_csv="regression_cp18_hinge_submission.csv",
-         ship_list=""):
+         ship_list="", conf=False):
     names = [n for n in POOLS[pool] if FAMS.get(n)]
     oofs = {k: raw_oof_fam(k) for k in names}
     inc = pd.read_csv(os.path.join(CACHE, incumbent_csv))
@@ -198,6 +229,7 @@ def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_bl
         P = np.column_stack([oofs[k].iloc[rows][iso].values for k in names])
         w0 = np.array([bN[iso]["weights"].get(k, 0.0) for k in names])
         lo_r, hi_r, y_r = lo[rows], hi[rows], y[rows]
+        rw_r = conf_row_weights(lo_r, hi_r) if conf else None
         base_w0 = st_rae(P @ w0, y_r, lo_r, hi_r)
 
         # ---- L1: Powell hinge fit, lambda sweep on rotation CV ----
@@ -209,7 +241,8 @@ def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_bl
             for f in range(5):
                 tr = fold_of != f
                 va = fold_of == f
-                w, _ = fit(P[tr], lo_r[tr], hi_r[tr], w0, lam)
+                w, _ = fit(P[tr], lo_r[tr], hi_r[tr], w0, lam, rw=None if rw_r is None
+                           else rw_r[tr])
                 g = (st_rae(P[tr] @ w0, y_r[tr], lo_r[tr], hi_r[tr])
                      - st_rae(P[tr] @ w, y_r[tr], lo_r[tr], hi_r[tr]))
                 gv = (st_rae(P[va] @ w0, y_r[va], lo_r[va], hi_r[va])
@@ -220,7 +253,7 @@ def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_bl
                             "pos_folds": int(sum(g > 0 for g in gains))}
             if mean_g > best_mean:
                 best_lam, best_mean, best_folds = lam, mean_g, gains
-        w1, f1 = fit(P, lo_r, hi_r, w0, best_lam)
+        w1, f1 = fit(P, lo_r, hi_r, w0, best_lam, rw=rw_r)
         insample = st_rae(P @ w1, y_r, lo_r, hi_r)
         n_pos = int(sum(g > 0 for g in best_folds))
         l1_pass = n_pos >= 4 and best_mean > 0.004
@@ -344,5 +377,7 @@ if __name__ == "__main__":
     ap.add_argument("--out", default="regression_cp18_hinge_submission.csv")
     ap.add_argument("--ship", default="",
                     help="comma list of isoforms to ship (gate AND ship-set)")
+    ap.add_argument("--conf", action="store_true",
+                    help="interval-width per-row confidence weights in FIT only")
     a = ap.parse_args()
-    main(a.emit, a.l4, a.pool, a.wout, a.report, a.incumbent, a.out, a.ship)
+    main(a.emit, a.l4, a.pool, a.wout, a.report, a.incumbent, a.out, a.ship, a.conf)
