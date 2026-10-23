@@ -19,9 +19,20 @@ Deadline: Nov 1. Board slots: 12h cooldown. Current standing: cp18 = 0.5119.
 - USER BOARD ACTIONS QUEUED: submit cp19 -> probe B -> probe C, send me
   per-isoform ST-RAE numbers after each. Cooldown expired ~8:52 AM EDT.
 
+## Results so far (Oct 23, 16:00)
+- zoo1 pool gate (cp18i + zoo_mae/rank/mse seed-0): ALL 4 PASS. 1A2 5/5 +0.0217,
+  2C9 4/5 +0.0058, 2D6 4/5 +0.0213 (was +0.0135 in cp18i: mae w=0.23, mse
+  w=-0.138), 3A4 5/5 +0.0146. Loss-axis diversity CONFIRMED; mse anti-correlates
+  (w -0.14 on 2C9) = the decorrelation trade. rank arm inert (~0 weight).
+- Standalone zoo ST-RAE: mae 0.7502, rank 0.8146, mse 0.8443 (all worse than
+  cpmed 0.6443; value is pool-level only, per theory).
+- --conf per-row interval-width: NEGATIVE (all 4 gates fail, cv -0.033/-0.009).
+- Homolog data: 2089 compounds (2C19 1615, 2C8 463, 2B6 224, 2A6 250),
+  CHEMBL3622/3721/4729/5282 verified. homarm trains in batch2.
+
 ## Theory driving current work
 Pool's binding constraint is DECORRELATION, not accuracy. Loss-axis diversity >
-seed-axis diversity (intarm evidence). Queue:
+seed-axis diversity (intarm + zoo evidence). Queue:
 
 1. LOSS ZOO (GPU, ~4h serial): same union-table trainer, new primary loss:
    - mae: plain L1 z-space (loss-diversity control)            [arm tag zoo_mae]
