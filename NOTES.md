@@ -2168,3 +2168,16 @@ homarm (12-aux incl. 4 ChEMBL homolog heads): macro 0.7595, 3/4 quarantined
 (2D6 fold3 1.088) - single seed, family=seed-avg is gate unit; seed 1/2 queued
 if zoo1b gate wants it.
 zoo1b gate (all 7 new families) running.
+
+### Sec 31d (Oct 23) - zoo1b full gate: ALL 4 PASS, w3 is the star member
+Pool = cp18i + 7 zoo families (all seed-0 except intarm seed-avg), L1 gate:
+  1A2 4/5 +0.0169 (w3 +0.244! homarm +0.073)
+  2C9 4/5 +0.0068 (w1 +0.119, w3 +0.114, mse -0.086)
+  2D6 4/5 +0.0193 (mse -0.26, mae +0.183, w3 +0.16, homarm +0.098)
+  3A4 5/5 +0.0169 (w3 +0.169)
+auxw3 (heavily-aux regularized hinge arm) takes the LARGEST new-family weight
+on 3/4 isoforms. mse anti-correlates harder (-0.26 on 2D6). homarm earns real
+weight (0.073-0.098) despite quarantine flags -> seeds 1/2 queued.
+Seed-averaging queue: mae s1/s2 (batch3, running), w3 s1/s2 + homarm s1/s2
+(batch4, queued). cp20 build = zoo1b pool with seed-averaged families, 5/5-clean
+ship set, moment-restore. GPU serial queue guarantees no overlap.
