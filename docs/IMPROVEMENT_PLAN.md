@@ -155,6 +155,27 @@ Each entry has a NOTES.md section showing the gate it failed.
    holds finished plans; REPRODUCTION.md updated so the final pair rebuilds
    byte-identical from the cleaned tree.
 
+## 4b. Mid/low mining addendum (open_mid_low.md, Oct 22 late)
+
+- **Rank-loss heads are CLOSED by field evidence** (we never tried them; do
+  not start): soft-Spearman -0.0729 (t=-17.6), lambdarank -0.177, RankNet
+  -0.018, oracle ceiling +0.009. rho gains in the field come from
+  censored-label coverage, hinge training, multi-task sharing (splitting
+  costs -0.0189), population-matched pretraining. The 0.72->0.78 rho gap is
+  label coverage, not architecture -> L3 (interval-hinge arms) is the rho
+  lever; L1/L2 are the calibration levers.
+- **Independent confirmations of L2**: jeremy placement-only
+  0.7247->0.5214 blind (CYP2D6 R2 -0.749->+0.377); talindrew spread
+  discount 0.896 via board secants + closed-form blind-moment recovery from
+  one's own scored row; adlvdl same algebra + placement gating; dargason-002
+  affine calibration 0.8981->0.5734 OOF ST-RAE with rho unchanged.
+  Placement is the field's biggest single lever and we are mid-band on it.
+- **Magicano confirms L3**: interval-hinge = the metric as loss; uniform
+  weights optimal by sweep; proxy point-labels on censored data cost
+  +0.0442 ST-RAE (do not convert bounds to points; hinge them).
+- dargason constant-4.0 baseline per-isoform ST-RAE: 1A2 1.0886, 2C9
+  1.6432, 2D6 1.1188, 3A4 1.4022 (hinge denominators for sanity checks).
+
 ## 5. Honest expectation
 
 L1+L4 (CPU pair) is worth ~-0.012 to -0.020 ST-RAE (rank ~35-42) if gates

@@ -9,8 +9,12 @@ Competition closes Nov 3; today is Oct 22. Execute the plan in
 docs/IMPROVEMENT_PLAN.md - do not re-derive it. Read in this order:
 docs/IMPROVEMENT_PLAN.md (the plan: levers L1-L5, gates, sequencing, rules),
 docs/mining/open_top.md (what the top entries do - the evidence base),
+docs/mining/open_mid_low.md (field-wide confirmations + closed levers),
 docs/mining/board_analysis.md (rank sensitivity math), NOTES.md sec 28-29
-(what is closed - do NOT reopen closed levers, the list is in plan section 2).
+(what is closed - do NOT reopen closed levers, the list is in plan section 2;
+rank-optimized heads are measured NEGATIVE in the field - soft-Spearman
+-0.073, lambdarank -0.177 - do not try them; hinge training L3 is the rho
+lever, and L2 placement is field-confirmed as the biggest single lever).
 
 Standing (leaderboard/2026-10-22 boards, committed):
 - Regression: rank 51 of 243, ST-RAE 0.5133 (R2 0.5219, rho 0.7245). Shipped:
