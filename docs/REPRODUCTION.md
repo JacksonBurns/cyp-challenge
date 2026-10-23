@@ -42,6 +42,17 @@ Pipeline (cyp env, repo root):
    predictions; official TDI validator PASS).
 4. Validation: built-in (`validation/tdi_validation.py`), prints `VALID: True`.
 
+## L1 candidate (Oct 23, not yet submitted): cp19_hinge
+
+1. `python src/interval_arm.py --seed {0,1,2}` -> `cache/ft_oof_intarm{,_s1,_s2}.csv`
+   (interval-hinge training arm; family = seed average, smoke artifacts excluded)
+2. `python src/hinge_blend.py --pool cp18i --l4 --emit --wout hinge_w_cp19.json
+   --report hinge_blend_cp19.json --incumbent regression_cp18_hinge_submission.csv
+   --out regression_cp19_hinge_submission.csv --ship CYP1A2,CYP3A4`
+   Ship-set discipline: only the 5/5-clean gate passes (1A2 +0.026, 3A4 +0.0188)
+   refit; 2C9/2D6 byte-identical to cp18.
+3. `python src/verify_submissions.py cache/regression_cp19_hinge_submission.csv`
+
 ## L1 candidate (Oct 22, not yet submitted): cp18_hinge
 
 1. `python src/hinge_blend.py --l4` -> `cache/hinge_blend_l1.json` (per-isoform

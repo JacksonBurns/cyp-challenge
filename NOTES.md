@@ -2117,3 +2117,14 @@ bounds. Per-fold ST-RAE + 0.085 tripwire in eval json. Smoke (1 fold,
 intarm seed0 standalone: pooled OOF hinge 0.4358 vs cpmed 0.3908 (all 4 neg) - arm is a pool-member, not a member-level win (field-consistent).
 cp18i gate (intarm as 20th family, seed0 only): 1A2 0.0285 5/5 (vs cp17 0.0287, ~unchanged); 3A4 +0.0162 5/5 (intarm w +0.111, gain +0.003 over cp17); 2C9 +0.0061 3/5 FAIL; 2D6 +0.0110 4/5 PASS (marginal, intarm w +0.136, one fold -0.036, L4 CI lower bound 0.0004).
 Seed discipline: need seeds 1-2 arm runs, then re-gate before any 2D6 ship call. Seed 1 running on GPU.
+
+### Sec 30d (Oct 23) - seed-averaged intarm: ALL 4 gate PASS; cp19 built
+cmp_intarm (seed-avg arm vs cpmed, ft_data universe): arm standalone WORSE macro
+0.6886 vs 0.6443 (all 4 neg) - pure decorrelation member, as the field record
+predicts. cp18i gate on seed-avg arm (smoke glob fixed): 1A2 5/5 +0.026 (arm
+w=0.046), 2C9 4/5 +0.0046 (w=0.164), 2D6 4/5 +0.0135 (w=0.146), 3A4 5/5 +0.0188
+(w=0.168); L4 all agree, CIs>0. SHIP SET = 5/5-clean only: cp19 = 1A2+3A4 refit
+(rho 0.9982/0.9985 vs cp18, moments restored), 2C9/2D6 byte-identical to cp18.
+Validator PASS, zero ties, NaN 0. md5: see commit. hinge_blend CLI:
+--incumbent/--out/--ship. 2C9/2D6 4/5 passes held in reserve pending probe-B
+evidence (L2) before spending a slot.
