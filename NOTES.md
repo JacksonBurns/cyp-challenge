@@ -2128,3 +2128,20 @@ w=0.046), 2C9 4/5 +0.0046 (w=0.164), 2D6 4/5 +0.0135 (w=0.146), 3A4 5/5 +0.0188
 Validator PASS, zero ties, NaN 0. md5: see commit. hinge_blend CLI:
 --incumbent/--out/--ship. 2C9/2D6 4/5 passes held in reserve pending probe-B
 evidence (L2) before spending a slot.
+
+### Sec 31 (Oct 23) - loss zoo + homolog arms + CONF NEGATIVE RESULT
+docs/LEDGER.md is the work ledger. Loss zoo (same union-table trainer, primary
+loss swapped, seed 0, standalone pooled ST-RAE):
+  mae 0.7502 | rank 0.8146 | mse 0.8443 | (hinge/intarm 0.6886 | cpmed 0.6443)
+All zoo arms worse standalone; value = decorrelation, gated in pool zoo1
+(hinge_blend --pool zoo1 auto-includes zoo_* families). mse worst = ST-RAE
+prefers L1 geometry (consistent).
+CONFIDENCE (avenue 3, --conf): per-row interval-width weights in the FIT
+objective = CATASTROPHIC. cp18i gate: 1A2 -0.0327 (2/5), 2C9 -0.0318 (0/5),
+2D6 -0.0087 (3/5), 3A4 -0.0134 (1/5); ALL FAIL. Narrow-interval compounds are
+NOT more learnable-consistent; up-weighting them hurts the combiner fit.
+Publishable negative result; stir_bar's "confidence weights dangerous" lesson
+now has a mechanism.
+Homolog download: 2C19=1615/2C8=463/2B6=224/2A6=250 unique compounds
+(CHEMBL3622/3721/4729/5282, verified human SINGLE PROTEIN); --hom arm queued.
+GPU batch2: auxw sweep {0,1,3} + homarm, serial.
