@@ -212,7 +212,7 @@ def conf_row_weights(lo, hi):
 
 def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_blend_l1.json',
          incumbent_csv=INCUMBENT_CSV, out_csv="regression_cp18_hinge_submission.csv",
-         ship_list="", conf=False):
+         ship_list="", use_conf=False):
     names = [n for n in POOLS[pool] if FAMS.get(n)]
     oofs = {k: raw_oof_fam(k) for k in names}
     inc = pd.read_csv(os.path.join(CACHE, incumbent_csv))
@@ -229,7 +229,7 @@ def main(emit, do_l4, pool=POOL, wout='hinge_w_cp18.json', report_name='hinge_bl
         P = np.column_stack([oofs[k].iloc[rows][iso].values for k in names])
         w0 = np.array([bN[iso]["weights"].get(k, 0.0) for k in names])
         lo_r, hi_r, y_r = lo[rows], hi[rows], y[rows]
-        rw_r = conf_row_weights(lo_r, hi_r) if conf else None
+        rw_r = conf_row_weights(lo_r, hi_r) if use_conf else None
         base_w0 = st_rae(P @ w0, y_r, lo_r, hi_r)
 
         # ---- L1: Powell hinge fit, lambda sweep on rotation CV ----

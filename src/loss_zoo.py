@@ -53,20 +53,45 @@ from interval_arm import bounds_by_smi, build_points_ext, soft_rae, ISO, NPRIM, 
 
 COLS = ft_ext.COLS + BOUNDC
 NALL = len(COLS)
+HOM = ["CYP2C19_hom", "CYP2C8_hom", "CYP2B6_hom", "CYP2A6_hom"]
+HOM_CSV = os.path.join(HERE, "..", "external", "chembl_cyp_homolog_ic50.csv")
 BATCH, VAL_FRAC, MAX_EPOCHS, PATIENCE = 128, 0.1, 40, 8
 TRIPWIRE = 0.085
 RANK_W = 0.5  # pairwise-ranking term weight (relative to z-space hinge units)
 
 
+def load_homolog():
+    """ChEMBL homolog IC50 (2C19/2C8/2B6/2A6) -> wide pIC50 frame, same
+    filter pipeline as ft_ext's chembl load (rel '=', units nM, median per
+    smiles)."""
+    ch = pd.read_csv(HOM_CSV)
+    ch = ch[ch["standard_relation"] == "="]
+    ch["standard_value"] = pd.to_numeric(ch["standard_value"], errors="coerce")
+    u = ch["standard_units"].astype(str).str.strip().str.lower()
+    ch = ch[u.isin(["nm"])].dropna(subset=["standard_value", "canonical_smiles"])
+    ch = ch[ch["standard_value"] > 0]
+    ch["pic50"] = 9.0 - np.log10(ch["standard_value"])
+    g = ch.groupby(["isoform", "canonical_smiles"])["pic50"].median().reset_index()
+    wide = g.pivot(index="canonical_smiles", columns="isoform", values="pic50")
+    df = pd.DataFrame({f"{i}_hom": wide[i] if i in wide else np.nan
+                       for i in ["CYP2C19", "CYP2C8", "CYP2B6", "CYP2A6"]})
+    df["SMILES"] = df.index
+    return df.dropna(subset=HOM, how="all")
+
+
 class ZooLoss(MSE):
     """Primary heads per MODE; aux MSE; bound cols zero. See module docstring."""
 
-    def __init__(self, mu_p=None, sd_p=None, mu_a=None, sd_a=None, mode="hinge", **kw):
+    def __init__(self, mu_p=None, sd_p=None, mu_a=None, sd_a=None, mode="hinge",
+                 n_aux=None, lo_sl=None, hi_sl=None, **kw):
         super().__init__(**kw)
+        self.n_aux = NAUX if n_aux is None else n_aux
+        self.lo_sl = LO_SL if lo_sl is None else lo_sl
+        self.hi_sl = HI_SL if hi_sl is None else hi_sl
         mu_p = np.zeros(NPRIM) if mu_p is None else np.asarray(mu_p, dtype=np.float32)
         sd_p = np.ones(NPRIM) if mu_p is None else np.asarray(sd_p, dtype=np.float32)
-        mu_a = np.zeros(NAUX) if mu_a is None else np.asarray(mu_a, dtype=np.float32)
-        sd_a = np.ones(NAUX) if sd_a is None else np.asarray(sd_a, dtype=np.float32)
+        mu_a = np.zeros(self.n_aux) if mu_a is None else np.asarray(mu_a, dtype=np.float32)
+        sd_a = np.ones(self.n_aux) if sd_a is None else np.asarray(sd_a, dtype=np.float32)
         self.mode = mode
         self.register_buffer("mu_p", torch.as_tensor(mu_p))
         self.register_buffer("sd_p", torch.as_tensor(sd_p))
@@ -77,20 +102,20 @@ class ZooLoss(MSE):
                              *args):
         prim = preds[:, :NPRIM]
         yprim = targets[:, :NPRIM]
-        lo = targets[:, LO_SL]
-        hi = targets[:, HI_SL]
-        hb = mask[:, LO_SL] & mask[:, HI_SL]
+        lo = targets[:, self.lo_sl]
+        hi = targets[:, self.hi_sl]
+        hb = mask[:, self.lo_sl] & mask[:, self.hi_sl]
         if self.training:  # FFN transform identity in train: preds are z
             z = prim
             raw = prim * self.sd_p + self.mu_p
-            aux_z = preds[:, NPRIM:NPRIM + NAUX]
-            aux_t = targets[:, NPRIM:NPRIM + NAUX]
+            aux_z = preds[:, NPRIM:NPRIM + self.n_aux]
+            aux_t = targets[:, NPRIM:NPRIM + self.n_aux]
         else:              # eval: output_transform applied, preds RAW
             raw = prim
             z = (prim - self.mu_p) / self.sd_p
-            aux_raw = preds[:, NPRIM:NPRIM + NAUX]
+            aux_raw = preds[:, NPRIM:NPRIM + self.n_aux]
             aux_z = (aux_raw - self.mu_a) / self.sd_a
-            aux_t = targets[:, NPRIM:NPRIM + NAUX]
+            aux_t = targets[:, NPRIM:NPRIM + self.n_aux]
         m = mask[:, :NPRIM]
         if self.mode == "mae":
             prim_loss = torch.where(m, (z - yprim).abs(), torch.zeros_like(z))
@@ -121,7 +146,7 @@ class ZooLoss(MSE):
                     rl[idx, j] = row_loss
                 prim_loss = prim_loss + RANK_W * rl
         aux = (aux_z - aux_t) ** 2
-        bnd = torch.zeros_like(preds[:, NPRIM + NAUX:])
+        bnd = torch.zeros_like(preds[:, NPRIM + self.n_aux:])
         return torch.cat([prim_loss, aux, bnd], dim=1)
 
 
