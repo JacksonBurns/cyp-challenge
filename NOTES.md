@@ -2214,3 +2214,20 @@ DECISION: ship-set pool stays zoo2 (cp20 as built); pt arms stay in zoo1
 pool as decorrelators; no cp21. LEDGER queue items 1-5 ALL DONE.
 Remaining: user submits cp19 -> probe B -> probe C; blind-moment solve on
 per-isoform R2s; placement build; final pair Nov 1.
+
+### Sec 32 (Oct 23, 23:40) - joint cls+reg + TDI-cond arms (zoo4)
+Data inventory: single-conc screen 4376 cpds log2fc (rho -0.83..-0.94,
+used only in UMTM); TDI-cond pIC50 all 4 iso (r 0.90-0.95, in ZERO arms).
+New arms: tdic (hinge_w3 + 4 TDI-cond aux heads); mv (full multiview:
+hinge_w3 + tdic x4 + log2fc x4 + is_TDI BCE x2, 22 heads).
+Standalone: tdic macro 0.76-0.77, 3A4 0.51-0.54 = best 3A4 member ever.
+mv macro 0.84 - over-auxed; 2D6 collapsed (0.97-1.01); is_TDI heads OOF
+MCC 0.00 (all-neg) - classification transfer NEGATIVE via this recipe.
+zoo4 gate (32 fam, ALL PASS): mv weight +0.197/1A2, +0.112/2D6,
++0.109/3A4 = real decorrelator; tdic small +0.03-0.06.
+zoo4 cv BEATS zoo3 on all 4 iso: 1A2 +0.0222, 2C9 +0.0064, 2D6 +0.0245,
+3A4 +0.020. pt families dilute (negative weights) -> ship pool zoo4 =
+zoo1 minus pt_*. cp21 emit from zoo4, ship 1A2+3A4 vs cp18 incumbent.
+Mechanism: over-auxed standalone = pool-value decorrelator (same pattern
+as intarm: worst standalone, strongest weight). Classification via BCE
+heads at auxw=3 starves 2D6 -> joint cls+reg needs per-head weights.

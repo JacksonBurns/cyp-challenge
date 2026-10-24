@@ -1,0 +1,50 @@
+{
+  "CYP1A2": {
+    "per_fold_st_rae": [
+      0.8484,
+      0.8448,
+      0.9012,
+      0.9219,
+      0.8503
+    ],
+    "pooled_st_rae": 0.8723,
+    "max_fold_off_pooled": 0.0496,
+    "quarantine": false
+  },
+  "CYP2C9": {
+    "per_fold_st_rae": [
+      0.7364,
+      0.804,
+      0.777,
+      0.859,
+      0.7348
+    ],
+    "pooled_st_rae": 0.7795,
+    "max_fold_off_pooled": 0.0794,
+    "quarantine": false
+  },
+  "CYP2D6": {
+    "per_fold_st_rae": [
+      0.9892,
+      0.9946,
+      1.0051,
+      1.0193,
+      1.0302
+    ],
+    "pooled_st_rae": 1.0076,
+    "max_fold_off_pooled": 0.0226,
+    "quarantine": false
+  },
+  "CYP3A4": {
+    "per_fold_st_rae": [
+      0.693,
+      0.6495,
+      0.7294,
+      0.7262,
+      0.6057
+    ],
+    "pooled_st_rae": 0.6798,
+    "max_fold_off_pooled": 0.0741,
+    "quarantine": false
+  }
+}
