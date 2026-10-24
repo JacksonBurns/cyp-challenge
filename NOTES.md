@@ -2194,3 +2194,23 @@ vs +0.026 1A2; +0.0175 vs +0.0188 3A4) = fitter variance of the 27-family
 pool; pool is strictly richer (loss + homolog + seed axes). Submission call:
 cp19 first (simpler, marginally better CV); cp20 is the promoted candidate
 if probe evidence supports. TDI queued; integration pass Nov 1.
+
+### Sec 31e (Oct 23, 20:30) - zoo3 gate: PT neutral, all 5 avenues executed
+30-family pool = zoo2 + 9 pt_* seed-avg families. Gate ALL PASS:
+1A2 5/5 +0.0184, 2C9 4/5 +0.0056, 2D6 4/5 +0.023, 3A4 5/5 +0.0189.
+vs zoo2 (no pt): 1A2 +0.0235->+0.0184 WORSE, 2C9 +0.008->+0.0056 WORSE,
+2D6 +0.021->+0.023 better, 3A4 +0.0175->+0.0189 better. Split decision =
+pure fitter variance from 3 extra families; no family dominates.
+pt family weights: pt_homarm +0.165 (2D6) +0.038 (1A2) = only consistent
+positive pt contributor; pt_mae negative on 2C9 (-0.133) and 3A4 (-0.127)
+= pure anti-correlation member; pt_hinge_w3 mixed small.
+Avenue 4 VERDICT: masked-atom transductive PT on an already-pretrained
+Chemprop encoder = standalone WORSE (mae .764 vs .748, w3 .806 vs .744,
+homarm .780 vs .759), pool-NEUTRAL (2 isoforms up slightly, 2 down).
+Mechanism: Maeno-style PT pays off when the encoder is un pretrained;
+Chemprop weights already encode this chemistry. pt_homarm's 2D6 weight is
+the one real signal: homolog transfer benefits slightly from PT.
+DECISION: ship-set pool stays zoo2 (cp20 as built); pt arms stay in zoo1
+pool as decorrelators; no cp21. LEDGER queue items 1-5 ALL DONE.
+Remaining: user submits cp19 -> probe B -> probe C; blind-moment solve on
+per-isoform R2s; placement build; final pair Nov 1.
