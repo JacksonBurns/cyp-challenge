@@ -57,8 +57,16 @@ NAUXD = NAUX
 LO_SL = slice(NPRIM + NAUX, NPRIM + NAUX + 8, 2)
 HI_SL = slice(NPRIM + NAUX + 1, NPRIM + NAUX + 8, 2)
 LABCOLS = ft_ext.COLS
+NCLSD = 0
+CLS_SL = slice(0, 0)
 HOM = ["CYP2C19_hom", "CYP2C8_hom", "CYP2B6_hom", "CYP2A6_hom"]
 HOM_CSV = os.path.join(HERE, "..", "external", "chembl_cyp_homolog_ic50.csv")
+TDIC = [f"{i}_tdic" for i in ISO]          # pIC50 TDI-condition, all 4 isoforms
+L2FC = [f"{i}_l2fc" for i in ISO]          # single-conc primary screen log2fc
+CLSH = ["is_TDI_2D6", "is_TDI_3A4"]        # classification heads
+NCLS = len(CLSH)
+CLS_W = 1.0
+DATA = os.path.join(HERE, "..", "data")
 BATCH, VAL_FRAC, MAX_EPOCHS, PATIENCE = 128, 0.1, 40, 8
 TRIPWIRE = 0.085
 RANK_W = 0.5  # pairwise-ranking term weight (relative to z-space hinge units)
@@ -87,11 +95,14 @@ class ZooLoss(MSE):
     """Primary heads per MODE; aux MSE; bound cols zero. See module docstring."""
 
     def __init__(self, mu_p=None, sd_p=None, mu_a=None, sd_a=None, mode="hinge",
-                 n_aux=None, lo_sl=None, hi_sl=None, **kw):
+                 n_aux=None, lo_sl=None, hi_sl=None, n_cls=None, cls_sl=None,
+                 **kw):
         super().__init__(**kw)
         self.n_aux = NAUX if n_aux is None else n_aux
         self.lo_sl = LO_SL if lo_sl is None else lo_sl
         self.hi_sl = HI_SL if hi_sl is None else hi_sl
+        self.n_cls = NCLS if n_cls is None else n_cls
+        self.cls_sl = CLS_SL if cls_sl is None else cls_sl
         mu_p = np.zeros(NPRIM) if mu_p is None else np.asarray(mu_p, dtype=np.float32)
         sd_p = np.ones(NPRIM) if mu_p is None else np.asarray(sd_p, dtype=np.float32)
         mu_a = np.zeros(self.n_aux) if mu_a is None else np.asarray(mu_a, dtype=np.float32)
@@ -150,20 +161,58 @@ class ZooLoss(MSE):
                     rl[idx, j] = row_loss
                 prim_loss = prim_loss + RANK_W * rl
         aux = (aux_z - aux_t) ** 2
-        bnd = torch.zeros_like(preds[:, NPRIM + self.n_aux:])
-        return torch.cat([prim_loss, aux, bnd], dim=1)
+        cls_loss = torch.zeros(preds.shape[0], self.n_cls,
+                               device=preds.device)
+        if self.n_cls:
+            lg = preds[:, self.cls_sl]
+            ct = targets[:, self.cls_sl]
+            cls_loss = torch.nn.functional.binary_cross_entropy_with_logits(
+                lg, ct, reduction="none")
+        bnd = torch.zeros_like(preds[:, NPRIM + self.n_aux + self.n_cls:])
+        return torch.cat([prim_loss, aux, cls_loss, bnd], dim=1)
 
 
-def set_cols(hom=False):
-    """Module-level column layout; bound cols always last (8, interleaved)."""
-    global COLS, NALL, LO_SL, HI_SL, NAUXD, LABCOLS
-    aux = ft_ext.AUX + (HOM if hom else [])
+def set_cols(hom=False, mv=False, tdic=False):
+    """Module-level column layout: prim + aux (+tdic/l2fc/cls) + bounds last."""
+    global COLS, NALL, LO_SL, HI_SL, NAUXD, LABCOLS, NCLSD, CLS_SL
+    aux = ft_ext.AUX + (HOM if hom else []) + (TDIC if (mv or tdic) else []) \
+        + (L2FC if mv else [])
+    clsh = CLSH if mv else []
     NAUXD = len(aux)
-    COLS = ft_ext.PRIMARY + aux + BOUNDC
+    NCLSD = len(clsh)
+    COLS = ft_ext.PRIMARY + aux + clsh + BOUNDC
     NALL = len(COLS)
-    LO_SL = slice(NPRIM + NAUXD, NPRIM + NAUXD + 8, 2)
-    HI_SL = slice(NPRIM + NAUXD + 1, NPRIM + NAUXD + 8, 2)
-    LABCOLS = ft_ext.PRIMARY + aux
+    b0 = NPRIM + NAUXD + NCLSD
+    LO_SL = slice(b0, b0 + 8, 2)
+    HI_SL = slice(b0 + 1, b0 + 8, 2)
+    CLS_SL = slice(NPRIM + NAUXD, NPRIM + NAUXD + NCLSD)
+    LABCOLS = ft_ext.PRIMARY + aux + clsh
+
+
+def load_aux_views():
+    """TDI-condition pIC50 x4, single-conc log2fc x4, is_TDI x2 keyed by SMILES."""
+    t = pd.read_csv(os.path.join(DATA, "cyp-challenge-TRAIN_TDI.csv"))
+    t = t.drop_duplicates("SMILES").set_index("SMILES")
+    out = pd.DataFrame(index=t.index)
+    for i in ISO:
+        out[f"{i}_tdic"] = pd.to_numeric(t[f"{i}_pIC50_TDI_condition"],
+                                         errors="coerce")
+    sc = pd.read_csv(os.path.join(DATA,
+                                  "cyp-challenge-single-concentration-TRAIN.csv"))
+    scp = sc.groupby(["SMILES", "enzyme"])["log2fc_estimate"].median().unstack("enzyme")
+    scp = scp.rename(columns={i: f"{i}_l2fc" for i in ISO})
+    for i in ISO:
+        out[f"{i}_l2fc"] = scp[i].reindex(out.index) if i in scp.columns else np.nan
+    emx = pd.read_csv(os.path.join(DATA, "cyp-challenge-TRAIN_Emax.csv"))
+    lab = pd.concat([t[["CYP2D6_is_TDI", "CYP3A4_is_TDI"]],
+                     emx.drop_duplicates("SMILES").set_index("SMILES")[
+                         ["CYP2D6_is_TDI", "CYP3A4_is_TDI"]]
+                     ]).groupby(level=0).first()
+    for c in ["CYP2D6_is_TDI", "CYP3A4_is_TDI"]:
+        out[f"is_TDI_{c.split('_')[0][3:]}"] = lab[c].map(
+            {True: 1.0, False: 0.0, 1.0: 1.0, 0.0: 0.0})
+    out["SMILES"] = out.index
+    return out.reset_index(drop=True)
 
 
 def build_points(df):
@@ -202,7 +251,8 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw, pt_init=False):
     if not full_ft:
         for p in mp.parameters():
             p.requires_grad = False
-    wts = np.concatenate([np.ones(NPRIM), np.full(NAUXD, auxw), np.zeros(8)])
+    wts = np.concatenate([np.ones(NPRIM), np.full(NAUXD, auxw),
+                          np.full(NCLSD, CLS_W), np.zeros(8)])
     mu_p = scaler.mean_[:NPRIM].astype(np.float32)
     sd_p = scaler.scale_[:NPRIM].astype(np.float32)
     mu_a = scaler.mean_[NPRIM:NPRIM + NAUXD].astype(np.float32)
@@ -213,6 +263,7 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw, pt_init=False):
                            criterion=ZooLoss(mu_p=mu_p, sd_p=sd_p, mu_a=mu_a,
                                              sd_a=sd_a, mode=mode, n_aux=NAUXD,
                                              lo_sl=LO_SL, hi_sl=HI_SL,
+                                             n_cls=NCLSD, cls_sl=CLS_SL,
                                              task_weights=wts))
     model = models.MPNN(mp, nn.MeanAggregation(), ffn, batch_norm=False)
     es = EarlyStopping(monitor="val_loss", patience=PATIENCE, mode="min")
@@ -224,13 +275,34 @@ def train_fold(tr_df, va_df, seed, full_ft, mode, auxw, pt_init=False):
     return model
 
 
+def predict_full(model, df):
+    """Predict all NALL columns (ft_ext.predict truncates to 12)."""
+    featurizer = ft_ext.featurizers.SimpleMoleculeMolGraphFeaturizer()
+    pts = [data.MoleculeDatapoint.from_smi(
+        s, [float("nan")] * NALL) for s in df["SMILES"]]
+    dset = data.MoleculeDataset(pts, featurizer)
+    loader = data.build_dataloader(dset, batch_size=BATCH, num_workers=0,
+                                   shuffle=False)
+    model.eval()
+    dev = next(model.parameters()).device
+    outs = []
+    with torch.no_grad():
+        for batch in loader:
+            bmg, V_d, X_d = batch[0], batch[1], batch[2]
+            bmg.to(dev)
+            y = model(bmg, V_d, X_d)
+            outs.append(np.atleast_2d(y.detach().cpu().numpy()))
+    return np.vstack(outs)
+
+
 def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
-     pt=False):
+         pt=False, mv=False, tdic=False):
     global MAX_EPOCHS, PATIENCE, BATCH
-    set_cols(hom)
+    set_cols(hom, mv, tdic)
     wtag = "" if abs(auxw - 0.3) < 1e-9 else f"_w{auxw:g}"
     sfx = "" if seed == 0 else f"_s{seed}"
-    base = (f"homarm{wtag}" if hom and mode == "hinge"
+    base = ("mv" if mv else "tdic" if tdic
+            else f"homarm{wtag}" if hom and mode == "hinge"
             else f"zoo_{mode}{wtag}")
     if pt:
         base = "pt_" + base.replace("zoo_", "")
@@ -240,6 +312,11 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
         tag = f"{tag}_smoke"
         ft_ext.EXT_CAP = 1200
     ft, test, allrows = ft_ext.load_tables()
+    if mv or tdic:
+        av = load_aux_views()
+        av = av[~av["SMILES"].isin(set(test["SMILES"]))]
+        keep = [c for c in av.columns if c in COLS or c == "SMILES"]
+        allrows = allrows.merge(av[keep], on="SMILES", how="left")
     if hom:
         hdf = load_homolog()
         hdf = hdf[~hdf["SMILES"].isin(set(ft["SMILES"]) | set(test["SMILES"]))]
@@ -254,6 +331,7 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
     ch_mask = (allrows["_src"] == "challenge").values
     lab = allrows[LABCOLS].notna().any(axis=1)
     oof = pd.DataFrame(np.nan, index=ft.index, columns=ISO)
+    oof_cls = np.full((len(ft), NCLSD), np.nan)
     folds = ft["fold"].values
     yfull = {iso: ft[iso].values.astype(float) for iso in ISO}
     lo_full = {iso: bb[f"{iso}_bndlo"].reindex(ft["SMILES"]).values for iso in ISO}
@@ -277,9 +355,14 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
         ev_df = tr_pool.iloc[vi].reset_index(drop=True)
         fit_df = fit_df.reset_index(drop=True)
         model = train_fold(fit_df, ev_df, seed, full_ft, mode, auxw, pt)
+        Pf = predict_full(model, va_df) if NCLSD else None
         P = ft_ext.predict(model, va_df)
         for j, iso in enumerate(ISO):
             oof.loc[va_idx, iso] = P[:, j]
+        if NCLSD:
+            oof_cls[va_idx] = torch.sigmoid(
+                torch.tensor(Pf[:, NPRIM + NAUXD:NPRIM + NAUXD + NCLSD])
+                ).numpy()
         for iso in ISO:
             k = ISO.index(iso)
             m = ~np.isnan(yfull[iso][va_idx])
@@ -292,6 +375,21 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
               {i: round(per_fold[i][-1], 3) for i in ISO}, flush=True)
     oof.insert(0, "SMILES", ft["SMILES"])
     oof.to_csv(os.path.join(CACHE, f"ft_oof_{tag}.csv"), index=False)
+    if NCLSD:
+        from sklearn.metrics import matthews_corrcoef as _mcc
+        co = ft[["SMILES"]].copy()
+        truth = allrows[ch_mask]
+        for j, c in enumerate(CLSH):
+            yv = truth[c].values.astype(float)
+            co[c] = oof_cls[:, j]
+            m = ~np.isnan(yv) & ~np.isnan(oof_cls[:, j])
+            pred = (oof_cls[m, j] > 0.5).astype(int)
+            sc = _mcc(yv[m].astype(int), pred)
+            print(f"[{tag}] TDI head {c} OOF n={int(m.sum())} "
+                  f"pos={int(yv[m].sum())} MCC={sc:.4f}", flush=True)
+            co[f"{c}_truth"] = yv
+        co.to_csv(os.path.join(CACHE, f"joint_oof_tdi_{tag}.csv"),
+                  index=False)
     if smoke:
         print("SMOKE: pipeline check only", flush=True)
         return
@@ -337,5 +435,9 @@ if __name__ == "__main__":
                     help="add 4 ChEMBL homolog aux heads (2C19/2C8/2B6/2A6)")
     ap.add_argument("--pt", action="store_true",
                     help="init encoder from cache/pt_encoder.pt (transductive PT)")
+    ap.add_argument("--mv", action="store_true",
+                    help="multi-view: +tdic x4 +l2fc x4 +is_TDI BCE x2 heads")
+    ap.add_argument("--tdic", action="store_true",
+                    help="+pIC50_TDI_condition x4 aux heads only")
     a = ap.parse_args()
-    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom, a.pt)
+    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom, a.pt, a.mv, a.tdic)

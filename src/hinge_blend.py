@@ -86,6 +86,8 @@ FAMS = {
     "ft_pt_mae": g("pt_mae"),
     "ft_pt_hinge_w3": g("pt_hinge_w3"),
     "ft_pt_homarm": g("pt_homarm"),
+    "ft_mv": g("mv"),
+    "ft_tdic": g("tdic"),
 }
 for _l in ("L1", "L2", "L3", "L4"):
     FAMS[f"ft_umtm{_l}"] = g(f"umtm{_l}")
@@ -109,7 +111,8 @@ POOLS = {
               "ft_umtmL3", "ft_umtmL4", "ft_tabpfn_cpmed", "ft_intarm",
               "ft_zoo_mae", "ft_zoo_rank", "ft_zoo_mse", "ft_zoo_hinge_w0",
               "ft_zoo_hinge_w1", "ft_zoo_hinge_w3", "ft_homarm",
-              "ft_pt_mae", "ft_pt_hinge_w3", "ft_pt_homarm"]
+              "ft_pt_mae", "ft_pt_hinge_w3", "ft_pt_homarm",
+              "ft_mv", "ft_tdic"]
              ],
 }
 
