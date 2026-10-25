@@ -22,6 +22,21 @@ Deadline: Nov 1. Board slots: 12h cooldown. Current standing: cp18 = 0.5119.
   per-isoform ST-RAE numbers after each. Cooldown expired ~8:52 AM EDT.
 
 ## Results so far (Oct 23, 17:30)
+## Results so far (Oct 24, 00:30)
+- cp21 BUILT f98cd854 from zoo4 pool (zoo1 minus pt, plus mv/tdic):
+  1A2 +0.0222 5/5, 3A4 +0.020 5/5; 2C9/2D6 byte-ident cp18.
+  SUBMISSION QUEUE: cp21 -> probe B -> probe C (cp19/cp20 demoted reserve).
+- zoo4 gate: mv multiview weight +0.197/1A2 +0.112/2D6 +0.109/3A4
+  (worst standalone 0.84, best decorrelator); tdic 3A4 0.51 = best
+  3A4 member ever (TDI-cond pIC50 transfer). is_TDI BCE heads MCC 0.00
+  all-neg -> needs per-head weights. mv beats standalone-bad = pool-good.
+- NEW: 3D/flex/planarity descriptor arm (42 desc incl invented
+  planar_frac/atrop/sp3_depth/flex_eff/sigmaHal/ring_plan/acid SMARTS)
+  -> desc_gbm correlation screen -> ft_dsc3d gate family. RUNNING.
+- NEW: mvx arm = mv + Emax x4 + all-4-iso is_TDI heads (32-head
+  multitask; Emax file has all-4 is_TDI, richer than TDI file).
+- RUNNING: batch7 cls-weight sweep (cw 1.0 vs 0.3, mv + mvx, 3 seeds);
+  descriptor build 3500/6145 -> auto-chain desc_gbm -> tag_eval -> gate.
 - zoo2 seed-avg gate (mae/w3/homarm 3-seed families): ALL PASS. 1A2 5/5 +0.0235
   (mae +0.215), 2C9 4/5 +0.008, 2D6 4/5 +0.021 (mae +0.245, mse -0.198), 3A4
   5/5 +0.0175 (w3 +0.222). cp20 BUILT: ship 1A2+3A4, 2C9/2D6=cp18 bytes,

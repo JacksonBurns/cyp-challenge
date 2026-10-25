@@ -419,6 +419,12 @@ def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
     tsub = pd.DataFrame(Pte[:, :NPRIM], columns=ISO)
     tsub.insert(0, "SMILES", test["SMILES"])
     tsub.to_csv(os.path.join(CACHE, f"ft_test_preds_{tag}.csv"), index=False)
+    if NCLSD:
+        Pf = predict_full(model, test)
+        csub = pd.DataFrame(Pf[:, NPRIM + NAUXD:NPRIM + NAUXD + NCLSD],
+                            columns=CLSH4[:NCLSD] if NCLSD == 4 else CLSH)
+        csub.insert(0, "SMILES", test["SMILES"])
+        csub.to_csv(os.path.join(CACHE, f"tdi_probs_{tag}.csv"), index=False)
     del model
     torch.cuda.empty_cache()
     ev = {}
