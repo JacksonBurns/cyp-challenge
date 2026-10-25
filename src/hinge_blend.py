@@ -120,6 +120,7 @@ POOLS = {
              ],
 }
 POOLS["zoo4"] = [n for n in POOLS["zoo1"] if not n.startswith("ft_pt_")]
+POOLS["zoo6"] = POOLS["zoo4"]
 
 ISO = R.ISOFORMS
 POOL = "cp17"

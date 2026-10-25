@@ -2231,3 +2231,26 @@ zoo1 minus pt_*. cp21 emit from zoo4, ship 1A2+3A4 vs cp18 incumbent.
 Mechanism: over-auxed standalone = pool-value decorrelator (same pattern
 as intarm: worst standalone, strongest weight). Classification via BCE
 heads at auxw=3 starves 2D6 -> joint cls+reg needs per-head weights.
+
+### Sec 33 (Oct 24, 23:55) - descriptors, zoo5, cls-weight experiment
+Descriptor screen (Spearman vs pIC50): 3A4 MolLogP .602 (size/lipophilic
+axis dominates); 2C9 MolLogP .485, FractionCSP3 -.325, planar_frac +.271
+(top6, flat pharmacophore CONFIRMED); 1A2 sp3C -.343, planar_frac +.249;
+2D6 TPSA -.204, pyrN +.172 (salt-bridge pharmacophore CONFIRMED), all
+correlations weak (max .20) = least descriptor-explainable isoform.
+Invented descs (planar_frac, pyrN) land top-6 in predicted isoforms.
+GBM arm dsc3d standalone macro 0.911 (weak solo, expected).
+zoo5 gate (zoo1 + dsc3d + mv_cw0.3 + mvx): 1A2 +0.023 5/5, 3A4 +0.0203
+5/5, 2D6 +0.0251 4/5, 2C9 +0.0051 3/5 FAIL. dsc3d pool weights
+-.066/+.077/-.088/0 = DESCRIPTORS MEASURED POOL-NEUTRAL (GBM signal
+already inside gbm/cpmed families). mv_cw0.3 +0.19 1A2 = strongest mv
+variant. zoo5 > zoo4 marginally (1A2 .023>.0222, 2D6 .0251>.0245, 3A4
+.0203>.020) but 2C9 fails; cp21 stays ship candidate (gains within CV
+noise; no cp22 slot).
+Cls-weight experiment: mv_cw0.3 macro 0.8391 vs mv 0.8397 - 2D6
+starvation NOT caused by cls heads (0.971 vs 0.973). mvx 32-head
+(+Emax x4, +is_TDI x4) 0.8384, mvx_cw0.3_s1 0.8340 best. Marginal.
+is_TDI heads: MCC 0.0000 in ALL arms (n=1497/3584) = DEFINITIVE:
+joint-training BCE at auxw=3 collapses to all-negative. Classification
+heads = decorrelation value only; real TDI classifier needs dedicated
+BCE training (post-deadline).

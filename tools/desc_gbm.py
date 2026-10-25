@@ -26,9 +26,9 @@ def main(top=25):
     feats = [c for c in tr.columns if c != "SMILES"]
 
     lab = fd[ISO].reindex(tr["SMILES"])
-    ok = lab.notna().any(axis=1).values
+    ok = (lab.notna().any(axis=1) & fd["fold"].reindex(tr["SMILES"]).notna()).values
     X = tr[feats].loc[ok]
-    folds = fd["fold"].reindex(tr["SMILES"]).values[ok]
+    folds = fd["fold"].reindex(tr["SMILES"]).values[ok].astype(int)
 
     # correlation screen vs each isoform label
     corr = {}
@@ -61,7 +61,7 @@ def main(top=25):
     Xte = Xte.reindex(te_idx)
     testp = pd.DataFrame(index=te_idx, columns=ISO, dtype=float)
     for iso in ISO:
-        y = lab[iso].values
+        y = lab[iso].values[ok]
         m = ~pd.isna(y)
         Xm = X[keep].values[m]
         ym = y[m]

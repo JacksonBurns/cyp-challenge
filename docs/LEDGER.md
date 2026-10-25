@@ -37,6 +37,11 @@ Deadline: Nov 1. Board slots: 12h cooldown. Current standing: cp18 = 0.5119.
   multitask; Emax file has all-4 is_TDI, richer than TDI file).
 - RUNNING: batch7 cls-weight sweep (cw 1.0 vs 0.3, mv + mvx, 3 seeds);
   descriptor build 3500/6145 -> auto-chain desc_gbm -> tag_eval -> gate.
+- DONE: descriptors measured pool-neutral (zoo5); cls-weight fix no-op
+  (2D6 starvation not from cls heads); mvx 32-head marginal 0.834;
+  is_TDI MCC 0.00 definitive all arms. cp21 stands as ship candidate.
+- NEXT: descriptor-augmented MPNN side-input arm targeting 2C9/2D6
+  (the two gate-losers); L2 calibration solve on user submissions.
 - zoo2 seed-avg gate (mae/w3/homarm 3-seed families): ALL PASS. 1A2 5/5 +0.0235
   (mae +0.215), 2C9 4/5 +0.008, 2D6 4/5 +0.021 (mae +0.245, mse -0.198), 3A4
   5/5 +0.0175 (w3 +0.222). cp20 BUILT: ship 1A2+3A4, 2C9/2D6=cp18 bytes,
