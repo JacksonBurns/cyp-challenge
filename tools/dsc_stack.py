@@ -43,7 +43,7 @@ def morgan_pca(train_smi, test_smi, seed=0):
     return pc.transform(Xtr), pc.transform(Xte)
 
 
-def main():
+def main(seed=0):
     fd = pd.read_csv(os.path.join(CACHE, "ft_data.csv")).set_index("SMILES")
     tr = pd.read_csv(os.path.join(CACHE, "desc3d_train.csv")).set_index("SMILES")
     te = pd.read_csv(os.path.join(CACHE, "desc3d_test.csv")).set_index("SMILES")
@@ -61,7 +61,7 @@ def main():
 
     Ftr_d, Fte_d = tr[keep].loc[tr_idx].fillna(0.0), te[keep].reindex(te_idx).fillna(0.0)
     Ptr, Pte = cp[ISO].loc[tr_idx], cpt[ISO].reindex(te_idx)
-    Mtr, Mte = morgan_pca(list(tr_idx), list(te_idx))
+    Mtr, Mte = morgan_pca(list(tr_idx), list(te_idx), seed=seed)
 
     oof = pd.DataFrame(index=tr_idx, columns=ISO, dtype=float)
     testp = pd.DataFrame(index=te_idx, columns=ISO, dtype=float)
@@ -77,7 +77,7 @@ def main():
             g = lgb.LGBMRegressor(n_estimators=400, learning_rate=0.05,
                                   num_leaves=31, min_child_samples=40,
                                   subsample=0.8, colsample_bytree=0.8,
-                                  random_state=0, verbose=-1)
+                                  random_state=seed, verbose=-1)
             g.fit(Xtr[trm], ym[trm])
             preds[vam] = g.predict(Xtr[vam])
         # index map back to full tr_idx
@@ -87,17 +87,19 @@ def main():
         g = lgb.LGBMRegressor(n_estimators=400, learning_rate=0.05,
                               num_leaves=31, min_child_samples=40,
                               subsample=0.8, colsample_bytree=0.8,
-                              random_state=0, verbose=-1)
+                              random_state=seed, verbose=-1)
         g.fit(Xtr, ym)
         Xte = np.hstack([Fte_d[[c for c in keep]].values,
                          Pte[[iso]].values, Mte])
         testp[iso] = g.predict(Xte)
     oof.insert(0, "SMILES", oof.index)
     testp.insert(0, "SMILES", testp.index)
-    oof.to_csv(os.path.join(CACHE, "ft_oof_dscst.csv"), index=False)
-    testp.to_csv(os.path.join(CACHE, "ft_test_preds_dscst.csv"), index=False)
-    print("WROTE ft_oof_dscst.csv + ft_test_preds_dscst.csv")
+    sfx = "" if seed == 0 else f"_s{seed}"
+    oof.to_csv(os.path.join(CACHE, f"ft_oof_dscst{sfx}.csv"), index=False)
+    testp.to_csv(os.path.join(CACHE, f"ft_test_preds_dscst{sfx}.csv"), index=False)
+    print(f"WROTE dscst{sfx}")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(int(sys.argv[1]) if len(sys.argv) > 1 else 0)

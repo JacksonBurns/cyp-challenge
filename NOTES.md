@@ -2254,3 +2254,18 @@ is_TDI heads: MCC 0.0000 in ALL arms (n=1497/3584) = DEFINITIVE:
 joint-training BCE at auxw=3 collapses to all-negative. Classification
 heads = decorrelation value only; real TDI classifier needs dedicated
 BCE training (post-deadline).
+
+### Sec 34 (Oct 25, 00:40) - dscst stacking: best standalone, anti-correlator pool
+dscst (desc25 + cpmed OOF + Morgan64 PCA in LightGBM, 3-seed avg):
+standalone macro 0.7461 BEST of campaign: 3A4 0.4825 best 3A4 EVER,
+2C9 0.6326 best 2C9 EVER, 1A2 .856, 2D6 1.013. Descriptors' ranking
+signal = residual corrector on incumbent bias, NOT standalone signal.
+zoo6 gate (zoo1 + dscst seeds): ALL 4 PASS incl 2C9 4/5 (first clean
+2C9 pool since gate discipline began; cv +.0051 4/5) and 2D6 +.0304
+BEST 2D6 EVER. 1A2 +.0228 5/5, 3A4 +.0193 5/5.
+dscst pool weights NEGATIVE all iso (-.144/-.109/-.177/-.063):
+anti-correlator mechanism = subtract cpmed-biased component from
+cpmed-stack (cpmed itself +.16/.20 positive). Strong-standalone +
+negative-weight = bias-corrector, same role chmridge/fullft play.
+cp22 from zoo6 (ship 1A2,3A4; 2C9 4/5 held reserve). zoo6 is the
+first ALL-4-PASS pool; if 2C9 ever clears 5/5 it ships.
