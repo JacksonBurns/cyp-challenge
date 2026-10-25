@@ -64,6 +64,8 @@ HOM_CSV = os.path.join(HERE, "..", "external", "chembl_cyp_homolog_ic50.csv")
 TDIC = [f"{i}_tdic" for i in ISO]          # pIC50 TDI-condition, all 4 isoforms
 L2FC = [f"{i}_l2fc" for i in ISO]          # single-conc primary screen log2fc
 CLSH = ["is_TDI_2D6", "is_TDI_3A4"]        # classification heads
+CLSH4 = [f"is_TDI_{i[3:]}" for i in ISO]   # all-4 via Emax file
+EMXC = [f"{i}_emax" for i in ISO]          # EmaxVsPosCtrl direct-inhibition
 NCLS = len(CLSH)
 CLS_W = 1.0
 DATA = os.path.join(HERE, "..", "data")
@@ -172,12 +174,12 @@ class ZooLoss(MSE):
         return torch.cat([prim_loss, aux, cls_loss, bnd], dim=1)
 
 
-def set_cols(hom=False, mv=False, tdic=False):
+def set_cols(hom=False, mv=False, tdic=False, emx=False):
     """Module-level column layout: prim + aux (+tdic/l2fc/cls) + bounds last."""
     global COLS, NALL, LO_SL, HI_SL, NAUXD, LABCOLS, NCLSD, CLS_SL
     aux = ft_ext.AUX + (HOM if hom else []) + (TDIC if (mv or tdic) else []) \
-        + (L2FC if mv else [])
-    clsh = CLSH if mv else []
+        + (L2FC if mv else []) + (EMXC if emx else [])
+    clsh = CLSH4 if emx else (CLSH if mv else [])
     NAUXD = len(aux)
     NCLSD = len(clsh)
     COLS = ft_ext.PRIMARY + aux + clsh + BOUNDC
@@ -204,12 +206,19 @@ def load_aux_views():
     for i in ISO:
         out[f"{i}_l2fc"] = scp[i].reindex(out.index) if i in scp.columns else np.nan
     emx = pd.read_csv(os.path.join(DATA, "cyp-challenge-TRAIN_Emax.csv"))
+    emx = emx.drop_duplicates("SMILES").set_index("SMILES")
+    for i in ISO:
+        out[f"{i}_emax"] = pd.to_numeric(
+            emx[f"{i}_EmaxVsPosCtrl_direct_inhibition"], errors="coerce") \
+            .reindex(out.index)
     lab = pd.concat([t[["CYP2D6_is_TDI", "CYP3A4_is_TDI"]],
-                     emx.drop_duplicates("SMILES").set_index("SMILES")[
-                         ["CYP2D6_is_TDI", "CYP3A4_is_TDI"]]
+                     emx[["CYP2D6_is_TDI", "CYP3A4_is_TDI"]]
                      ]).groupby(level=0).first()
     for c in ["CYP2D6_is_TDI", "CYP3A4_is_TDI"]:
         out[f"is_TDI_{c.split('_')[0][3:]}"] = lab[c].map(
+            {True: 1.0, False: 0.0, 1.0: 1.0, 0.0: 0.0})
+    for i in ISO:
+        out[f"is_TDI_{i[3:]}"] = emx[f"{i}_is_TDI"].reindex(out.index).map(
             {True: 1.0, False: 0.0, 1.0: 1.0, 0.0: 0.0})
     out["SMILES"] = out.index
     return out.reset_index(drop=True)
@@ -296,12 +305,16 @@ def predict_full(model, df):
 
 
 def main(mode, auxw, seed=0, full_ft=False, smoke=False, hom=False,
-         pt=False, mv=False, tdic=False):
-    global MAX_EPOCHS, PATIENCE, BATCH
-    set_cols(hom, mv, tdic)
+         pt=False, mv=False, tdic=False, clsw=None, emx=False):
+    global MAX_EPOCHS, PATIENCE, BATCH, CLS_W
+    set_cols(hom, mv, tdic, emx)
+    if clsw is not None:
+        CLS_W = clsw
     wtag = "" if abs(auxw - 0.3) < 1e-9 else f"_w{auxw:g}"
     sfx = "" if seed == 0 else f"_s{seed}"
-    base = ("mv" if mv else "tdic" if tdic
+    ctag = "" if clsw is None else f"_cw{clsw:g}"
+    base = ("mvx" + ctag if emx else "mv" + ctag if mv else "tdic"
+            if tdic
             else f"homarm{wtag}" if hom and mode == "hinge"
             else f"zoo_{mode}{wtag}")
     if pt:
@@ -438,6 +451,11 @@ if __name__ == "__main__":
     ap.add_argument("--mv", action="store_true",
                     help="multi-view: +tdic x4 +l2fc x4 +is_TDI BCE x2 heads")
     ap.add_argument("--tdic", action="store_true",
-                    help="+pIC50_TDI_condition x4 aux heads only")
+                    help="add 4 TDI-condition pIC50 aux heads (cross-assay transfer)")
+    ap.add_argument("--clsw", type=float, default=None,
+                    help="weight for is_TDI BCE heads in mv arm (default 1.0)")
+    ap.add_argument("--emx", action="store_true",
+                    help="mvx: mv + Emax x4 heads + all-4-iso is_TDI heads")
     a = ap.parse_args()
-    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom, a.pt, a.mv, a.tdic)
+    main(a.mode, a.auxw, a.seed, a.full_ft, a.smoke, a.hom, a.pt, a.mv,
+         a.tdic, a.clsw, a.emx)
