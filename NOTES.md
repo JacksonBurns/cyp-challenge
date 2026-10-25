@@ -2269,3 +2269,7 @@ cpmed-stack (cpmed itself +.16/.20 positive). Strong-standalone +
 negative-weight = bias-corrector, same role chmridge/fullft play.
 cp22 from zoo6 (ship 1A2,3A4; 2C9 4/5 held reserve). zoo6 is the
 first ALL-4-PASS pool; if 2C9 ever clears 5/5 it ships.
+cp22 BUILT d703b3b0 (zoo6 pool, ship 1A2/3A4, 2C9/2D6 = cp18;
+validator PASS NaN=0; vs cp21 rho .9954/.9993 = CV-noise twins;
+cp21 stays primary ship candidate). raw_test_matrix TAGS fix for
+ft_mvxcw0.3 (name[3:] tag derivation).

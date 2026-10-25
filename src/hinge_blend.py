@@ -168,7 +168,8 @@ def raw_test_matrix(name, test_smiles):
     if name == "emb":
         blend = np.load(os.path.join(CACHE, "blend_test_preds.npz"))
         return np.column_stack([blend[f"concat_{i}"] for i in ISO])
-    tag = name[3:]
+    TAGS = {"ft_mvxcw0.3": "mvx_cw0.3", "ft_mv_cw0.3": "mv_cw0.3"}
+    tag = TAGS.get(name, name[3:])
     files = sorted(f for f in glob.glob(os.path.join(CACHE, f"ft_test_preds_{tag}*.csv"))
                    if "smoke" not in os.path.basename(f))
     assert files, f"no test preds for {tag}"
