@@ -61,3 +61,37 @@ Subagents: max 1 at a time, blocking, shared GPU. Memory cgroup OOM: avoid
   Control: --nopcgrad plain-sum. Gate: 2D6 standalone < mv (0.97) AND macro
   <=0.84; then hinge_blend pool CV + 3 seeds.
 - GPU: smoke test only; full 5-fold pcgrad + control queued after.
+
+### Q2 (Oct 25) - CV->blind ST-RAE discount fit (src/q2_discount_fit.py, cache/q2_discount.json)
+Five scored points paired CV-side (hinge/soft_rae surrogate on the exact SHIPPED
+columns, raw family OOF + assay bounds; R2 = documented nested-honest) with blind
+board scores. Boards stratified: era A = Sep23 interim+final, era B = Sep26/Oct22
+(+Oct23 cp18 re-score 0.5119, NOTES 30b; Oct3 = cp7 repeat, board noise 0.012).
+Era-A blind scores drift-adjusted to era-B scale (paired field +0.073 R2 /
+-0.058 ST-RAE / +0.017 rho, NOTES 14); unadjusted sensitivity reported.
+
+CV ship columns (macro over 4 iso): cp17-blend 0.6172, cp18 0.6013,
+cp21 0.5969 (1A2 .6734+3A4 .3694 zoo4-fit, 2C9/2D6 cp18 bytes), cp22 0.5961
+(1A2 .6702+3A4 .3694 zoo6-fit). cp21/22 = CV-noise twins (delta 0.0008).
+
+Fits (blind = a + b*cv, bootstrap over points 10k):
+- ST-RAE adjusted 5pts: a=0.058 b=0.739 (b CI [0.155,0.954], fit R2 0.88)
+  -> pred cp21 0.499 [0.383,0.503], cp22 0.499.
+- ST-RAE unadjusted 5pts: a=-0.238 b=1.228 (fit R2 0.986) -> cp21 0.494 [0.339,0.445].
+- era-B only (n=3, the same-blind triple): blind - cv = -0.099 ST-RAE (tight:
+  -0.089..-0.104); gain slope b=0.66 [0.16,0.95]. cp21 point 0.498 [0.492,0.512],
+  cp22 0.498. Anchor propagation: from cp17 0.5133 -0.66*0.0203 -> 0.500; from
+  cp18 0.5119 -0.66*0.0044 -> 0.509; at cp18's observed 8.8-13% transfer rate -> 0.511.
+- R2: blind - cv (nested) = +0.067 era-B (NEGATIVE discount, placement; k~1.05
+  history). Adjusted line pred cp21 0.60 [0.51,0.70] - EXTRAPOLATION, do not trust.
+- rho: blind - cv = +0.064 era-B; line pred cp21 0.731 [0.721,0.742] (fit R2 0.96).
+
+DECISION READ: predicted blind MA-ST-RAE cp21 0.499-0.509, cp22 0.499-0.511 vs
+cp18 on board 0.5119. Expected gain 0.001-0.014 = at or below board-side noise
+(0.012 from the cp7 same-file rescore). The discount is a LEVEL offset of
+-0.099 ST-RAE (blind set is chemistractively enriched, easier than CV rows),
+NOT a multiplicative gain factor: era-B gain slope 0.66 upper CI 0.95 excludes
+the ~0.13x rate implied by the single cp18 event. Calibrated: absolute blind
+level (+/-0.01). NOT calibrated: sub-0.013 deltas, cp21-vs-cp22 ordering
+(CV twins), R2 transfer line (n=4, extrapolated CV range, nested-vs-placed
+metric mismatch).

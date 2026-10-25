@@ -149,8 +149,8 @@ def boot_fit(x, y, targets_x, n=N_BOOT):
 
 def main():
     # ---- CV surrogates of shipped columns ----
-    m1, _ = cv_metrics(blend_frame(
-        json.load(open(os.path.join(CACHE, "blendN.json")))))
+    # P1 = raw GBM 4cfg x 3seed (shipped Sep 23 interim; NOTES sec 7 OOF 0.743)
+    m1, _ = cv_metrics(HB.raw_oof_fam("gbm"))
     m1 = dict(m1, r2=0.349)  # documented Pearson^2 proxy (NOTES sec 9)
 
     m2, _ = cv_metrics(blend_frame(
@@ -173,13 +173,15 @@ def main():
     def ship(fits, pass_map):
         cols = {}
         for iso in ISO:
-            cols[iso] = (fits[iso]["fitted_oof_st_rae"] if pass_map[iso]
+            cols[iso] = (fits[iso]["fitted_oof_st_rae"] if pass_map.get(iso, False)
                          else p4[iso]["st_rae"])
         return cols
 
+    # ship discipline: hinge-fitted cols where gate passed AND in ship set;
+    # 2C9/2D6 = incumbent cp17-blend bytes (= cp18 bytes for those columns)
     ship18 = ship(h18, {iso: h18[iso]["gate_pass_L1"] for iso in ISO})
-    ship21 = ship(h21, {iso: True for iso in ISO})       # cp21: all-4 zoo4 fit
-    ship22 = ship(h22, {iso: h22[iso]["gate_pass_L1"] for iso in ISO})  # 2C9 fail -> cp18
+    ship21 = ship(h21, {"CYP1A2": True, "CYP3A4": True})  # ship 1A2+3A4 (NOTES sec 32)
+    ship22 = ship(h22, {"CYP1A2": True, "CYP3A4": True})  # ship 1A2+3A4 (NOTES sec 34)
 
     cv18 = round(float(np.mean(list(ship18.values()))), 4)
     cv21 = round(float(np.mean(list(ship21.values()))), 4)
@@ -190,7 +192,7 @@ def main():
     # ---- points table ----
     pts = {
         "P1_Sep23interim_rawGBM":  ("regression_2026-09-23_interim_reveal.csv", "A", m1),
-        "P2_Sep23final_ext2v3":    ("regression_2026-09-23_final_reveal.csv", "A", m2),
+        "P2_Sep23final_v3ext":    ("regression_2026-09-23_final_reveal.csv", "A", m2),
         "P3_Sep26_cp7":            ("regression_2026-09-26_interim_reveal2.csv", "B", m3),
         "P4_Oct22_cp17":           ("regression_2026-10-22_board.csv", "B", m4),
         "P5_Oct23rescore_cp18":    (None, "B", m5),
@@ -242,8 +244,8 @@ def main():
 
     # era-B anchor gain propagation (ST-RAE)
     xB, yB, kB = series("st_rae", True)
-    b_anchor = ols(xB[np.array([points[k]["era"] == "B" for k in kB])],
-                   yB[np.array([points[k]["era"] == "B" for k in kB])])[1]
+    eraB_mask = np.array([points[k]["era"] == "B" for k in kB])
+    b_anchor = ols(xB[eraB_mask], yB[eraB_mask])[1]
     anchor = {"b_anchor_eraB": round(float(b_anchor), 4), "pred": {}}
     for name, cvx in (("cp21", cv21), ("cp22", cv22)):
         anchor["pred"][name] = {
@@ -254,6 +256,24 @@ def main():
                 round(0.5119 - 0.13 * (cv18 - cvx), 4),
         }
     fits["st_rae_anchor"] = anchor
+
+    # era-B-only intercept-shift predictions (b=1 gain propagation):
+    d_mean = np.mean(yB[eraB_mask] - xB[eraB_mask])
+    pred_shift = {}
+    for name, cvx in (("cp21", cv21), ("cp22", cv22)):
+        bs = boot_fit(xB[eraB_mask], yB[eraB_mask], [round(cvx, 4)])
+        pred_shift[name] = {
+            "point": round(cvx + float(d_mean), 4),
+            "boot_mean_CI95": bs["pred"][str(round(cvx, 4))],
+        }
+    linB = ols(xB[eraB_mask], yB[eraB_mask])
+    fits["st_rae_eraB_only"] = {
+        "n": int(eraB_mask.sum()),
+        "a": round(linB[0], 4) if linB else None,
+        "b": round(linB[1], 4) if linB else None,
+        "mean_delta": round(float(d_mean), 4),
+        "pred": pred_shift,
+    }
 
     out = {
         "method_doc": __doc__.strip().splitlines()[0],
