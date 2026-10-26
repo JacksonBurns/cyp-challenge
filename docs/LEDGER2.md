@@ -181,3 +181,14 @@ on >=2 isoforms):
   irreducible label-noise ceiling. 'Know when to stop' argument weakened;
   headroom exists if representation improves. Files: src/q4_noise_floor.py,
   cache/q4_noise.json. Caveat: replicate n small (15-103 mols/iso).
+
+### Oct 25 ~21:20 - Q5 interval-supervision dissociation (quantified)
+- Family table (cache/q5_interval.csv): POSITIVE pool-w families mean
+  standalone RMSE 0.796; NEGATIVE-w (dscst -0.116, fullft -0.133) RMSE
+  0.757-0.768 = BETTER standalone. Confirms 'standalone-bad = pool-good'
+  ordering (mv 0.88w +.094; umtmL2 best-of-both +.363).
+- Bound-coverage of OOF preds ~0.24-0.34 for ALL families (conf bounds are
+  tight); interval arms (intarm .267, zoo_hinge_w3 .260) do NOT cover more.
+  VERDICT: the interval-arm pool value is decorrelation via loss-geometry
+  diversity, not measurable coverage calibration on point preds. Q5 partial:
+  dissociation confirmed on the accuracy axis, NOT on the coverage axis.
