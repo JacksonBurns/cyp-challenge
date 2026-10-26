@@ -246,3 +246,12 @@ on >=2 isoforms):
   uq_ood_test.csv written as monitoring artifact only.
 - UQ directive now FULLY executed: detection PASS (AUC .62-.66), loss
   reweighting FAIL, latent OOD FAIL. Three-part honest result for report.
+
+### Oct 25 ~23:30 - Q6 homolog direction: CLOSED, no pairwise 2C19<->2D6 transfer
+- Forward (A vs base, challenge 2D6 soft_rae): 0.9375 vs 0.9302 -> gain -0.007.
+- Reverse (C2D6 vs C, held-out homolog 2C19 RMSE, n=323): 0.5719 vs 0.5705
+  -> gain -0.0014.
+- VERDICT: single-head 2C19<->2D6 auxiliary transfer is SYMMETRICALLY NULL.
+  pt_homarm's +0.165 2D6 pool weight is a recipe-level effect (4-homolog
+  panel + hinge loss + PT encoder init), not a pairwise 2C19 donor effect.
+- All six Q's + all three directive arms now executed. GPU idle.

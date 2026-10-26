@@ -18,7 +18,7 @@ every gate pre-registered, results reported honestly including failures.
 | Q3 pool-role predictor | Spearman <= -0.5 | FAIL: -0.069 (significant, tiny) |
 | Q4 2D6 noise floor | sigma ratio | DONE: 1.19 - resistance is feature-side, not label noise |
 | Q5 interval supervision | coverage calibration | PARTIAL: dissociation on accuracy axis, NOT coverage |
-| Q6 homolog direction | per-direction gain | RUNNING (base/A/B, GPU) |
+| Q6 homolog direction | per-direction gain | DONE: both directions NULL (-0.007 / -0.0014) - transfer is recipe-level, not pairwise |
 
 ## Headline findings
 
