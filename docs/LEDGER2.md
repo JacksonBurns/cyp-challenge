@@ -217,3 +217,13 @@ on >=2 isoforms):
   an optimization pathology (fixed by PCGrad surgery), NOT label absence;
   signal is real but weaker than the dedicated LGBM blend machinery. Both
   facts go in the methods report.
+
+### Oct 25 ~22:05 - UQ-weighted loss GATE FAIL (diagnostic yes, causal no)
+- prim-only baseline macroST 0.7437 (2D6 .9100); UQ-downweighted (top-decile
+  x0.5): all-iso 0.7513, 2D6-only 0.7512. GATE (gain >0.005) FAILS (-0.008).
+- Verdict: cross-family UQ is a valid DETECTOR of high-residual molecules
+  (uq_detect AUC .62-.66) but down-weighting them in the loss does not
+  improve point ST-RAE: flagged rows are exactly the irreducible-hard rows;
+  removing their gradient neither helps fit nor denoises targets. UQ stays
+  a monitoring/flagging tool (test-set flags in uq_ood_latent), not a loss.
+- GPU freed -> uq_ood_latent (quick) then q6_direction base/A/B queued.
