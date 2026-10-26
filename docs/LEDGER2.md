@@ -95,3 +95,21 @@ the ~0.13x rate implied by the single cp18 event. Calibrated: absolute blind
 level (+/-0.01). NOT calibrated: sub-0.013 deltas, cp21-vs-cp22 ordering
 (CV twins), R2 transfer line (n=4, extrapolated CV range, nested-vs-placed
 metric mismatch).
+
+### Oct 25 ~19:50 - Q2 RESULT (subagent, commit d557382, VERIFIED on disk)
+- Fit: blind_STRAE = 0.058 + 0.739*cv_STRAE (drift-adjusted, n=5, fit R2 0.88;
+  b CI [0.155,0.954]). era-B clean triple: blind = cv - 0.099 (tight -0.089..-0.104).
+- R2: blind EXCEEDS nested-CV by +0.067 (placement effect); rho +0.064.
+- cp18 observed gain transfer rate 8.8% (CV -0.0159 -> blind -0.0014): the
+  honest bound is predicted gain <= 0.014 for cp21/cp22.
+- PREDICTED blind cp21 0.499-0.509, cp22 0.499-0.111 (0.5119 cp18 baseline):
+  gain at/below 0.012 board noise floor. cp21-vs-cp22 ordering uncalibrated.
+- IMPACT: Q2 says pool-swap slots (cp21/cp22) are EV-neutral. Slots should go
+  to PROBES (per-isoform R2s for blind_moment_solve placement) not pool swaps.
+  Files: src/q2_discount_fit.py, cache/q2_discount.json.
+
+### Oct 25 ~19:55 - Q1 label wiring fix
+- is_TDI labels: TDI file = 2D6/3A4 only; 1A2/2C9 come from Emax file
+  (23/38 positives -> 1A2/2C9 arms are low-signal; gate on 2D6/3A4).
+  q1_tdi_imbalance.py rewired to merge both label sources. Running proc_63e9d110edc7.
+- PCGrad smoke proc_dcd87d523a54 (GPU, sole GPU job).

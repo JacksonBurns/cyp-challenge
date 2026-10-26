@@ -103,10 +103,16 @@ def train_oof(X, y, smiles, cw=None, seed=SEED):
 def main():
     Xtr = pd.read_parquet(os.path.join(CACHE, "X_train.parquet"))
     tdi = pd.read_csv(os.path.join(DATA, "cyp-challenge-TRAIN_TDI.csv"))
+    emx = pd.read_csv(os.path.join(DATA, "cyp-challenge-TRAIN_Emax.csv"))
     Xtr = Xtr.drop_duplicates("SMILES").reset_index(drop=True)
-    tdi_u = tdi.drop_duplicates("SMILES").set_index("SMILES")
+    # label availability: TDI file has 2D6/3A4 is_TDI; Emax file adds 1A2/2C9
+    lab = {}
+    for c in ["CYP2D6_is_TDI", "CYP3A4_is_TDI"]:
+        lab[c] = tdi.drop_duplicates("SMILES").set_index("SMILES")[c]
+    for c in ["CYP1A2_is_TDI", "CYP2C9_is_TDI"]:
+        lab[c] = emx.drop_duplicates("SMILES").set_index("SMILES")[c]
+    Y = pd.DataFrame(lab)
     common = Xtr["SMILES"]
-    Y = tdi_u.reindex(common)
     feats = [c for c in Xtr.columns if c != "SMILES"]
 
     results, oof_store, test_store = {}, {}, {}

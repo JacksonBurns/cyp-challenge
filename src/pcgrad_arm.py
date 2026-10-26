@@ -235,14 +235,14 @@ def main():
         loader = data.build_dataloader(tr_dset, batch_size=BATCH,
                                        num_workers=0)
         # shared params for surgery: FFN trunk (+ encoder if fullft)
-        shared = list(model.ffn.ffn.parameters())
+        shared = list(model.predictor.ffn.parameters())
         if a.fullft:
-            shared += [p for p in model.mp.parameters() if p.requires_grad]
+            shared += [p for p in model.message_passing.parameters() if p.requires_grad]
         opt = torch.optim.AdamW([
-            {"params": model.ffn.ffn.parameters(), "weight_decay": L2W},
-            {"params": model.ffn.output_transform.parameters(),
+            {"params": model.predictor.ffn.parameters(), "weight_decay": L2W},
+            {"params": model.predictor.output_transform.parameters(),
              "weight_decay": 0.0},
-            {"params": model.mp.parameters(), "weight_decay": L2W},
+            {"params": model.message_passing.parameters(), "weight_decay": L2W},
         ], lr=1e-3)
         best, best_ep, bad = np.inf, 0, 0
         for ep in range(maxep):
@@ -256,7 +256,7 @@ def main():
                 targets = targets.to(device)
                 mask = mask.to(device)
                 Z = model.fingerprint(bmg, V_d, X_d)
-                z = model.ffn.ffn(Z)  # z-space preds (train-mode identity)
+                z = model.predictor.ffn(Z)  # z-space preds (train-mode identity)
                 lp, la, lc = group_losses(
                     z, targets, mask, mu_p, sd_p, mu_a, sd_a,
                     lo_sl, hi_sl, cls_sl, na, nc, a.auxw, a.clsw)
