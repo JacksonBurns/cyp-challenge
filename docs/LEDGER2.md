@@ -156,3 +156,16 @@ on >=2 isoforms):
   3. src/uq_weight_arm.py --q 0.9 --wdw 0.5 --iso CYP2D6 --seed 0
 - Gate: macroST gain vs baseline > 0.005. JSON per run in cache/uqw_*.json.
 - NOTE: foreground terminal caps ~420s; ALL GPU runs use background=true.
+
+### Oct 25 ~21:00 - Q3 pool-role predictor: GATE FAIL (clean negative)
+- Pre-registered: sign(corr(resid_m, resid_inc-minus-m)) predicts pool weight
+  sign (bias-corrector vs decorrelator). Pooled Spearman = -0.069 (n=1286,
+  14 pools, p=0.014): SIGNIFICANT but tiny. Per-iso -0.11..+0.06.
+- d (resid corr) compresses to .79-.96 for all members: shared label noise
+  dominates; residual orthogonality ALONE cannot predict pool role a priori.
+- Family means do order correctly (dscst w-.116 vs intarm w+.105) but d values
+  overlap (0.798 vs 0.840): the effect is family-identity, not a transferable
+  OOF statistic. Verdict: pool role = property of training recipe interaction,
+  not predictable from member-residual geometry. Q3 CLOSED (negative result
+  for methods report; zoo-family screening stays empirical).
+- Files: src/q3_poolrole.py, cache/q3_poolrole.{csv,json}.
