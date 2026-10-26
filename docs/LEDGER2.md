@@ -329,3 +329,18 @@ any conditioning we tested. Association (+0.90 logU on 3A4) is confounded
 by the assay-protocol selection (TDI assays use a different panel/protocol),
 not a causal potency shift the model can exploit. 2D6-specific hope: the
 2D6 gate MCC is 0.034 (near-chance) -> no signal to transfer.
+
+### Oct 26 ~15:40 - uq_localescal: the user's LLOD/shrink battery, honest CV
+- T1-T3 floor-high-UQ-at-LLOD(1.03): gain EXACTLY 0.0 all isoforms.
+  Blend preds never go below ~2.5; the low-side rows are moderately low
+  (predict 3.5, truth 4.5), not floor-level. Floor is a no-op.
+- T4/T5 shrink high-UQ rows to median/mean: NEGATIVE (2D6 -0.023,
+  2C9 -0.014). High-UQ rows are centered near truth; shrinking hurts.
+- FINAL ANSWER to the family-disagreement question:
+  (a) YES, disagreement is systematically low-side (91-94% of high-UQ
+      metric error is below assay lo).
+  (b) NO ad-hoc fix works on test: true-bounds clipping needs blinded
+      per-row bounds; learned bounds heads select gamma=0 (no clip)
+      5/5 folds; LLOD floor no-op; shrink calibration negative.
+  The bias is real, the metric reward is real, and we cannot touch it
+      without per-row test bounds. Line closed with full accounting.
