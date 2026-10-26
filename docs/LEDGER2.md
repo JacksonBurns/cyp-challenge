@@ -227,3 +227,10 @@ on >=2 isoforms):
   removing their gradient neither helps fit nor denoises targets. UQ stays
   a monitoring/flagging tool (test-set flags in uq_ood_latent), not a loss.
 - GPU freed -> uq_ood_latent (quick) then q6_direction base/A/B queued.
+
+### Oct 25 ~22:20 - PCGrad pool gate: pool-NEUTRAL (no ship change)
+- zoo7 = zoo6 + ft_pcgrad: fitted weights pcgrad 1A2 -0.034, 2C9 +0.046,
+  2D6 -0.043, 3A4 +0.016 -> weight ~0 all isoforms. Pool gates pass
+  (1A2 +.0209 5/5, 2D6 +.0303 4/5, 3A4 +.0194 5/5, 2C9 +.0025 4/5) = zoo6
+  gains unchanged. PCGrad is a TDI/science win, NOT a regression-pool member.
+- cp21 (zoo4) remains the regression ship candidate; no rebuild warranted.
