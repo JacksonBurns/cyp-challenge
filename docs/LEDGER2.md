@@ -299,3 +299,33 @@ on >=2 isoforms):
   (moe_arm exports plo/phi; clip_predbounds.py = honest-CV validator).
 - Blend reconstruction bug found+fixed (fitted weights sum ~1.26; must
   normalize per-row by sum of present weights; hinge_w_zoo6.json 'w').
+
+### Oct 26 ~15:20 - BATCH: learned MoE arm + clip lever, BOTH DEAD (TDI->pIC50 line exhausted)
+
+moE ARM (learned TDI-gated mixture-of-experts, GPU, full 5-fold):
+- prim pIC50 heads: 1A2 0.8417, 2C9 0.7041, 2D6 0.9384, 3A4 0.5778
+- GATED MIX P(alpha*tdic+(1-a)*prim): best_alpha=0.0 on ALL 4 isoforms,
+  folds_pos_mix=0/5 everywhere. 2D6 mix BLOWS UP (0.938 -> 3.07 at a=1.0).
+- gate head is_TDI: 3A4 MCC 0.335 (real), 2C9 0.073, 2D6 0.034, 1A2 0.000.
+- VERDICT: learned gating HURTS. The TDI-conditioned expert is not a
+  better predictor on any subset; blending it in degrades every isoform.
+  Gate is informative ONLY on 3A4 and even there the pIC50 mix is negative.
+
+CLIP-INTO-PREDICTED-BOUNDS lever (the +0.024..0.115 train-side fact):
+- MoE exports learned assay-bound heads (plo/phi). Honest 5-fold gamma
+  sweep: gamma=0 (NO clip) selected 5/5 folds on ALL 4 isoforms.
+- bounds_predictability.py: numerically degenerate (descriptor heavy tails
+  break ridge); inconclusive, and moot given gamma=0.
+- VERDICT: predicted intervals do not track true assay intervals. Clip
+  lever requires TRUE test bounds (blinded, unavailable). DEAD on test.
+
+=== TDI->pIC50 LINE: EXHAUSTED, 3 INDEPENDENT NULLS ===
+1. tdi_calib (post-hoc, TRUE TDI labels): dead (0/5 folds all isoforms)
+2. tdi_gate_zoo6 (Platt gate + offset on ship blend): dead (0/5 folds)
+3. moe_arm (learned gated MoE expert): dead (alpha=0, 0/5 folds)
+Consistent scientific finding: is_TDI carries real CLASSIFICATION signal
+(3A4 MCC 0.33) that does NOT transfer into better pIC50 REGRESSION under
+any conditioning we tested. Association (+0.90 logU on 3A4) is confounded
+by the assay-protocol selection (TDI assays use a different panel/protocol),
+not a causal potency shift the model can exploit. 2D6-specific hope: the
+2D6 gate MCC is 0.034 (near-chance) -> no signal to transfer.
