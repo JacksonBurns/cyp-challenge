@@ -27,21 +27,23 @@ ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
 K = 25
 
 
-def encode(model, smiles_list, device):
-    featurizer = ft_ext.featurizers.SimpleMoleculeMolGraphFeaturizer()
-    pts = [data.MoleculeDatapoint.from_smi(s) for s in smiles_list]
-    loader = data.build_dataloader(
-        data.MoleculeDataset(pts, featurizer), batch_size=128,
-        num_workers=0, shuffle=False)
+def encode(model, smiles_list, device, featurizer=None):
+    featurizer = featurizer or ft_ext.featurizers.SimpleMoleculeMolGraphFeaturizer()
     model.eval()
-    outs = []
+    ok, outs = [], []
     with torch.no_grad():
-        for batch in loader:
-            bmg, V_d, X_d = batch[0], batch[1], batch[2]
-            bmg.to(device)
-            z = model.fingerprint(bmg, V_d, X_d)
-            outs.append(z.cpu().numpy())
-    return np.vstack(outs)
+        for s in smiles_list:
+            try:
+                p = data.MoleculeDatapoint.from_smi(s)
+                mg = featurizer(p.mol)
+                bmg = data.BatchMolGraph([mg])
+                bmg.to(device)
+                z = model.fingerprint(bmg, None, None)
+                outs.append(z.cpu().numpy()[0])
+                ok.append(s)
+            except Exception:
+                pass
+    return np.stack(outs), ok
 
 
 def main():
@@ -56,8 +58,9 @@ def main():
     ft, test, allrows = ft_ext.load_tables()
     tr_smi = ft["SMILES"].values
     te_smi = test["SMILES"].values
-    Ztr = encode(model, list(tr_smi), device)
-    Zte = encode(model, list(te_smi), device)
+    Ztr, tr_smi = encode(model, list(tr_smi), device)
+    Zte, te_smi = encode(model, list(te_smi), device)
+    tr_smi = np.array(tr_smi); te_smi = np.array(te_smi)
     print("latents", Ztr.shape, Zte.shape, flush=True)
     sc = StandardScaler().fit(Ztr)
     A = sc.transform(Ztr); B = sc.transform(Zte)
@@ -69,8 +72,6 @@ def main():
         d = 1.0 - S
         return np.sort(d, axis=1)[:, :K].mean(axis=1)
     d_te = knn_dist(B, A)
-    d_tr = knn_dist(A, A[np.arange(len(A))][:0] if False else A)
-    # self-exclude: set diagonal
     S = A @ A.T
     np.fill_diagonal(S, -np.inf)
     d_tr = np.sort(1.0 - S, axis=1)[:, :K].mean(axis=1)

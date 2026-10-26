@@ -234,3 +234,15 @@ on >=2 isoforms):
   (1A2 +.0209 5/5, 2D6 +.0303 4/5, 3A4 +.0194 5/5, 2C9 +.0025 4/5) = zoo6
   gains unchanged. PCGrad is a TDI/science win, NOT a regression-pool member.
 - cp21 (zoo4) remains the regression ship candidate; no rebuild warranted.
+
+### Oct 25 ~22:40 - Latent-embedding OOD: GATE FAIL (representation distance is blind)
+- Frozen CheMeLeon 2048-d fingerprints, cosine kNN(k=25) distance to train.
+  corr(latent_knn, cross-family UQ): 1A2 .02, 2C9 -.05, 2D6 -.25(!), 3A4 .06;
+  corr with |OOF resid|: .06/.00/-.12/.09. No positive signal anywhere; 2D6
+  INVERSE (far-in-latent = MORE predictable).
+- VERDICT: pre-trained latent geometry does NOT encode predictability;
+  behavioral UQ (cross-family disagreement) is the working issue-molecule
+  detector. Test-set flags from behavioral UQ remain valid (uq_cross_spread);
+  uq_ood_test.csv written as monitoring artifact only.
+- UQ directive now FULLY executed: detection PASS (AUC .62-.66), loss
+  reweighting FAIL, latent OOD FAIL. Three-part honest result for report.
