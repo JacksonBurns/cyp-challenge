@@ -1,0 +1,12 @@
+sim matrices in 1s
+n fp: 6145
+== near-neighbor (Tanimoto>=0.9) |y - y_nnb| by isoform ==
+ CYP1A2 n=0
+ CYP2C9 n=0
+ CYP2D6 n=6 median|d|=0.52 mean=1.10 frac|d|>1=0.333 frac|d|>2=0.333 p90=2.56
+ CYP3A4 n=8 median|d|=0.05 mean=0.11 frac|d|>1=0.000 frac|d|>2=0.000 p90=0.34
+label sigma per isoform (for scale):
+ CYP1A2 sd=1.03
+ CYP2C9 sd=0.78
+ CYP2D6 sd=0.92
+ CYP3A4 sd=1.09

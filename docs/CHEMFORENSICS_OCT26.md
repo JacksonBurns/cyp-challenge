@@ -131,3 +131,13 @@ floor are partially non-chemistry by construction.
   2D6 pharmacophore, label ambiguity
 - src/chem_block.py / cache/chem_block_out.txt - motif block + gate A/B
 - tools/floor_census*.py - floor pileup census per label family
+
+## 8. Near-identical chemistry, divergent labels (tools/nb_spread.py)
+
+Pairs at Tanimoto>=0.9 (ECFP4), label gap |y - y_nearest|:
+- 1A2, 2C9: ZERO such pairs -> dataset is structurally diverse; hard rows
+  are not clustered next to known neighbors (matches the AD finding).
+- 3A4: 8 pairs, median gap 0.05 (labels consistent when chemistry matches).
+- 2D6: 6 pairs, median 0.52, ONE THIRD straddle >2 log units (p90 2.56).
+  Qualitative (n=6), but consistent with Q4: 2D6 label noise is the highest,
+  and near-identical 2D6 pairs genuinely straddle the potency scale.

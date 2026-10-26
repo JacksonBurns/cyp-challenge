@@ -364,3 +364,7 @@ Full writeup docs/CHEMFORENSICS_OCT26.md. Summary:
 VERDICT: descriptor augmentation cannot recover the hardness; floor is
 non-chemistry; 2D6 needs 3D pharmacophore. Chemistry line EXHAUSTED, negative.
 Files: chem_profile/chem_hard2/chem_mech/chem_block/floor_hazard + caches.
+- Near-neighbor check: 1A2/2C9 ZERO pairs at Tanimoto>=0.9 (diverse data);
+  3A4 pairs consistent (0.05); 2D6 pairs straddle >2 log at 1/3 (n=6,
+  qualitative; matches Q4 noise). Evidence closes the 'nearby chemistry'
+  claim with the direct measurement. CHEMISTRY LINE DONE.
