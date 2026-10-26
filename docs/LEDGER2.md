@@ -269,3 +269,12 @@ on >=2 isoforms):
 - CONCLUSION: the conditioning must be LEARNED inside the model, not
   bolted on. -> tdi_joint2 arm (GPU): prim pIC50 + per-isoform TDI offset
   head gated by co-trained TDI head probability.
+
+### Oct 26 ~00:20 - tdi_moe_offset: honest nested-CV gate-conditioned offset
+- Gate = Platt-calibrated pcgrad OOF P(is_TDI); offset = ridge on
+  [g, g*P, g*d1, g*d2, g] fit on 4/5, applied 1/5 (fully out-of-sample).
+- 2D6: gain +0.0069, 4/5 folds POSITIVE (partial pass; the 2D6 bet pays).
+- 1A2 -0.003 (1/5), 2C9 -0.007 (1/5), 3A4 -0.022 (1/5): blends already
+  use TDI-condition mv heads -> post-hoc gate offsets are redundant.
+- MACRO -0.0061: post-hoc route dead EXCEPT 2D6 (+0.0017 macro = noise).
+- Conclusion: conditioning must be LEARNED in-model -> moe_arm (GPU).
