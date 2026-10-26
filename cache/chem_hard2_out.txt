@@ -1,0 +1,76 @@
+== per-isoform HARD(+) vs EASY(-) contrast (top discriminating feats) ==
+
+CYP1A2: n_hard=234 n_easy=424
+   tpsa               hard=  71.75 easy=  63.50
+   mw                 hard= 341.41 easy= 336.12
+   nheavy             hard=  24.40 easy=  23.75
+   logp               hard=   2.77 easy=   3.25
+   nN                 hard=   3.81 easy=   3.52
+   nrot               hard=   4.19 easy=   3.99
+   basic_n            hard=   1.41 easy=   1.23
+   narom              hard=   2.48 easy=   2.66
+
+CYP2C9: n_hard=73 n_easy=540
+   tpsa               hard=  76.52 easy=  70.98
+   mw                 hard= 352.07 easy= 355.83
+   nheavy             hard=  24.68 easy=  25.42
+   logp               hard=   2.58 easy=   2.96
+   nring              hard=   3.25 easy=   3.51
+   nrot               hard=   4.10 easy=   4.25
+   basic_n            hard=   1.51 easy=   1.62
+   al_aniline         hard=   0.38 easy=   0.49
+
+CYP2D6: n_hard=203 n_easy=583
+   mw                 hard= 359.76 easy= 346.68
+   tpsa               hard=  64.25 easy=  62.76
+   nheavy             hard=  25.45 easy=  24.65
+   narom              hard=   2.69 easy=   2.35
+   nring              hard=   3.66 easy=   3.39
+   logp               hard=   3.32 easy=   3.07
+   nN                 hard=   3.61 easy=   3.44
+   nhalo              hard=   0.81 easy=   0.71
+
+CYP3A4: n_hard=234 n_easy=869
+   mw                 hard= 338.64 easy= 352.05
+   tpsa               hard=  75.80 easy=  70.04
+   nheavy             hard=  24.14 easy=  24.92
+   logp               hard=   2.29 easy=   2.88
+   nrot               hard=   3.83 easy=   4.21
+   nN                 hard=   3.66 easy=   3.37
+   narom              hard=   2.09 easy=   2.25
+   nhalo              hard=   0.68 easy=   0.57
+
+== top HARD scaffolds (count, hard-rate vs base) ==
+    11  rate=0.17 (base 0.11)  c1ccccc1
+     3  rate=0.20 (base 0.11)  c1ccc2ncccc2c1
+     3  rate=0.50 (base 0.11)  C1=CC(c2ccccc2)C=CN1
+     3  rate=0.25 (base 0.11)  O=C(Nc1ccccc1)c1ccccc1
+     2  rate=1.00 (base 0.11)  O=C(CCc1ccccc1)c1ccccc1
+     2  rate=1.00 (base 0.11)  O=C(Nc1c[nH]nc1-c1ccccc1)c1cccc(-c2ncn[nH]2)c1
+     2  rate=0.67 (base 0.11)  O=c1cc(CNc2ccccc2)nc2ccccn12
+     2  rate=0.67 (base 0.11)  c1ccc(-n2cc(Cn3cccn3)cn2)cc1
+     2  rate=1.00 (base 0.11)  O=C(Cc1cncs1)N1CCC2(CC1)CNCc1ccccc1O2
+     2  rate=0.67 (base 0.11)  O=C(NCc1ccccc1)c1cccc(Cn2ccnc2)c1
+     2  rate=1.00 (base 0.11)  O=C(Cc1noc2ccccc12)NCc1cc(C2CC2)[nH]n1
+     2  rate=1.00 (base 0.11)  O=C(Nc1cccc(-c2nnc[nH]2)c1)c1ccc2c(c1)CCN2
+     2  rate=1.00 (base 0.11)  O=C(Nc1cccc(-c2nc3ccccc3[nH]2)c1)c1ccc(-c2nc[nH]n2)cc1
+     2  rate=1.00 (base 0.11)  c1ccc2c(N3CCC(n4ccnn4)CC3)ccnc2c1
+     2  rate=1.00 (base 0.11)  c1cnc2nc(-c3ccc(-c4ccncc4)cc3)[nH]c2c1
+
+== AD: min-Tanimoto to same-isoform actives (median split) ==
+  CYP1A2 HARD   n= 234 median_maxTanimoto=0.530
+  CYP1A2 EASY   n= 424 median_maxTanimoto=0.434
+  CYP1A2 FLOOR  n=  22 median_maxTanimoto=0.286
+  CYP1A2 MID    n= 732 median_maxTanimoto=1.000
+  CYP2C9 HARD   n=  73 median_maxTanimoto=0.481
+  CYP2C9 EASY   n= 540 median_maxTanimoto=1.000
+  CYP2C9 FLOOR  n=  20 median_maxTanimoto=0.293
+  CYP2C9 MID    n= 652 median_maxTanimoto=0.540
+  CYP2D6 HARD   n= 203 median_maxTanimoto=1.000
+  CYP2D6 EASY   n= 583 median_maxTanimoto=0.388
+  CYP2D6 FLOOR  n=  23 median_maxTanimoto=0.288
+  CYP2D6 MID    n= 684 median_maxTanimoto=1.000
+  CYP3A4 HARD   n= 234 median_maxTanimoto=0.452
+  CYP3A4 EASY   n= 869 median_maxTanimoto=1.000
+  CYP3A4 FLOOR  n=  36 median_maxTanimoto=0.403
+  CYP3A4 MID    n=1196 median_maxTanimoto=0.608

@@ -1,0 +1,22 @@
+sim matrices in 1s
+== motif prevalence FLOOR / HARD / EASY / MID (iso: top HARD-vs-EASY gaps) ==
+ CYP1A2: n_stereo_unassigned 24.24/23.62, n_stereo 0.65/0.50, mt_long_alkyl 0.35/0.26, flatness 0.72/0.80, basic_centers 0.15/0.21, acid_centers 0.15/0.09
+   FLOOR top: n_stereo_unassigned 25.32/23.89, mt_amine_2c_from_arom 0.09/0.28, mt_long_alkyl 0.41/0.29, basic_centers 0.09/0.21
+ CYP2C9: n_stereo_unassigned 24.37/25.21, acid_centers 0.29/0.16, mt_amine_2c_from_arom 0.23/0.32, pharm2d6 0.14/0.21, basic_centers 0.14/0.21, mt_phenol 0.11/0.04
+   FLOOR top: n_stereo_unassigned 22.10/24.97, mt_hydroxamic 0.45/0.02, mt_cooh 0.45/0.02, acid_centers 0.55/0.19
+ CYP2D6: n_stereo_unassigned 25.19/24.40, flatness 0.73/0.62, mt_anilide 0.25/0.20, n_stereo 0.76/0.80, mt_long_alkyl 0.34/0.37, basic_centers 0.27/0.29
+   FLOOR top: n_stereo 0.17/0.83, n_stereo_unassigned 25.04/24.42, acid_centers 0.43/0.15, mt_long_alkyl 0.17/0.43
+ CYP3A4: n_stereo_unassigned 23.89/24.75, n_stereo 0.81/0.68, mt_sulfonamide 0.11/0.19, reactive 0.16/0.09, mt_alkyl_halide 0.15/0.09, acid_centers 0.24/0.28
+   FLOOR top: n_stereo_unassigned 24.08/24.35, mt_hydroxamic 0.28/0.05, mt_cooh 0.28/0.05, acid_centers 0.44/0.27
+
+== GATE A: HARD AUC, block-only (5-fold) ==
+ CYP1A2 n=1412 hard=234 AUC=0.517
+ CYP2C9 n=1285 hard=73 AUC=0.550
+ CYP2D6 n=1493 hard=203 AUC=0.482
+ CYP3A4 n=2335 hard=234 AUC=0.564
+
+== GATE B: GBM y-prediction MAE, Xtr vs Xtr+block (5-fold) ==
+ CYP1A2 MAE base=0.662 +block=0.656 delta=-0.006
+ CYP2C9 MAE base=0.489 +block=0.487 delta=-0.002
+ CYP2D6 MAE base=0.624 +block=0.623 delta=-0.002
+ CYP3A4 MAE base=0.532 +block=0.535 delta=+0.002

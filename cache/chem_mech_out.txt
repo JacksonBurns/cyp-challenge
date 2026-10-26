@@ -1,0 +1,22 @@
+sim matrices in 1s
+== A. signed residual mean by group (neg = blend predicts HIGH)
+ CYP1A2: {'EASY': (np.float64(0.02), 424), 'FLOOR': (np.float64(-2.18), 22), 'HARD': (np.float64(-0.02), 234), 'MID': (np.float64(0.15), 732)}
+ CYP2C9: {'EASY': (np.float64(-0.0), 540), 'FLOOR': (np.float64(-1.37), 20), 'HARD': (np.float64(-0.22), 73), 'MID': (np.float64(-0.07), 652)}
+ CYP2D6: {'EASY': (np.float64(-0.0), 583), 'FLOOR': (np.float64(-2.41), 23), 'HARD': (np.float64(-0.07), 203), 'MID': (np.float64(0.1), 684)}
+ CYP3A4: {'EASY': (np.float64(-0.0), 869), 'FLOOR': (np.float64(-1.17), 36), 'HARD': (np.float64(-0.47), 234), 'MID': (np.float64(-0.04), 1196)}
+
+== B. SMARTS prevalence HARD vs EASY vs FLOOR (per iso, top gaps) ==
+ CYP1A2 HARDvsEASY: amide 0.73v0.59, pyrimidine 0.14v0.08, benzyl_amine 0.15v0.19, aliphatic_N 0.20v0.15, aniline 0.50v0.54
+      FLOORvMID:  amide 0.77v0.62, pyridine 0.45v0.31, benzyl_amine 0.09v0.20, sulfoxide 0.14v0.07
+ CYP2C9 HARDvsEASY: aniline 0.38v0.49, urea 0.08v0.19, benzyl_amine 0.14v0.20, pyrimidine 0.16v0.11, imidazole 0.07v0.01
+      FLOORvMID:  carboxyl 0.45v0.02, amide 0.65v0.80, aliphatic_N 0.25v0.18, sulfonamide 0.05v0.11
+ CYP2D6 HARDvsEASY: urea 0.08v0.13, aniline 0.47v0.44, amide 0.63v0.61, quinoline 0.03v0.02, sulfonamide 0.08v0.07
+      FLOORvMID:  aliphatic_N 0.09v0.45, aniline 0.61v0.44, benzyl_amine 0.13v0.28, amide 0.65v0.55
+ CYP3A4 HARDvsEASY: sulfonamide 0.11v0.19, sulfoxide 0.15v0.21, pyrimidine 0.11v0.08, amide 0.80v0.77, carboxyl 0.06v0.03
+      FLOORvMID:  carboxyl 0.28v0.05, aniline 0.36v0.47, benzyl_amine 0.06v0.16, pyrimidine 0.03v0.11
+
+== C. CYP2D6: aliphatic_N prevalence HARD=0.37 EASY=0.38 FLOOR=0.09; quaternary HARD=0.00 EASY=0.01
+
+== D. label-source disagreement (DI vs chembl/pubchem aux) ==
+
+== E. near-neighbor (Tanimoto>=0.9, excl self) y-spread ==

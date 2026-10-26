@@ -344,3 +344,23 @@ not a causal potency shift the model can exploit. 2D6-specific hope: the
       5/5 folds; LLOD floor no-op; shrink calibration negative.
   The bias is real, the metric reward is real, and we cannot touch it
       without per-row test bounds. Line closed with full accounting.
+
+### Oct 26 ~16:30 - CHEMISTRY FORENSICS line: floor + hard molecules, exhausted
+Full writeup docs/CHEMFORENSICS_OCT26.md. Summary:
+- FLOOR (label at isoform 1.5pct, ~20-36 rows/iso, assay reporting floor ~10nM;
+  pIC50 labels left-censored min~1.9): polar, acidic, flat, amine-poor true junk.
+  2C9 floor 45% hydroxamic/45% COOH; 2D6 floor aliphatic-N 0.09v0.45, stereo 0.17v0.83.
+  Signed residual y-P = -1.2..-2.4 (blend over-predicts floor by 1-2.5 log).
+  Floor labels are assay-physics (aggregation/solubility), NOT structure.
+- HARD (|resid|>=1): two-sided, NOT low-end. 2D6=high MW/logP/polyaromatic
+  (lipophilic-mass outliers); 1A2=polar/flex/low-aromatic (anti-archetype);
+  3A4=small polar (anti-lipophilic); 2C9 fewest (73), high TPSA.
+  AD: HARD max-Tanimoto-to-actives >= EASY -> near-chemistry, far-labels,
+  NOT applicability-domain distance.
+- Stack gap: 2D+autocorr only; NO pKa/solubility/reactivity/pharmacophore/3D.
+- GATES (honest CV): block->HARD AUC 0.48-0.56 (chance); block+GBM MAE delta
+  -0.006..+0.002 (zero); floor-hazard AUC 0.44/0.59/0.75/0.62 (only 2D6);
+  shrink-to-floor post-process delta +0.021 macro = WORSE.
+VERDICT: descriptor augmentation cannot recover the hardness; floor is
+non-chemistry; 2D6 needs 3D pharmacophore. Chemistry line EXHAUSTED, negative.
+Files: chem_profile/chem_hard2/chem_mech/chem_block/floor_hazard + caches.

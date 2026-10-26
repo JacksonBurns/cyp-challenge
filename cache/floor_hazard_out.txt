@@ -1,0 +1,14 @@
+sim matrices in 1s
+== floor-hazard: AUC (block -> is FLOOR) ==
+ CYP1A2 n=1412 n_floor=22 AUC=0.511 flag@fp1%=0.011
+ CYP2C9 n=1285 n_floor=20 AUC=0.679 flag@fp1%=0.012
+ CYP2D6 n=1493 n_floor=23 AUC=0.619 flag@fp1%=0.010
+ CYP3A4 n=2335 n_floor=36 AUC=0.541 flag@fp1%=0.010
+
+== shrink-to-floor post-process (OOF hazard, honest by 5-fold) ==
+ CYP1A2 soft_rae base=0.3467 shrink=0.3955 delta=+0.0488
+ CYP2C9 soft_rae base=0.1459 shrink=0.1699 delta=+0.0240
+ CYP2D6 soft_rae base=0.3362 shrink=0.3845 delta=+0.0483
+ CYP3A4 soft_rae base=0.1963 shrink=0.2450 delta=+0.0487
+ MACRO base=0.2563 shrink=0.2987 delta=+0.0424
+GATE: FAIL (floor-hazard AUC >= 0.7 all isoforms)
