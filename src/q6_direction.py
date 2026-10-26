@@ -40,7 +40,7 @@ AUXW = 0.3
 
 def build_points_swap(df, swap):
     """swap: dict colA->colB value swap on L.COLS order (prim slot 3=2D6,
-    aux 2C19 col = 'CYP2C19_chembl')."""
+    aux 2C19 col = 'CYP2C19_hom')."""
     pts = []
     for _, row in df.iterrows():
         vals = []
@@ -115,10 +115,70 @@ def predict(model, df):
     return np.vstack(outs)
 
 
+def run_c_mode(a, allrows, ch_mask, lab, device):
+    """Reverse direction: 2C19 supervised (prim slot via swap); eval on
+    held-out homolog 2C19 rows. C = challenge only; C2D6 adds 2D6 aux head.
+    Gain_B = RMSE(C) - RMSE(C2D6): does 2D6 supervision help 2C19?"""
+    tag = f"q6_{a.mode}"
+    hsel = allrows["CYP2C19_hom"].notna().values & ~ch_mask
+    hrows = np.where(hsel)[0]
+    rng = np.random.default_rng(7 + a.seed)
+    perm = rng.permutation(len(hrows))
+    n_ev = max(150, len(hrows) // 5)
+    ev_i, tr_i = hrows[perm[:n_ev]], hrows[perm[n_ev:]]
+    swap = {"CYP2D6": "CYP2C19_hom"}
+    if a.mode == "C2D6":
+        swap["CYP2C9_pubchem"] = "CYP2D6"
+    tr_extra = allrows.iloc[tr_i]
+    if len(tr_extra) > ft_ext.EXT_CAP:
+        tr_extra = tr_extra.iloc[rng.choice(len(tr_extra),
+                                            ft_ext.EXT_CAP, replace=False)]
+    fit_df = pd.concat([allrows[ch_mask], tr_extra], ignore_index=True)
+    ev_df = allrows.iloc[ev_i].reset_index(drop=True)
+    seed_everything(a.seed)
+    model, scaler, tr_dset, mu_p, sd_p, mu_a, sd_a = make_model(
+        fit_df, False, device, swap)
+    loader = data.build_dataloader(tr_dset, batch_size=BATCH,
+                                   num_workers=0)
+    opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=L2W)
+    col2 = 2  # prim slot CYP2D6 carries swapped 2C19
+    yv = ev_df["CYP2C19_hom"].values.astype(float)
+    best, bad, best_state = np.inf, 0, None
+    for ep in range(MAX_EPOCHS):
+        model.train()
+        for batch in loader:
+            bmg, V_d, X_d, targets, w, lt_m, gt_m = batch
+            mask = targets.isfinite()
+            targets = targets.nan_to_num(nan=0.0)
+            bmg.to(device); targets = targets.to(device)
+            mask = mask.to(device)
+            z = model.predictor.ffn(model.fingerprint(bmg, V_d, X_d))
+            loss = losses(z, targets, mask, mu_p, sd_p, mu_a, sd_a)
+            opt.zero_grad(set_to_none=True)
+            loss.backward(); opt.step()
+        Pe = predict(model, ev_df)
+        rmse_e = float(np.sqrt(np.mean((yv - Pe[:, col2]) ** 2)))
+        if rmse_e < best - 1e-4:
+            best, bad = rmse_e, 0
+            best_state = {kk: vv.cpu().clone()
+                          for kk, vv in model.state_dict().items()}
+        else:
+            bad += 1
+            if bad >= 8:
+                break
+    model.load_state_dict(best_state)
+    Pe = predict(model, ev_df)
+    rmse = float(np.sqrt(np.mean((yv - Pe[:, col2]) ** 2)))
+    print(f"[{tag}] 2C19-hom held-out n={len(yv)} train_extra={len(tr_i)} "
+          f"RMSE={rmse:.4f} best_ep_rmse={best:.4f}", flush=True)
+    json.dump({"rmse": rmse, "n_ev": len(yv), "mode": a.mode},
+              open(os.path.join(CACHE, f"q6_{tag}.json"), "w"))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--mode", choices=["A", "B", "base"], default="A",
+    ap.add_argument("--mode", choices=["A", "B", "base", "C", "C2D6"], default="A",
                     help="A: aux=2C19 prim=2D6; B: prim slot=2C19 labels; "
                          "base: no homolog aux")
     a = ap.parse_args()
@@ -126,11 +186,15 @@ def main():
     # chembl aux cols order: AUX = 1A2..3A4 chembl then pubchem (NAUX=8)
     swap = {}
     if a.mode == "A":
-        # put CYP2C19_chembl values into aux slot 0 (unused head) - all aux
+        # put CYP2C19_hom values into aux slot 0 (unused head) - all aux
         # heads exist; 2C19 rides as EXTRA supervised head via pubchem slot
-        swap["CYP1A2_pubchem"] = "CYP2C19_chembl"
-    elif a.mode == "B":
-        swap["CYP2D6"] = "CYP2C19_chembl"   # prim 2D6 slot supervised w/ 2C19
+        swap["CYP1A2_pubchem"] = "CYP2C19_hom"
+    elif a.mode in ("C", "C2D6"):
+        # 2C19 rides the prim 2D6 slot; eval = held-out homolog 2C19.
+        # C2D6 adds challenge 2D6 as an aux head (reverse-direction probe).
+        swap["CYP2D6"] = "CYP2C19_hom"
+        if a.mode == "C2D6":
+            swap["CYP2C9_pubchem"] = "CYP2D6"
     tag = f"q6_{a.mode}" + ("" if a.seed == 0 else f"_s{a.seed}")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     ft, test, allrows = ft_ext.load_tables()
@@ -147,11 +211,14 @@ def main():
     bb = bounds_by_smi()
     for c in BOUNDC:
         allrows[c] = allrows["SMILES"].map(bb[c])
-    if "CYP2C19_chembl" not in allrows.columns:
-        print("NO 2C19 col - check aux view", flush=True)
+    if "CYP2C19_hom" not in allrows.columns:
+        print("NO CYP2C19_hom - check aux view", flush=True)
         return
     ch_mask = (allrows["_src"] == "challenge").values
     lab = allrows[L.LABCOLS].notna().any(axis=1)
+    lab = lab | allrows["CYP2C19_hom"].notna()  # homolog rows count labeled
+    if a.mode in ("C", "C2D6"):
+        return run_c_mode(a, allrows, ch_mask, lab, device)
     folds = ft["fold"].values
     seed_everything(a.seed)
     res = []
