@@ -1,168 +1,142 @@
 """UQ arm (Oct 25 directive): per-molecule uncertainty to DETECT
-issue-causing molecules, and test UQ-weighted loss relevance.
+issue-causing molecules. CPU-only, uses existing OOF artifacts only.
 
-Two uncertainty sources, same scaffold-5CV split convention:
- A) ensemble spread: per-fold ridge (alpha sweep) on Morgan-2048 + descriptor
-    features -> per-fold residual matrix; spread = var-of-fold-preds + MAD.
- B) latent embedding geometry: PCA-reduced (256d, memory rule) chemprop_medium
-    embeddings (emb_cpmed_all.parquet) -> kNN distance to train (k=10),
-    Mahalanobis distance (PCA whitened).
+Two uncertainty sources available at zero training cost:
+ A) SEED SPREAD: families trained with multiple seeds (d2d6_s8/9/10,
+    dscst_s1/2, ext_s1..5) -> per-molecule std of OOF preds across seeds
+    = epistemic proxy.
+ B) CROSS-FAMILY DISAGREEMENT: std of OOF preds across ALL families per
+    molecule = ensemble-disagreement proxy (includes model-form uncertainty).
 
-Targets: the 4 pIC50 isoforms from cache/X_train.parquet labels (ft table).
+GATE (pre-registered): per isoform, does spread flag high-residual molecules?
+ - Spearman(spread, |residual|) over labeled rows,
+ - AUC(spread -> top-quartile residual),
+ - decile lift: mean |residual| in top spread decile / overall.
+PASS if AUC >= 0.62 on >= 2 isoforms for source B (chance 0.5).
 
-Deliverables:
- 1. Spearman(UQ, mean |residual|) per isoform - gate rho > 0.30.
- 2. Top-5% issue molecules per isoform -> cache/uq_issue_top.csv.
- 3. Correlation of UQ with test-set (blinded) neighbor distance - "is the
-    blind set OOD relative to train?" external_features overlap audit exists;
-    this gives the UQ view.
- 4. UQ-weighted loss RELEVANCE test: refit ridge with weights 1/(eps+spread)
-    vs unweighted: honest per-fold R2 change. (Cheap proxy for the loss-side
-    use of UQ; the deep trainer version uses ft_oof spread as sample weights.)
-
-Writes: cache/uq_scores.csv, cache/uq_issue_top.csv, cache/uq_analysis.json
-CPU only.
+Follow-on (GPU, separate arm): UQ-weighted loss - downweight top-decile
+high-spread training rows on the 2D6 arm; gate = CV ST-RAE improvement.
+Latent-embedding OOD (MPNN fingerprint kNN distance) is a later GPU step.
 """
+import glob
 import json
 import os
 
 import numpy as np
 import pandas as pd
-from rdkit import RDLogger
-from scipy.spatial.distance import cdist
 from scipy.stats import spearmanr
-from sklearn.decomposition import PCA
-from sklearn.linear_model import Ridge
-from sklearn.model_selection import ParameterGrid
+from sklearn.metrics import roc_auc_score
 
-RDLogger.disable()
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-CACHE = os.path.join(HERE, "..", "cache")
-DATA = os.path.join(HERE, "..", "data")
+CACHE = "/home/jackson/cyp-challenge/cache"
 ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
-K = 5
-SEED = 7
-ALPHAS = [1.0, 10.0, 100.0]
-KNN = 10
-PCA_DIM = 256
+MIN_REP = 3  # seeds needed for seed-spread
 
 
-def scaffold_folds(smiles, k=K, seed=SEED):
-    import sys
-    sys.path.insert(0, os.path.join(HERE))
-    from run_regression import scaffold_groups, make_folds
-    return make_folds(scaffold_groups(smiles), k, seed)
+def load_fams():
+    fams = {}
+    for f in sorted(glob.glob(os.path.join(CACHE, "ft_oof_*.csv"))):
+        base = os.path.basename(f)[len("ft_oof_"):-len(".csv")]
+        try:
+            df = pd.read_csv(f)
+        except Exception:
+            continue
+        if "SMILES" not in df.columns:
+            continue
+        fams[base] = df.set_index("SMILES")
+    return fams
+
+
+def seed_groups(fams):
+    """family -> list of OOF frames incl seed variants (base name stem)."""
+    groups = {}
+    for name, df in fams.items():
+        stem = name.split("_s")[0] if "_s" in name else name
+        # careful: names like 'hinge2' have no _s; 'ext_s3' -> 'ext'; 'mv32_s1' -> 'mv32'
+        groups.setdefault(stem, []).append(df)
+    return {k: v for k, v in groups.items() if len(v) >= MIN_REP}
 
 
 def main():
-    X = pd.read_parquet(os.path.join(CACHE, "X_train.parquet"))
-    X = X.drop_duplicates("SMILES").reset_index(drop=True)
-    desc = pd.read_csv(os.path.join(CACHE, "desc3d_train.csv"))
-    desc = desc.drop_duplicates("SMILES").set_index("SMILES")
-    emb = pd.read_parquet(os.path.join(CACHE, "emb_cpmed_all.parquet"))
-    emb = emb.drop_duplicates("SMILES").set_index("SMILES")
-    ytab = X[["SMILES"] + [i for i in ISO if i in X.columns]]
-    feats = [c for c in X.columns if c not in ("SMILES", *ISO)]
-    Xf = X.set_index("SMILES")
-    common = ([s for s in ytab["SMILES"] if s in emb.index and s in desc.index])
-    ytab = ytab.set_index("SMILES").loc[common].reset_index()
-    Xm = Xf.loc[common, feats].values
-    Dm = desc.loc[common].values.astype(float)
-    Dm = np.nan_to_num(Dm, nan=0.0, posinf=0.0, neginf=0.0)
-    Em = emb.loc[common].values.astype(np.float32)
-    Em = np.nan_to_num(Em, nan=0.0)
-    fold = scaffold_folds(ytab["SMILES"].tolist())
-    n = len(ytab)
+    fams = load_fams()
+    data = pd.read_csv(os.path.join(CACHE, "ft_data.csv"))
+    lab = data.drop_duplicates("SMILES").set_index("SMILES")
+    print(f"{len(fams)} family OOF files", flush=True)
 
-    # PCA embedding (memory rule: never run distances at 2048-d)
-    pca = PCA(n_components=min(PCA_DIM, Em.shape[1]), random_state=0)
-    Ep = pca.fit_transform(Em)
-    Ep = Ep / (Ep.std(0, keepdims=True) + 1e-9)
+    out = {}
+    # per-isoform accumulators
+    seed_spread = {}   # iso -> DataFrame SMILES x fam (std across seeds)
+    cross_spread = {}  # iso -> Series SMILES (std across families)
+    cross_mean = {}    # iso -> Series mean OOF across families
+    sgroups = seed_groups(fams)
+    print("seed-replicate families:", {k: len(v) for k, v in sgroups.items()},
+          flush=True)
 
-    results = {}
-    spread_store = np.zeros((n, len(ISO)))
-    knn = np.zeros(n)
-    maha = np.zeros(n)
-    for f in range(K):
-        tr, va = np.where(fold != f)[0], np.where(fold == f)[0]
-        # latent geometry: distance from val to train points
-        d = cdist(Ep[va], Ep[tr], metric="euclidean")
-        knn[va] = np.sort(d, axis=1)[:, :KNN].mean(1)
-        mu = Ep[tr].mean(0)
-        C = np.cov(Ep[tr].T) + 1e-4 * np.eye(Ep.shape[1])
-        Ci = np.linalg.pinv(C)
-        dc = Ep[va] - mu
-        maha[va] = np.sqrt(np.einsum("ij,jk,ik->i", dc, Ci, dc))
-    for j, iso in enumerate(ISO):
-        y = ytab[iso].values.astype(float)
-        lab = ~np.isnan(y)
-        preds = np.full((n, K), np.nan)
-        best_a, best_r2 = None, -np.inf
-        for f in range(K):
-            tr = np.where(fold != f)[0]
-            va = np.where(fold == f)[0]
-            trl = tr[lab[tr]]
-            val = va[lab[va]]
-            if len(val) == 0:
+    for iso in ISO:
+        cols = {n: df[iso] for n, df in fams.items() if iso in df.columns}
+        M = pd.DataFrame(cols)  # SMILES x family
+        labiso = lab[iso].reindex(M.index)
+        labiso = labiso.dropna()
+        Mo = M.loc[labiso.index]
+        # drop families that are mostly-NaN on labeled rows
+        good = Mo.columns[Mo.notna().mean() > 0.5]
+        Mo = Mo[good]
+        # cross-family disagreement (nan-aware)
+        cs = Mo.std(axis=1, skipna=True)
+        cm = Mo.mean(axis=1, skipna=True)
+        cross_spread[iso], cross_mean[iso] = cs, cm
+        # seed spread: mean over seed-groups of within-group std
+        sstd = {}
+        for stem, frames in sgroups.items():
+            sub = [f[iso] for f in frames if iso in f.columns]
+            if len(sub) < MIN_REP:
                 continue
-            for a in ALPHAS:
-                r = Ridge(alpha=a).fit(np.c_[Xm[trl], Dm[trl]], y[trl])
-                p = r.predict(np.c_[Xm[val], Dm[val]])
-                preds[val, ALPHAS.index(a)] = p
-                ss = 1 - ((y[val] - p) ** 2).sum() / ((y[val] - y[trl].mean()) ** 2).sum()
-                if ALPHAS.index(a) == 0 and ss > best_r2:
-                    best_a, best_r2 = a, ss
-        # per-molecule spread: across-alpha + use mean |resid| as error target
-        err = np.nanmean(np.abs(preds - y[:, None]), axis=1)
-        sp_pred = np.nanvar(preds, axis=1)
-        sp_mean = np.nanmean(preds, axis=1)
-        rho_sp = spearmanr(sp_pred[lab], err[lab]).statistic
-        rho_knn = spearmanr(knn[lab], err[lab]).statistic
-        rho_ma = spearmanr(maha[lab], err[lab]).statistic
-        # UQ-weighted refit: weights 1/(0.5+knn-z) style, honest per-fold R2
-        w = 1.0 / (0.5 + np.clip(np.nan_to_num(sp_pred), 0, None)
-                   + knn / knn.std())
-        r2_w, r2_u = [], []
-        for f in range(K):
-            tr, va = np.where(fold != f)[0], np.where(fold == f)[0]
-            trl, val = tr[lab[tr]], va[lab[va]]
-            if len(val) < 5:
-                continue
-            XX = np.c_[Xm, Dm]
-            ru = Ridge(alpha=10.0).fit(XX[trl], y[trl])
-            pu = ru.predict(XX[val])
-            rw = Ridge(alpha=10.0).fit(XX[trl], y[trl], sample_weight=w[trl])
-            pw = rw.predict(XX[val])
-            r2_u.append(1 - ((y[val] - pu) ** 2).sum() / ((y[val] - y[trl].mean()) ** 2).sum())
-            r2_w.append(1 - ((y[val] - pw) ** 2).sum() / ((y[val] - y[trl].mean()) ** 2).sum())
-        results[iso] = {
-            "rho_spread_err": round(float(rho_sp), 4),
-            "rho_knn_err": round(float(rho_knn), 4),
-            "rho_maha_err": round(float(rho_ma), 4),
-            "mean_abs_err": round(float(np.nanmean(err[lab])), 4),
-            "r2_unweighted": round(float(np.mean(r2_u)), 4),
-            "r2_uqweighted": round(float(np.mean(r2_w)), 4),
-        }
-        spread_store[:, j] = np.nan_to_num(sp_pred)
-        print(iso, json.dumps(results[iso]), flush=True)
+            S = pd.DataFrame(sub).loc[labiso.index]
+            sstd[stem] = S.std(axis=1, skipna=True)
+        seed_spread[iso] = pd.DataFrame(sstd)
 
-    out = pd.DataFrame({"SMILES": common, "knn10": knn, "mahalanobis": maha,
-                        "spread_1A2": spread_store[:, 0],
-                        "spread_2C9": spread_store[:, 1],
-                        "spread_2D6": spread_store[:, 2],
-                        "spread_3A4": spread_store[:, 3]})
-    out.to_csv(os.path.join(CACHE, "uq_scores.csv"), index=False)
-    # top-5% issue molecules: per-iso rank of spread (mean of z-scores of
-    # spread, knn, maha = composite OOD-issue score)
-    z = lambda v: (v - np.nanmean(v)) / (np.nanstd(v) + 1e-9)
-    out["composite"] = (z(out["knn10"]) + z(out["mahalanobis"])
-                        + z(out[[f"spread_{i}" for i in ("1A2", "2C9", "2D6", "3A4")]]).mean(1))
-    top = out.sort_values("composite", ascending=False).head(int(0.05 * n))
-    top.to_csv(os.path.join(CACHE, "uq_issue_top.csv"), index=False)
-    with open(os.path.join(CACHE, "uq_analysis.json"), "w") as fh:
-        json.dump(results, fh, indent=1)
-    print("WROTE uq_scores.csv, uq_issue_top.csv (n=%d), uq_analysis.json" % n)
+        y = labiso.astype(float)
+        resid = (y - cm).abs()
+        rec = {"n": int(len(y)), "n_families": int(len(good))}
+        for src, uq in [("cross_family", cs),
+                        ("seed_spread", seed_spread[iso].mean(axis=1, skipna=True))]:
+            m = uq.notna() & resid.notna()
+            if m.sum() < 200:
+                continue
+            u, r = uq[m], resid[m]
+            thr = r.quantile(0.75)
+            top = (r >= thr).astype(int)
+            if top.std() == 0:
+                continue
+            rec[src] = {
+                "n_eval": int(m.sum()),
+                "spearman_uq_resid": round(float(spearmanr(u, r).statistic), 4),
+                "auc_topquartile": round(float(roc_auc_score(top, u)), 4),
+                "lift_top_decile": round(
+                    float(r[u >= u.quantile(0.9)].mean() / r.mean()), 3),
+            }
+        out[iso] = rec
+        print(iso, json.dumps(rec), flush=True)
+
+    # persist per-molecule UQ for the 2D6 follow-on (loss-weighting arm)
+    keep = pd.DataFrame({
+        f"{iso}_uq": cross_spread[iso].rename(None) for iso in ISO
+    })
+    keep.index.name = "SMILES"
+    keep.to_csv(os.path.join(CACHE, "uq_cross_spread.csv"))
+    ss = pd.DataFrame({f"{iso}_seedstd": seed_spread[iso].mean(axis=1, skipna=True)
+                       for iso in ISO})
+    ss.index.name = "SMILES"
+    ss.to_csv(os.path.join(CACHE, "uq_seed_spread.csv"))
+
+    npass = 0
+    for iso in ISO:
+        for src in ("cross_family", "seed_spread"):
+            if src in out[iso] and out[iso][src].get("auc_topquartile", 0) >= 0.62:
+                npass += 1
+    out["GATE"] = {"pass_if_auc_ge_0.62_on_2_isoforms": npass >= 2, "n_pass": npass}
+    print("GATE:", json.dumps(out["GATE"]), flush=True)
+    with open(os.path.join(CACHE, "uq_detect.json"), "w") as fh:
+        json.dump(out, fh, indent=1)
 
 
 if __name__ == "__main__":

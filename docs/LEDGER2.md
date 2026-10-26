@@ -113,3 +113,13 @@ metric mismatch).
   (23/38 positives -> 1A2/2C9 arms are low-signal; gate on 2D6/3A4).
   q1_tdi_imbalance.py rewired to merge both label sources. Running proc_63e9d110edc7.
 - PCGrad smoke proc_dcd87d523a54 (GPU, sole GPU job).
+
+### Oct 25 ~20:05 - PCGrad smoke PASS + arms in flight
+- pcgrad_arm.py smoke: pipeline OK (fold 16s, cos_pa/cos_pc logged, no crash).
+  Full run proc_c9779d78af7f (tag pcg1, SOLE GPU job). Gate: 2D6 val ST-RAE
+  vs mv baseline (~0.97-1.01 starved) and pool CV gain.
+- Q1 relaunch (labels merged from TDI+Emax files): proc_63e9d110edc7 (CPU).
+  Label census: 2D6 324+/1173-, 3A4 764+/2820-, 1A2 23+ (low-signal), 2C9 38+.
+- UQ arm src/uq_detect.py (CPU, proc_8e9f1c363b52): seed-spread + cross-family
+  disagreement vs |residual|; pre-registered gate AUC>=0.62 on >=2 isoforms.
+  Writes cache/uq_cross_spread.csv, uq_seed_spread.csv, uq_detect.json.
