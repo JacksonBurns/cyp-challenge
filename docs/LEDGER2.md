@@ -255,3 +255,17 @@ on >=2 isoforms):
   pt_homarm's +0.165 2D6 pool weight is a recipe-level effect (4-homolog
   panel + hinge loss + PT encoder init), not a pairwise 2C19 donor effect.
 - All six Q's + all three directive arms now executed. GPU idle.
+
+### Oct 25 ~23:55 - TDI association + post-hoc calibration test
+- ASSOCIATION (real): mean pIC50 TDI+ vs TDI-: 3A4 4.70/3.80 (+0.90, n=764
+  = 33% of 3A4 rows!), 1A2 +0.48, 2D6 -0.36 (n=324), 2C9 +0.11.
+- uq_clipcal (bound-clipping on train): clip-into-[lo,hi] gains 0.024-0.115
+  on train rows (uq90 variant). TEST file has NO bounds (blinded SMILES
+  only) -> not transferable; predicted-bounds clipping needs the intarm
+  bound heads exported (pending).
+- tdi_calib POST-HOC (shift blend on TDI+): oracle gain 3A4 +0.214, 2D6
+  +0.059 headline, but bootstrap-refit CI ~0 -> in-sample artifact; blend
+  already uses TDI-condition mv heads. Post-hoc calibration: GATE FAIL.
+- CONCLUSION: the conditioning must be LEARNED inside the model, not
+  bolted on. -> tdi_joint2 arm (GPU): prim pIC50 + per-isoform TDI offset
+  head gated by co-trained TDI head probability.
