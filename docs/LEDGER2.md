@@ -206,3 +206,14 @@ on >=2 isoforms):
 - Files: cache/ft_oof_pcgrad.csv, tdi_probs_pcgrad.csv, joint_oof_tdi_pcgrad.csv.
 - GPU queue next: uqw baseline (launched), then uqw q90w50 all, then 2D6-only,
   then q6_direction modes base/A/B.
+
+### Oct 25 ~21:45 - TDI head adjudication: v4_candidate STAYS slot owner
+- PCGrad TDI heads under field scoring (prior-grid E[MCC], src/tdi_pcgrad_eval.py):
+  3A4 MCC_best 0.4086, E[MCC]@f=.26 = 0.230 (q-sweep 0.283); 2D6 MCC_best
+  0.1327, E[MCC]@f=.33 = 0.046.
+- v4_candidate E[MCC] book: 2D6 0.163, 3A4 0.409 (macro 0.286). PCGrad head
+  loses at shipped fractions on BOTH isoforms. No TDI candidate promotion.
+- SCIENCE: MCC 0.000 -> 0.4086 (best-thr, 3A4) proves joint-head collapse was
+  an optimization pathology (fixed by PCGrad surgery), NOT label absence;
+  signal is real but weaker than the dedicated LGBM blend machinery. Both
+  facts go in the methods report.
