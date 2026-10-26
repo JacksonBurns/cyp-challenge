@@ -69,8 +69,8 @@ def main():
                 continue
             ok = np.isfinite(fam_oof)
             P[ok] += w * fam_oof[ok]
-            tot[ok] += abs(w)
-        # weighted blend; weights sum ~1 by construction (lam-regularized)
+            tot[ok] += w
+        P = np.where(tot > 0.5, P / np.maximum(tot, 1e-9), np.nan)
 
         y = H.targets[f"{iso}_pIC50_direct_inhibition"].reindex(smi).values.astype(float)
         lo = H.bounds[f"{iso}_lo"].reindex(smi).values.astype(float)

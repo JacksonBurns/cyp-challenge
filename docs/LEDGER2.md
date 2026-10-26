@@ -286,3 +286,16 @@ on >=2 isoforms):
   TDI-condition heads; zoo6 has them -> gate info already internalized).
 - POST-HOC TDI CALIBRATION: FULLY CLOSED (both blends, honest CV).
 - Remaining route: LEARNED in-model gating -> moe_arm (GPU).
+
+### Oct 26 ~01:10 - UQ DIRECTION (user question): YES - errors are LOW-side
+- zoo6 blend, true bounds, UQ deciles -> metric err-share from LOW side
+  (P below lo): 1A2 0.65-0.67, 2C9 0.64-0.68, 2D6 0.61-0.69, 3A4 0.70-0.78
+  (rises with UQ on 3/4 iso). 61-78% of ALL scored error mass = P < lo.
+- 2D6 top decile: 57% below_lo, mean(y-P)=+0.05 (UNDER-prediction) - the
+  LLOD hypothesis is literally true for 2D6.
+- 3A4 top decile: 71% inside (wide intervals = hard assays), bias -0.21.
+- Clip-into-TRUE-interval on train: +0.024..0.115 (uq_clipcal) = the lever.
+  TEST has no bounds (blinded) -> operationalize via LEARNED bound heads
+  (moe_arm exports plo/phi; clip_predbounds.py = honest-CV validator).
+- Blend reconstruction bug found+fixed (fitted weights sum ~1.26; must
+  normalize per-row by sum of present weights; hinge_w_zoo6.json 'w').

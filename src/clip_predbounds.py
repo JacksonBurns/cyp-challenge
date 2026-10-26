@@ -47,6 +47,7 @@ def main():
         short = iso.split("CYP")[1]
         wmap = W.get(iso, {}).get("w", {})
         P = np.zeros(len(smi))
+        tot = np.zeros(len(smi))
         for fam, w in wmap.items():
             if not isinstance(w, (int, float)) or abs(w) < 1e-9:
                 continue
@@ -56,6 +57,8 @@ def main():
                 continue
             ok = np.isfinite(fo)
             P[ok] += w * fo[ok]
+            tot[ok] += w
+        P = np.where(tot > 0.5, P / np.maximum(tot, 1e-9), np.nan)
         y = H.targets[f"{iso}_pIC50_direct_inhibition"].reindex(smi).values.astype(float)
         lo = H.bounds[f"{iso}_lo"].reindex(smi).values.astype(float)
         hi = H.bounds[f"{iso}_hi"].reindex(smi).values.astype(float)
