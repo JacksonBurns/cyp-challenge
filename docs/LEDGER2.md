@@ -278,3 +278,11 @@ on >=2 isoforms):
   use TDI-condition mv heads -> post-hoc gate offsets are redundant.
 - MACRO -0.0061: post-hoc route dead EXCEPT 2D6 (+0.0017 macro = noise).
 - Conclusion: conditioning must be LEARNED in-model -> moe_arm (GPU).
+
+### Oct 26 ~00:30 - TDI gate offset on the SHIP blend (zoo6): 0/5 folds, dead
+- Same honest 5-fold offset, P = zoo6 hinge-weighted OOF:
+  2D6 -0.0060 (0/5), 3A4 -0.0193, 1A2 -0.0056, 2C9 -0.0023.
+- The ft_pcgrad 2D6 +0.0069 signal was FAMILY-specific (pcgrad lacks the
+  TDI-condition heads; zoo6 has them -> gate info already internalized).
+- POST-HOC TDI CALIBRATION: FULLY CLOSED (both blends, honest CV).
+- Remaining route: LEARNED in-model gating -> moe_arm (GPU).
