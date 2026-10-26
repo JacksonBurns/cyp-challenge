@@ -123,3 +123,27 @@ metric mismatch).
 - UQ arm src/uq_detect.py (CPU, proc_8e9f1c363b52): seed-spread + cross-family
   disagreement vs |residual|; pre-registered gate AUC>=0.62 on >=2 isoforms.
   Writes cache/uq_cross_spread.csv, uq_seed_spread.csv, uq_detect.json.
+
+### Oct 25 ~20:30 - Q1 + UQ GATE RESULTS
+**Q1 (dedicated is_TDI + imbalance methods) - gate result: weak PASS on 3A4,
+near-chance on 2D6, dead on 1A2/2C9.**
+- 3A4 (764+/2820-): AUROC 0.526, MCC_best +0.061, E[MCC]@f=0.36 = +0.168.
+- 2D6 (324+/1173-): AUROC 0.476-0.505 (chance), MCC_best +0.034.
+- 1A2 (23 pos) / 2C9 (38 pos): unlearnable, MCC <= 0.
+- SCIENTIFIC VERDICT: joint-arm MCC 0.000 collapse was NOT gradient starvation -
+  the binary is_TDI label signal is ~chance-level from available features.
+  Balanced weights/logit-adjust/threshold-calibration lift MCC from 0.000 to
+  0.03-0.06 on labeled isoforms: real but tiny. TDI track rank-30 target
+  (+0.014 MA-MCC) will NOT come from this arm. Files: cache/q1_tdi_imb.json.
+
+**UQ detection arm - PRE-REGISTERED GATE PASSED 4/4** (threshold AUC>=0.62
+on >=2 isoforms):
+- cross-family disagreement AUC(top-quartile residual): 1A2 .631, 2C9 .625,
+  2D6 .623, 3A4 .661. Lift top-decile: 1.32-1.52x mean |residual|.
+- seed-spread weaker (AUC .55-.62): model-FORM diversity carries the
+  uncertainty signal, seed diversity does not - consistent with loss-zoo
+  finding (loss diversity > seed diversity).
+- Spearman(uq, |resid|) .17-.27. Per-molecule UQ maps exported:
+  cache/uq_cross_spread.csv, uq_seed_spread.csv, gate json uq_detect.json.
+- NEXT (GPU, queued behind pcg1): UQ-weighted 2D6 loss (downweight top-decile
+  spread rows); gate = CV ST-RAE gain. Latent-embedding kNN OOD to follow.

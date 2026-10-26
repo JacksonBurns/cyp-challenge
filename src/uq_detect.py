@@ -42,7 +42,7 @@ def load_fams():
             continue
         if "SMILES" not in df.columns:
             continue
-        fams[base] = df.set_index("SMILES")
+        fams[base] = df.drop_duplicates("SMILES").set_index("SMILES")
     return fams
 
 
@@ -60,6 +60,7 @@ def main():
     fams = load_fams()
     data = pd.read_csv(os.path.join(CACHE, "ft_data.csv"))
     lab = data.drop_duplicates("SMILES").set_index("SMILES")
+    lab = lab[~lab.index.duplicated(keep="first")]
     print(f"{len(fams)} family OOF files", flush=True)
 
     out = {}
@@ -87,10 +88,12 @@ def main():
         # seed spread: mean over seed-groups of within-group std
         sstd = {}
         for stem, frames in sgroups.items():
-            sub = [f[iso] for f in frames if iso in f.columns]
+            sub = [f[iso][~f.index.duplicated(keep="first")]
+                   for f in frames if iso in f.columns]
             if len(sub) < MIN_REP:
                 continue
-            S = pd.DataFrame(sub).loc[labiso.index]
+            S = pd.DataFrame({f"s{i}": s for i, s in enumerate(sub)})
+            S = S[~S.index.duplicated(keep="first")].reindex(labiso.index)
             sstd[stem] = S.std(axis=1, skipna=True)
         seed_spread[iso] = pd.DataFrame(sstd)
 

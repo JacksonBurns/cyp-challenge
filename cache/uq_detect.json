@@ -1,0 +1,70 @@
+{
+ "CYP1A2": {
+  "n": 1412,
+  "n_families": 105,
+  "cross_family": {
+   "n_eval": 1412,
+   "spearman_uq_resid": 0.2394,
+   "auc_topquartile": 0.6313,
+   "lift_top_decile": 1.391
+  },
+  "seed_spread": {
+   "n_eval": 1412,
+   "spearman_uq_resid": 0.1704,
+   "auc_topquartile": 0.5943,
+   "lift_top_decile": 1.241
+  }
+ },
+ "CYP2C9": {
+  "n": 1285,
+  "n_families": 105,
+  "cross_family": {
+   "n_eval": 1285,
+   "spearman_uq_resid": 0.1814,
+   "auc_topquartile": 0.6253,
+   "lift_top_decile": 1.52
+  },
+  "seed_spread": {
+   "n_eval": 1285,
+   "spearman_uq_resid": 0.0746,
+   "auc_topquartile": 0.5519,
+   "lift_top_decile": 1.377
+  }
+ },
+ "CYP2D6": {
+  "n": 1493,
+  "n_families": 105,
+  "cross_family": {
+   "n_eval": 1493,
+   "spearman_uq_resid": 0.1727,
+   "auc_topquartile": 0.6229,
+   "lift_top_decile": 1.402
+  },
+  "seed_spread": {
+   "n_eval": 1493,
+   "spearman_uq_resid": 0.1645,
+   "auc_topquartile": 0.6184,
+   "lift_top_decile": 1.543
+  }
+ },
+ "CYP3A4": {
+  "n": 2335,
+  "n_families": 105,
+  "cross_family": {
+   "n_eval": 2335,
+   "spearman_uq_resid": 0.2732,
+   "auc_topquartile": 0.6605,
+   "lift_top_decile": 1.32
+  },
+  "seed_spread": {
+   "n_eval": 2335,
+   "spearman_uq_resid": 0.1224,
+   "auc_topquartile": 0.5732,
+   "lift_top_decile": 1.315
+  }
+ },
+ "GATE": {
+  "pass_if_auc_ge_0.62_on_2_isoforms": true,
+  "n_pass": 4
+ }
+}
