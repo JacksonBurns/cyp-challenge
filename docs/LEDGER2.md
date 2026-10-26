@@ -192,3 +192,17 @@ on >=2 isoforms):
   VERDICT: the interval-arm pool value is decorrelation via loss-geometry
   diversity, not measurable coverage calibration on point preds. Q5 partial:
   dissociation confirmed on the accuracy axis, NOT on the coverage axis.
+
+### Oct 25 ~21:35 - PCGrad FULL RUN: TDI head gate PASS (MCC 0.00 -> 0.34)
+- pcgrad_arm.py 5-fold, prim-anchored shared-trunk surgery, mvx 32-head layout:
+  POOLED soft_rae 1A2 .8438 / 2C9 .6956 / 2D6 .9503 / 3A4 .5686
+  (macro .7646; mvx marginal baseline .834; 2D6 .95 = starved band persists
+  on val, modest pool-relevant gain).
+- **TDI heads: 3A4 MCC 0.3403, 2D6 MCC 0.0541** (joint arms before: 0.000).
+  PCGrad gradient surgery FIXED the all-negative collapse on 3A4. Combined
+  with Q1 (is_TDI signal real but thin), TDI track path = PCGrad joint head,
+  not standalone LGBM. 3A4 head alone would contribute ~+0.085 to MA-MCC if
+  it transfers blind (current board MA-MCC 0.3422; rank-30 +0.014).
+- Files: cache/ft_oof_pcgrad.csv, tdi_probs_pcgrad.csv, joint_oof_tdi_pcgrad.csv.
+- GPU queue next: uqw baseline (launched), then uqw q90w50 all, then 2D6-only,
+  then q6_direction modes base/A/B.
