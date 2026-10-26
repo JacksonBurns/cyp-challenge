@@ -147,3 +147,12 @@ on >=2 isoforms):
   cache/uq_cross_spread.csv, uq_seed_spread.csv, gate json uq_detect.json.
 - NEXT (GPU, queued behind pcg1): UQ-weighted 2D6 loss (downweight top-decile
   spread rows); gate = CV ST-RAE gain. Latent-embedding kNN OOD to follow.
+
+### Oct 25 ~20:45 - GPU serial queue (via notifications, not chained script)
+- pcg1 full run = proc_704c26ad15e5 (pid 3864474) SOLE GPU job now.
+- Queued after it (launch on each completion notification; 1 GPU job at a time):
+  1. src/uq_weight_arm.py --baseline --seed 0        (baseline, prim-only)
+  2. src/uq_weight_arm.py --q 0.9 --wdw 0.5 --iso all --seed 0
+  3. src/uq_weight_arm.py --q 0.9 --wdw 0.5 --iso CYP2D6 --seed 0
+- Gate: macroST gain vs baseline > 0.005. JSON per run in cache/uqw_*.json.
+- NOTE: foreground terminal caps ~420s; ALL GPU runs use background=true.
