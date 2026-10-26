@@ -169,3 +169,15 @@ on >=2 isoforms):
   not predictable from member-residual geometry. Q3 CLOSED (negative result
   for methods report; zoo-family screening stays empirical).
 - Files: src/q3_poolrole.py, cache/q3_poolrole.{csv,json}.
+
+### Oct 25 ~21:10 - Q4 2D6 noise floor: resistance is FEATURE-side, not label noise
+- ChEMBL replicate analysis (>=3 assays/molecule, human, relation '='):
+  inter-assay pIC50 std pooled: 1A2 0.63 (n=15 mols), 2C9 0.39 (35),
+  2D6 0.65 (47), 3A4 0.62 (103). Medians 0.16-0.33.
+- sigma_2D6/others = 1.19 (~parity). 2C9 has the LOWEST noise floor yet
+  mid-tier scores; 3A4 has noise ~2D6 but the BEST scores. Noise does NOT
+  order the difficulty. Verdict: 2D6 resistance = feature/chemistry side
+  (pharmacophore saturation: basic amine + spacing is ubiquitous), NOT an
+  irreducible label-noise ceiling. 'Know when to stop' argument weakened;
+  headroom exists if representation improves. Files: src/q4_noise_floor.py,
+  cache/q4_noise.json. Caveat: replicate n small (15-103 mols/iso).

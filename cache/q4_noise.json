@@ -1,0 +1,46 @@
+{
+ "CYP1A2": {
+  "n_multi_assay_mols": 15,
+  "inter_assay_std_pooled": 0.6317,
+  "inter_assay_std_median": 0.2656,
+  "intra_assay_std": 0.442,
+  "n_mols_total": 1577,
+  "n_assays": 478
+ },
+ "CYP2C9": {
+  "n_multi_assay_mols": 35,
+  "inter_assay_std_pooled": 0.3905,
+  "inter_assay_std_median": 0.1559,
+  "intra_assay_std": 0.2688,
+  "n_mols_total": 2827,
+  "n_assays": 970
+ },
+ "CYP2D6": {
+  "n_multi_assay_mols": 47,
+  "inter_assay_std_pooled": 0.6535,
+  "inter_assay_std_median": 0.2003,
+  "intra_assay_std": 0.3207,
+  "n_mols_total": 2952,
+  "n_assays": 811
+ },
+ "CYP3A4": {
+  "n_multi_assay_mols": 103,
+  "inter_assay_std_pooled": 0.62,
+  "inter_assay_std_median": 0.3258,
+  "intra_assay_std": 0.2352,
+  "n_mols_total": 5452,
+  "n_assays": 1545
+ },
+ "CYP2C19": {
+  "n_multi_assay_mols": 0,
+  "inter_assay_std_pooled": NaN,
+  "inter_assay_std_median": NaN,
+  "intra_assay_std": NaN,
+  "n_mols_total": 0,
+  "n_assays": 0
+ },
+ "VERDICT": {
+  "sigma_2D6_over_others": 1.194,
+  "read": "2D6 label noise ~ others: resistance is feature-side, not noise floor"
+ }
+}
