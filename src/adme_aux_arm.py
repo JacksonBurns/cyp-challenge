@@ -71,14 +71,24 @@ def load_sources():
     frames["logS_esol"] = es[[smc, "measured log solubility in mols per litre"]].dropna()
     frames["logS_esol"].columns = ["SMILES", "y"]
     rot = pd.read_csv(f"{USER}/rotational_barrier_xinli.csv", encoding="utf-8-sig")
-    rc = [x for x in rot.columns if "canonical" in x.lower()][0]
-    frames["rotbar_dG"] = rot[[rc, "umr_minimum_energy_dG_avg"]].dropna()
+    rc = [x for x in rot.columns if "smiles" in x.lower()][0]
+    gc = [x for x in rot.columns if "g(" in x.lower()][0]
+    frames["rotbar_dG"] = rot[[rc, gc]].dropna()
     frames["rotbar_dG"].columns = ["SMILES", "y"]
     return frames
 
 
+def numify(v):
+    import re
+    m = re.match(r"\s*(-?\d+(?:\.\d+)?)", str(v))
+    return float(m.group(1)) if m else np.nan
+
+
 def main():
     frames = load_sources()
+    for k, f in frames.items():
+        f["y"] = f["y"].map(numify)
+        frames[k] = f.dropna(subset=["y"])
     # one shared descriptor matrix over union of external smiles
     allsm = sorted(set().union(*[set(f.SMILES) for f in frames.values()]))
     dpath = f"{CACHE}/ext_desc.parquet"
@@ -157,18 +167,20 @@ def main():
             tot += w * ok
         P = P / np.maximum(tot, 1e-9)
         y = H.targets[f"{iso}_pIC50_direct_inhibition"].reindex(smi).values.astype(float)
-        m = ~np.isnan(y) & ~np.isnan(P)
-        resid = np.abs(y - P)
+        m = ~np.isnan(y)
+        y = y[m]
+        Xbase_i, A_i = Xbase[m], A_tr[m]
+        resid = np.abs(y - np.nan_to_num(P[m], nan=np.nanmedian(y)))
         hard = (resid >= 1.0).astype(int)
-        Xa = np.hstack([Xbase, A_tr])
+        Xa = np.hstack([Xbase_i, A_i])
         maes = []
         skf = StratifiedKFold(5, shuffle=True, random_state=0)
-        for tr, te in skf.split(Xbase, hard):
+        for tr, te in skf.split(Xbase_i, hard):
             yv = y[tr]
             m0 = lgb.LGBMRegressor(n_estimators=400, learning_rate=0.05,
                                    num_leaves=31, verbose=-1)
-            m0.fit(Xbase[tr], y[tr])
-            e0 = mean_absolute_error(y[te], m0.predict(Xbase[te]))
+            m0.fit(Xbase_i[tr], y[tr])
+            e0 = mean_absolute_error(y[te], m0.predict(Xbase_i[te]))
             m1 = lgb.LGBMRegressor(n_estimators=400, learning_rate=0.05,
                                    num_leaves=31, verbose=-1)
             m1.fit(Xa[tr], y[tr])
@@ -181,6 +193,29 @@ def main():
 
     pos = [iso for iso in ISO if gains[iso][0] - gains[iso][1] >= 0.005]
     print("GATE A pass isoforms:", pos if pos else "NONE")
+
+    # GATE B: FLOOR-membership hazard AUC (assay-physics detection)
+    from sklearn.metrics import roc_auc_score
+    from sklearn.linear_model import LogisticRegression
+    skf2 = StratifiedKFold(5, shuffle=True, random_state=1)
+    for iso in ISO:
+        y = H.targets[f"{iso}_pIC50_direct_inhibition"].reindex(smi).values.astype(float)
+        m = ~np.isnan(y)
+        yv = y[m]
+        lo = np.nanpercentile(yv, 1.5)
+        hb = (yv <= lo + 1e-9).astype(int)
+        if hb.sum() < 10:
+            continue
+        Xb, Xa = Xbase[m], A_tr[m]
+        aucs = []
+        for tr, te in skf2.split(Xb, hb):
+            lr = LogisticRegression(max_iter=2000).fit(Xb[tr], hb[tr])
+            a0 = roc_auc_score(hb[te], lr.decision_function(Xb[te]))
+            lr2 = LogisticRegression(max_iter=2000).fit(Xa[tr], hb[tr])
+            a1 = roc_auc_score(hb[te], lr2.decision_function(Xa[te]))
+            aucs.append((a0, a1))
+        print(f" GATE B {iso}: floor-hazard AUC stack={np.mean([a for a,b in aucs]):.3f} "
+              f"adme={np.mean([b for a,b in aucs]):.3f} n_floor={hb.sum()}")
 
 
 if __name__ == "__main__":

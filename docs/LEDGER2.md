@@ -388,3 +388,11 @@ Arms:
 - R2 (pending on R1): GPU aux heads in the ft_ext-style multitask
   (infrastructure exists: ft_ext.py pattern, 12 heads, aux-head transfer
   already a proven WIN: +20-35% blend weight, macro R2 0.404->0.410).
+
+### Oct 26 ~22:10 - ADME aux R1 (descriptor gate): POSITIVE, first non-null descriptor arm
+Predicted-ADME features (GBM CV from 30,649 external molecules, zero
+overlap): logP_sang R2=.88, logS_esol .91, LogD .86, KSOL .59, rotbar .59,
+Papp .56, MLM .44, HLM .38. Appended 8 feats to stack, honest 5-fold GBM:
+ GATE A MAE gain: 1A2 +0.0019, 2C9 +0.0115 (PASS bar .005), 2D6 +0.0023, 3A4 +0.0008.
+Positive all four isoforms; 2C9 clears bar. R2 GPU arm (src/ft_adme.py,
+12 CYP + 13 ADME heads, ext ~35k rows, full-FT) smoke launching.

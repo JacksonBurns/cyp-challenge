@@ -1,11 +1,17 @@
 sim matrices in 2s
-Traceback (most recent call last):
-  File "/home/jackson/cyp-challenge/src/adme_aux_arm.py", line 187, in <module>
-    main()
-  File "/home/jackson/cyp-challenge/src/adme_aux_arm.py", line 81, in main
-    frames = load_sources()
-             ^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/adme_aux_arm.py", line 74, in load_sources
-    rc = [x for x in rot.columns if "canonical" in x.lower()][0]
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
-IndexError: list index out of range
+external molecules featurized: 30649
+  prop logP_sang                n= 23520 CV_R2=0.880
+  prop LogD                     n=  5039 CV_R2=0.857
+  prop KSOL                     n=  5128 CV_R2=0.585
+  prop HLM_CLint                n=  3759 CV_R2=0.377
+  prop MLM_CLint                n=  4522 CV_R2=0.435
+  prop Caco-2_Permeability_Papp_A>B n=  2157 CV_R2=0.562
+  prop logS_esol                n=  1128 CV_R2=0.913
+  prop rotbar_dG                n=   885 CV_R2=0.592
+RDKit-named cols found in stack: 217/217
+ADME block tr (6145, 8)
+ GATE A CYP1A2: MAE base=0.6768 +adme=0.6748 gain=+0.0019
+ GATE A CYP2C9: MAE base=0.4850 +adme=0.4735 gain=+0.0115
+ GATE A CYP2D6: MAE base=0.6277 +adme=0.6254 gain=+0.0023
+ GATE A CYP3A4: MAE base=0.5373 +adme=0.5365 gain=+0.0008
+GATE A pass isoforms: ['CYP2C9']
