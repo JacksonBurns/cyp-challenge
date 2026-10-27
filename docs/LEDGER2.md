@@ -449,3 +449,23 @@ metric gain (matches UQ-shrink and gate C). ft_adme full run ongoing.
 Standalone OOF soft_rae: 1A2 .4269 2C9 .2071 2D6 .4020 3A4 .2924,
 macro .3321 (competitive arm). zoo9 (zoo6+ft_adme) + zoo9p shuffled
 control chain running -> ADME-specific delta = zoo9 - zoo9p per iso.
+
+### Oct 26 ~01:00 - ZOO9: ADME aux-target arm closed. ADME LINE EXHAUSTED.
+zoo9 (zoo6+ft_adme) vs zoo9p (shuffled control), cv_mean_gain:
+  1A2 real .0238 shuf .0272 -> delta -0.0034
+  2C9 real .0091 shuf .0025 -> delta +0.0066
+  2D6 real .0316 shuf .0303 -> delta +0.0013
+  3A4 real .0169 shuf .0192 -> delta -0.0023
+ADME-specific pool value ~0 (2C9 +.0066 only, within noise).
+FINAL ADME SCORECARD (all routes from user directive):
+  aux targets (ft_adme 13 heads): pool delta ~0 -> FAIL
+  pretraining: covered by adme_pretrain ckpt lineage -> no gain seen
+  predictions-as-inputs: Gate A positive (2C9 +.0115 MAE) - tiny real;
+    R4 stacking FAIL
+  post-processing: gate C FAIL; R5 rule FAIL
+  rules/assertions: floor shrink FAIL (3rd confirmation)
+  detection: Gate B STRONG PASS (2C9 floor AUC .689->.828) - science win,
+    no metric conversion
+VERDICT: assay-physics features predict WHO floors, not WHERE predictions
+sit; metric cannot be moved by ADME at this label density. ADME line
+CLOSED. Next: ship phase (cp21 submit + probe chain, Nov 1 target).
