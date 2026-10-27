@@ -1,1 +1,2 @@
-sim matrices in 6s
+sim matrices in 1s
+CYP1A2: base 0.6810 | +ADME2 0.6655 (+0.0155) | +alerts 0.6654 (+0.0001)

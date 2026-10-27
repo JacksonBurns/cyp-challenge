@@ -1,0 +1,103 @@
+rows: 88582 challenge: 6145 ext: 82428
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1211: RuntimeWarning: invalid value encountered in divide
+  updated_mean = (last_sum + new_sum) / updated_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1216: RuntimeWarning: invalid value encountered in divide
+  T = new_sum / new_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1240: RuntimeWarning: invalid value encountered in divide
+  new_unnormalized_variance -= correction**2 / new_sample_count
+[fold0] trainable 17.2M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+fold 0 done 1175s
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1211: RuntimeWarning: invalid value encountered in divide
+  updated_mean = (last_sum + new_sum) / updated_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1216: RuntimeWarning: invalid value encountered in divide
+  T = new_sum / new_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1240: RuntimeWarning: invalid value encountered in divide
+  new_unnormalized_variance -= correction**2 / new_sample_count
+[fold1] trainable 17.2M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+fold 1 done 1617s
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1211: RuntimeWarning: invalid value encountered in divide
+  updated_mean = (last_sum + new_sum) / updated_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1216: RuntimeWarning: invalid value encountered in divide
+  T = new_sum / new_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1240: RuntimeWarning: invalid value encountered in divide
+  new_unnormalized_variance -= correction**2 / new_sample_count
+[fold2] trainable 17.2M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+fold 2 done 2130s
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1211: RuntimeWarning: invalid value encountered in divide
+  updated_mean = (last_sum + new_sum) / updated_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1216: RuntimeWarning: invalid value encountered in divide
+  T = new_sum / new_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1240: RuntimeWarning: invalid value encountered in divide
+  new_unnormalized_variance -= correction**2 / new_sample_count
+[fold3] trainable 17.2M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+fold 3 done 2551s
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1211: RuntimeWarning: invalid value encountered in divide
+  updated_mean = (last_sum + new_sum) / updated_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1216: RuntimeWarning: invalid value encountered in divide
+  T = new_sum / new_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1240: RuntimeWarning: invalid value encountered in divide
+  new_unnormalized_variance -= correction**2 / new_sample_count
+[fold4] trainable 17.2M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+fold 4 done 3512s
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1211: RuntimeWarning: invalid value encountered in divide
+  updated_mean = (last_sum + new_sum) / updated_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1216: RuntimeWarning: invalid value encountered in divide
+  T = new_sum / new_sample_count
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/sklearn/utils/extmath.py:1240: RuntimeWarning: invalid value encountered in divide
+  new_unnormalized_variance -= correction**2 / new_sample_count
+[all] trainable 17.2M
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Seed set to 0
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loading `train_dataloader` to estimate number of stepping batches.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+/home/jackson/miniforge3/envs/chemeleon/lib/python3.12/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:434: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+DONE 3888.2448990345

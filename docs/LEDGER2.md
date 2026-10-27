@@ -575,3 +575,12 @@ zoo12 pool gates w/ shuffled control. Standalone bar for pool candidate:
 1.5-pct floor gives 20-23 rows; only 3A4 has n for stable AUC. Detection
 monotone in endpoint count: v1 8-feat .607->.715 (3A4), ADME2 18-feat
 .697->.742. Detection confirmed; metric-invisibility of floor stands (R6).
+
+
+### Oct 27 - ZOO11 CONTROL: v1 aux arm pool gain = inflation (again, expected)
+real minus shuf: 1A2 -.003 / 2C9 +.002 / 2D6 +.001 / 3A4 -.000. Zero.
+Third pool gate (zoo8, zoo9, zoo11) confirms: single MPNN member adds
+variance-harvest, not signal. Avg-family gate (zoo11a/11ap) queued -
+5-seed avg is the real test. Sweep seeds: w0.02 mean .3237 (3 seeds),
+w0.1 mean .3249 (4), w0.3 .3299 (5), w0 .3282. Light band real; w0.02
+edges w0.1. Pool candidates = w0.02 avg family + w0.1 avg family (zoo12).
