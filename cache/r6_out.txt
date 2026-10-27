@@ -1,1 +1,2 @@
 sim matrices in 2s
+R6 CYP1A2: best_w 0.50 insample gain +0.0000 | CV gain +0.0000 wins 5/5
