@@ -584,3 +584,10 @@ variance-harvest, not signal. Avg-family gate (zoo11a/11ap) queued -
 5-seed avg is the real test. Sweep seeds: w0.02 mean .3237 (3 seeds),
 w0.1 mean .3249 (4), w0.3 .3299 (5), w0 .3282. Light band real; w0.02
 edges w0.1. Pool candidates = w0.02 avg family + w0.1 avg family (zoo12).
+
+
+### Oct 27 - Seed-averaged families + zoo12 gate chain launched
+Families (avg OOF + shuf control + avg test preds): w0.02x3 (.3237),
+w0.1x4 (.3249), band w0.02+w0.1 x7. zoo12_gate modes band/w002 pair
+queued (battery4). GPU free after seed chains. zoo11 avg pair running.
+Decisive tests: zoo12 band real-minus-shuf (pool), zoo11a pair (v1 avg).
