@@ -569,3 +569,9 @@ U-shape; min at 0.1. Light physics supervision = regularizer, not task.
 Sweep refinement w0.05, w0.02 running; w0.1 seeds next -> avg family ->
 zoo12 pool gates w/ shuffled control. Standalone bar for pool candidate:
 .3203 vs zoo6 members ~.33-.37.
+
+
+### Oct 27 - B2 (corrected floor def): 3A4 hazard AUC .697 -> .742 (+.045)
+1.5-pct floor gives 20-23 rows; only 3A4 has n for stable AUC. Detection
+monotone in endpoint count: v1 8-feat .607->.715 (3A4), ADME2 18-feat
+.697->.742. Detection confirmed; metric-invisibility of floor stands (R6).
