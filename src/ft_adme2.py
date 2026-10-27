@@ -241,10 +241,14 @@ def predict(model, smiles_df):
 
 
 def main(full_ft, seed, skip_folds=False, pretrained=None, prefix="adme",
-         smoke=False):
+         smoke=False, epochs=None, patience=None):
     global MAX_EPOCHS, PATIENCE
     if smoke:
         MAX_EPOCHS, PATIENCE = 2, 2
+    if epochs:
+        MAX_EPOCHS = epochs
+    if patience:
+        PATIENCE = patience
     sfx = "" if seed == 0 else f"_s{seed}"
     tag = f"{prefix}{sfx}"
     ft, test, allrows = load_tables()
@@ -312,6 +316,8 @@ if __name__ == "__main__":
     ap.add_argument("--pretrained", default=None)
     ap.add_argument("--prefix", default="adme")
     ap.add_argument("--skip-folds", action="store_true")
+    ap.add_argument("--epochs", type=int, default=None)
+    ap.add_argument("--patience", type=int, default=None)
     ap.add_argument("--smoke", action="store_true")
     a = ap.parse_args()
     main(a.full_ft, a.seed, skip_folds=a.skip_folds, pretrained=a.pretrained, prefix=a.prefix, smoke=a.smoke)

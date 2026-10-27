@@ -514,3 +514,9 @@ construction: the metric does not charge the floor. Rows that DO move
 ST-RAE are those predicted outside [lo,hi], and true bounds are not
 chemistry/ADME-predictable (bounds_predictability degenerate). All
 post-processing/rule routes: DONE.
+
+### Oct 27 - ft_adme2 complete: standalone 0.3306 (best MPNN arm standalone)
+31-head full FT, folds 1026-3911s. macro softRAE 0.3306 (v1 adme 0.3321;
+gbm_adme family n/a). OOF complete 0 NaN. Zoo11 pair queued + A2+ alerts
+gate queued. GPU queue: seed1 -> seed2 (ft_adme2 decorrelated replicas
+for pooling, campaign's best standalone -> pool contribution candidate).
