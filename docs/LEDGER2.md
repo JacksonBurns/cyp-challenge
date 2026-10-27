@@ -505,7 +505,7 @@ Sangster resend verified byte-identical to ingested copy (md5 afd61550).
 Discipline: every pool claim = real-minus-shuffled.
 
 ### Oct 27 - R6 center-shrink: METRIC-INVISIBLE (closes post-processing family)
-R6 CV gain +0.0000 (5/5 folds, all w). Root cause, decisive: ST-RAE is
+R6 CV gains +0.0000/+.0001/+.0001/+.0002 (5/5 folds, all w, full range). Root cause, decisive: ST-RAE is
 interval-aware - floor rows sit INSIDE their assay intervals (labels
 2.0-2.1 vs lo ~1.03-2.0), so their metric cost is ~ZERO and any
 floor-conditioned shift (toward floor, gate C/R5; toward center, R6)
