@@ -524,3 +524,10 @@ for pooling, campaign's best standalone -> pool contribution candidate).
 ### Oct 27 - ft_adme2 seed1 macro softRAE 0.3294 (seed0 0.3306); seed2 launched
 Replicas within 0.0012 -> stable arm. Zoo11 pair (seed0 real+shuf) in
 flight; seeds pool as decorrelated family once zoo11 adjudicates.
+
+### Oct 27 - ft_adme2 seed2 0.3284: replicas 0.3306/0.3294/0.3284 - stable, best MPNN standalone
+GPU free. Queue state: zoo10 build -> zoo10 pair; zoo11 real (running) ->
+zoo11p; TDI cls gate running; B2 running; gates3 (alerts delta) queued
+in battery2. ft_adme2 3-seed family is the pool-swap candidate; zoo11
+pair = gate. If real-minus-shuf > 0 on >=3 isoforms, family goes to cp22
+test with L4 emphasis.
