@@ -48,6 +48,11 @@ TDC_FILES = dict(zip(TDC_SETS, [
     "cyp3a4_veith.csv", "cyp1a2_veith.csv", "cyp2c9_sub.csv",
     "cyp2d6_sub.csv", "cyp3a4_sub.csv"]))
 CYP_AUX = [f"{i}_chembl" for i in ISO] + [f"{i}_pubchem" for i in ISO]
+import os as _os
+if _os.environ.get("FT_ABLATE") == "no_cyp_tdc":
+    # ablation: drop the 4 Veith + 3 substrate TDC heads (pure ADME-physics aux)
+    ADME = [a for a in ADME if not (a.endswith("_veith") or a.endswith("_sub"))]
+    TDC_SETS = [t for t in TDC_SETS if not (t.endswith("_veith") or t.endswith("_sub"))]
 PRIMARY = ISO
 AUX = CYP_AUX + ADME
 COLS = PRIMARY + AUX

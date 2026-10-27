@@ -546,3 +546,10 @@ avg family (test preds averaged over seeds) to zoo12 gate w/ control.
 4-seed avg OOF (ft_oof_adme2_avg.csv) + test avg (ft_test_preds_adme2_avg.csv,
 750 rows). zoo11_gate modes: real/shuf/avg/avgshuf -> tags zoo11/11p/11a/11ap.
 avg_shuf control file written. seed4 on GPU (5-seed family; cheap arm).
+
+
+### Oct 27 - ft_adme2 seed4 0.3374 (5-seed family, mean .3299); ablation launched
+Family: .3306/.3294/.3284/.3239/.3374. 5-seed avg member + avg_shuf control
+rebuilt; zoo11 avg gates queued (battery3). GPU: ft_adme2 ablation
+FT_ABLATE=no_cyp_tdc (drops 4 Veith + 3 substrate heads) - isolates ADME-
+physics vs CYP-direct aux contribution. Standalone ablation vs full 0.3299.

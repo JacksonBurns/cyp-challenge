@@ -1,2 +1,3 @@
 sim matrices in 3s
 adme2 aligned (6145, 18)
+CYP2D6 base: best-thr MCC 0.1533 | field MCC 0.0969
