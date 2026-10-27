@@ -469,3 +469,18 @@ FINAL ADME SCORECARD (all routes from user directive):
 VERDICT: assay-physics features predict WHO floors, not WHERE predictions
 sit; metric cannot be moved by ADME at this label density. ADME line
 CLOSED. Next: ship phase (cp21 submit + probe chain, Nov 1 target).
+
+### Oct 27 - ADME2 program opened (user: drill down, more endpoints, reg+cls, exhaust it)
+ACQUIRED via TDC dataverse direct IDs (pytdc wheel broken; module=tdc; dataverse works):
+  CYP Veith substrate/inhibitor labels x4 iso (12-13k each, BINARY - direct CYP physics)
+  CYP 2C9/2D6/3A4 CarbonMangels curated substrates (~667 each)
+  Caco2 Wang, HIA Hou, Pgp Broccatelli, BBB Martins, VDss Lombardo, PPBR AZ,
+  AqSolDB (9982), half-life Obach, CL hepatocyte/microsome AZ, Lipophilicity AZ (4200)
+= 18 endpoints, 35,695-molecule external universe. TDC GitHub repo dead (404);
+dataverse.harvard.edu datafile IDs from sdist metadata work.
+PLAN: ADME2-2 build predicted-feature block (GBM per endpoint, external-trained);
+gates: A2 reg MAE, B2 floor-hazard AUC, zoo10 pool w/ shuffled control (dscst_adme2),
+TDI classification gate (base vs +ADME2 in run_tdi machinery, field MCC vs v4
+.409/.163), R6 physics-gated shrink, ft_adme2 GPU aux heads (CYP Veith + ADME2).
+NOTE: pytdc install broke cyp env (numpy 1.x rdkit); restored numpy==1.26.4.
+TDC work isolated in env 'tdc'.

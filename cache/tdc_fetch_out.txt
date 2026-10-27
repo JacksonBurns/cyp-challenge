@@ -1,0 +1,23 @@
+  found: cyp2c19_veith 4259576
+  found: cyp2c9_substrate_carbonmangels 4259584
+  found: cyp2d6_substrate_carbonmangels 4259578
+  found: cyp3a4_substrate_carbonmangels 4259581
+  found: cyp2c19_veith 12092
+  found: cyp2c9_substrate_carbonmangels 666
+  found: cyp2d6_substrate_carbonmangels 664
+  found: cyp3a4_substrate_carbonmangels 667
+  ok cyp2c9_veith.csv 739721 bytes
+  ok cyp2d6_veith.csv 799509 bytes
+  ok cyp3a4_veith.csv 746183 bytes
+  ok cyp1a2_veith.csv 760372 bytes
+  ok caco2_wang.csv 82501 bytes
+  ok ppbr_az.csv 265195 bytes
+  ok aqsoldb.csv 852658 bytes
+  ok half_life_obach.csv 53583 bytes
+  ok cl_hepatocyte.csv 91565 bytes
+  ok cl_microsome.csv 81661 bytes
+  ok lipophilicity_az.csv 297882 bytes
+  ok hia_hou.csv 40140 bytes
+  ok pgp_broccatelli.csv 125532 bytes
+  ok bbb_martins.csv 137899 bytes
+  ok vdss_lombardo.csv 89914 bytes

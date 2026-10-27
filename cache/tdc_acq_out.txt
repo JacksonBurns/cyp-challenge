@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/tools/tdc_acq.py", line 17, in <module>
+    from pytdc.ground_adme.benchmark import benchmark
+ModuleNotFoundError: No module named 'pytdc'
