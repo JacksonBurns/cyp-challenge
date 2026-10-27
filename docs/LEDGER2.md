@@ -561,3 +561,11 @@ vs full 0.3299 (5-seed mean). Direct CYP label transfer adds ~0.001;
 solubility/permeability/PPB/clearance/lipophilicity heads carry the arm.
 Assay-physics >> more-CYP-data at model level (mirrors feature-level A2).
 GPU: AUX_W sweep 1.0 -> 0.1 (physics-head training pressure).
+
+
+### Oct 27 - AUX_W sweep: optimum 0.1 -> 0.3203, BEATS fullft 0.3282 (best FT arm ever)
+w1.0 .3530 / w0.3 .3299 / w0.1 .3203 / w0 (fullft, no ADME heads) .3282.
+U-shape; min at 0.1. Light physics supervision = regularizer, not task.
+Sweep refinement w0.05, w0.02 running; w0.1 seeds next -> avg family ->
+zoo12 pool gates w/ shuffled control. Standalone bar for pool candidate:
+.3203 vs zoo6 members ~.33-.37.
