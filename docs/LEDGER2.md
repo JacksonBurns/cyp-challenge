@@ -520,3 +520,7 @@ post-processing/rule routes: DONE.
 gbm_adme family n/a). OOF complete 0 NaN. Zoo11 pair queued + A2+ alerts
 gate queued. GPU queue: seed1 -> seed2 (ft_adme2 decorrelated replicas
 for pooling, campaign's best standalone -> pool contribution candidate).
+
+### Oct 27 - ft_adme2 seed1 macro softRAE 0.3294 (seed0 0.3306); seed2 launched
+Replicas within 0.0012 -> stable arm. Zoo11 pair (seed0 real+shuf) in
+flight; seeds pool as decorrelated family once zoo11 adjudicates.
