@@ -436,3 +436,10 @@ submit zoo8. ADME-specific value remains: Gate A tiny (2C9 +0.0115 MAE),
 Gate B strong detection (.83 2C9 floor hazard) with no metric conversion.
 Methodological keeper: every future pool gate needs the shuffled-member
 control (zoo6 passes + zoo6p passes => claim only the delta real-minus-shuf).
+
+### Oct 26 ~00:10 - R5 floor-rule gate: DEAD (all four negative)
+Test-applicable hazard rule (head trained on train folds only, quantile-
+rank flag, shift toward floor, hyperparams by inner CV): 1A2 -0.0017,
+2C9 -0.0022, 2D6 -0.0038, 3A4 -0.0018; 1-2/5 folds positive. Third
+independent confirmation: floor-risk detection does not convert to
+metric gain (matches UQ-shrink and gate C). ft_adme full run ongoing.
