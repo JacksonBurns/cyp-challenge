@@ -368,3 +368,23 @@ Files: chem_profile/chem_hard2/chem_mech/chem_block/floor_hazard + caches.
   3A4 pairs consistent (0.05); 2D6 pairs straddle >2 log at 1/3 (n=6,
   qualitative; matches Q4 noise). Evidence closes the 'nearby chemistry'
   claim with the direct measurement. CHEMISTRY LINE DONE.
+
+### Oct 26 ~21:30 - ADME AUX-TASK idea (user): datasets audited, R1 arm running
+User supplied: expansion_data_train.csv (5326 rows: LogD, KSOL, HLM/MLM CLint,
+Caco-2 Papp/efflux, MPPB/MBPB/MGMB) + rotational_barrier_xinli.csv (828-885
+amide-rotor T/dG) + Sangster logP xlsx (pulled from Zenodo 19387552, 23.5k).
+Public ESOL (Delaney 1128) added.
+
+OVERLAP AUDIT (tools/overlap_check.py, robust: isomeric + stereo-free canon):
+  expansion 0 / 0, rotational 0 / 0, ESOL 17/26, Sangster 204 train + 2 test.
+  => essentially disjoint: aux-task transfer must go through SHARED DESCRIPTORS.
+Predictability from existing stack: Sangster logP CV R2=0.737 (n=204) => the
+existing 3456-stack nearly ENCODES logP (Crippen is in it) - little new info.
+
+Arms:
+- R1 (running, proc_bded79c17988, CPU): src/adme_aux_arm.py - GBM property
+  heads on external data, predict ADME block for all 6895 challenge mols,
+  GATE A = 5-fold CV MAE gain on base stack per isoform (pass >= +0.005).
+- R2 (pending on R1): GPU aux heads in the ft_ext-style multitask
+  (infrastructure exists: ft_ext.py pattern, 12 heads, aux-head transfer
+  already a proven WIN: +20-35% blend weight, macro R2 0.404->0.410).

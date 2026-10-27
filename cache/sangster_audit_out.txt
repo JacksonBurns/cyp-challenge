@@ -1,0 +1,7 @@
+sim matrices in 2s
+sangster sheets: ['SangsterLogP (N=23,520)', 'Huuskonen (N=1,870)', 'Prospective (N=327)']
+ SangsterLogP (N=23,520): n=23512 prop=logP overlap_train=204 overlap_TEST=2
+   GBM CV R2 from existing stack: 0.737 (n=204)
+ Huuskonen (N=1,870): n=1849 prop=logP overlap_train=62 overlap_TEST=0
+   GBM CV R2 from existing stack: nan (n=62)
+ Prospective (N=327): n=327 prop=logP overlap_train=3 overlap_TEST=0

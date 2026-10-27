@@ -1,0 +1,11 @@
+sim matrices in 2s
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/adme_aux_arm.py", line 187, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/src/adme_aux_arm.py", line 81, in main
+    frames = load_sources()
+             ^^^^^^^^^^^^^^
+  File "/home/jackson/cyp-challenge/src/adme_aux_arm.py", line 74, in load_sources
+    rc = [x for x in rot.columns if "canonical" in x.lower()][0]
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range

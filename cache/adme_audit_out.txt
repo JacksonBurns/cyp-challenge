@@ -1,0 +1,54 @@
+sim matrices in 2s
+== expansion: shape (5326, 11)
+  LogD: n=5039
+  KSOL: n=5128
+  HLM CLint: n=3759
+  MLM CLint: n=4522
+  Caco-2 Permeability Papp A>B: n=2157
+  Caco-2 Permeability Efflux: n=2161
+  MPPB: n=1302
+  MBPB: n=975
+  MGMB: n=222
+== rot: rows 828 T range 169.0 512.15 dG range 8.9 43.5
+== exp: canonical 5326 | overlap train 0 | overlap TEST 0
+== rot: canonical 828 | overlap train 0 | overlap TEST 0
+== GBM CV R2 from EXISTING descriptor stack ==
+  LogD: align fail
+  KSOL: align fail
+  HLM CLint: align fail
+  MLM CLint: align fail
+  Caco-2 Permeability Papp A>B: align fail
+  Caco-2 Permeability Efflux: align fail
+  MPPB: align fail
+  MBPB: align fail
+  MGMB: align fail
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/tools/adme_audit.py", line 111, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/tools/adme_audit.py", line 102, in main
+    r2, n = gbm_cv_r2(*prep(rot, "dG"))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: __main__.gbm_cv_r2() argument after * must be an iterable, not NoneType
+sim matrices in 2s
+Traceback (most recent call last):
+  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'SMILES'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/tools/esol_audit.py", line 38, in <module>
+    es["cs"] = es["SMILES"].map(canon)
+               ~~^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'SMILES'
