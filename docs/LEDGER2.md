@@ -553,3 +553,11 @@ Family: .3306/.3294/.3284/.3239/.3374. 5-seed avg member + avg_shuf control
 rebuilt; zoo11 avg gates queued (battery3). GPU: ft_adme2 ablation
 FT_ABLATE=no_cyp_tdc (drops 4 Veith + 3 substrate heads) - isolates ADME-
 physics vs CYP-direct aux contribution. Standalone ablation vs full 0.3299.
+
+
+### Oct 27 - ABLATION: ADME-physics heads carry ft_adme2 (user hypothesis confirmed)
+no_cyp_tdc (Veith+substrate 7 heads removed, ~45k CYP label rows): 0.3312
+vs full 0.3299 (5-seed mean). Direct CYP label transfer adds ~0.001;
+solubility/permeability/PPB/clearance/lipophilicity heads carry the arm.
+Assay-physics >> more-CYP-data at model level (mirrors feature-level A2).
+GPU: AUX_W sweep 1.0 -> 0.1 (physics-head training pressure).

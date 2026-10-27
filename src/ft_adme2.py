@@ -61,6 +61,8 @@ PATIENCE = 8
 BATCH = 128
 VAL_FRAC = 0.1
 AUX_W = 0.3
+if _os.environ.get("FT_AUXW"):
+    AUX_W = float(_os.environ["FT_AUXW"])
 EXT_CAP = 14000
 
 
