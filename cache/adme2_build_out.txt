@@ -12,3 +12,48 @@ sim matrices in 1s
   lipo_az: 4200 mols
   cyp2c9_veith: 12092 mols
   cyp2d6_veith: 13130 mols
+  cyp3a4_veith: 12328 mols
+  cyp1a2_veith: 12579 mols
+  cyp2c9_sub: 666 mols
+  cyp2d6_sub: 664 mols
+  cyp3a4_sub: 667 mols
+external universe: 35695
+  featurized 2000
+  featurized 4000
+  featurized 6000
+  featurized 8000
+  featurized 10000
+  featurized 12000
+  featurized 14000
+  featurized 16000
+  featurized 18000
+  featurized 20000
+  featurized 22000
+  featurized 24000
+  featurized 26000
+  featurized 28000
+  featurized 30000
+  featurized 32000
+  featurized 34000
+  featurized 2000
+  featurized 4000
+  featurized 6000
+  caco2_wang: fit on 904 external rows
+  hia_hou: fit on 578 external rows
+  pgp: fit on 1212 external rows
+  bbb: fit on 1956 external rows
+  vdss: fit on 1104 external rows
+  ppbr: fit on 1797 external rows
+  aqsol: fit on 9091 external rows
+  half_life: fit on 661 external rows
+  cl_hep: fit on 1020 external rows
+  cl_mic: fit on 1102 external rows
+  lipo_az: fit on 4199 external rows
+  cyp2c9_veith: fit on 11934 external rows
+  cyp2d6_veith: fit on 12973 external rows
+  cyp3a4_veith: fit on 12171 external rows
+  cyp1a2_veith: fit on 12431 external rows
+  cyp2c9_sub: fit on 666 external rows
+  cyp2d6_sub: fit on 664 external rows
+  cyp3a4_sub: fit on 667 external rows
+ADME2 feats: (6145, 18) (750, 18)

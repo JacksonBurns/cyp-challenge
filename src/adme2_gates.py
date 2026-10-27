@@ -63,8 +63,8 @@ def main():
     for iso in ISO:
         y = H.targets[f"{iso}_pIC50_direct_inhibition"].reindex(smi).values.astype(float)
         m = np.isfinite(y)
-        lo = np.nanmin(y)
-        hb = (y <= lo + 1e-9).astype(int)
+        flr = np.nanpercentile(y[np.isfinite(y)], 1.5)
+        hb = (y <= flr).astype(int)
         if hb[m].sum() < 30:
             print(f"B2 {iso}: {int(hb[m].sum())} floor rows, skip")
             continue

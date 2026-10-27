@@ -1,0 +1,10 @@
+sim matrices in 1s
+ADME2 block: (6145, 18)
+A2 CYP1A2: base MAE 0.6810 -> adme2 0.6655 delta +0.0155
+A2 CYP2C9: base MAE 0.4876 -> adme2 0.4713 delta +0.0163
+A2 CYP2D6: base MAE 0.6214 -> adme2 0.6247 delta -0.0033
+A2 CYP3A4: base MAE 0.5466 -> adme2 0.5414 delta +0.0052
+B2 CYP1A2: 1 floor rows, skip
+B2 CYP2C9: 1 floor rows, skip
+B2 CYP2D6: 1 floor rows, skip
+B2 CYP3A4: 1 floor rows, skip

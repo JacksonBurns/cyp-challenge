@@ -484,3 +484,12 @@ TDI classification gate (base vs +ADME2 in run_tdi machinery, field MCC vs v4
 .409/.163), R6 physics-gated shrink, ft_adme2 GPU aux heads (CYP Veith + ADME2).
 NOTE: pytdc install broke cyp env (numpy 1.x rdkit); restored numpy==1.26.4.
 TDC work isolated in env 'tdc'.
+
+### Oct 27 - ADME2-2 gates: A2 strongest feature result of campaign
+18-endpoint GBM-predicted block (external-trained 5-fold ensembles, 35.7k
+universe) appended to stack, 5-fold GBM pIC50 MAE:
+  1A2 0.6810 -> 0.6655 (+0.0155)  2C9 0.4876 -> 0.4713 (+0.0163)
+  2D6 0.6214 -> 0.6247 (-0.0033)  3A4 0.5466 -> 0.5414 (+0.0052)
+3/4 positive, 1A2/2C9 ~3-5x the v1 Gate A magnitudes. B2 floor-hazard
+re-running (floor def fixed: pctile 1.5 matches chem_block). zoo10
+(dscst_adme2 pool) building. ft_adme2 (31 heads) full FT on GPU.

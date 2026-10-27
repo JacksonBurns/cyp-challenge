@@ -1,0 +1,13 @@
+sim matrices in 1s
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/r6_center_gate.py", line 99, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/src/r6_center_gate.py", line 62, in main
+    for tr, te in skf.split(idx, hb[idx]):
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/sklearn/model_selection/_split.py", line 888, in split
+    y = check_array(y, input_name="y", ensure_2d=False, dtype=None)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/sklearn/utils/validation.py", line 1113, in check_array
+    raise ValueError(
+ValueError: Found array with 0 sample(s) (shape=(0,)) while a minimum of 1 is required.
