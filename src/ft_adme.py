@@ -95,9 +95,14 @@ def load_adme_rows():
     for sn in wb.sheetnames:
         ws = wb[sn]
         it = ws.iter_rows(values_only=True)
-        hdr = next(it)
-        si = [j for j, h in enumerate(hdr) if h and "SMILES" in str(h).upper()][0]
-        li = [j for j, h in enumerate(hdr) if h and "logP" in str(h).lower()][0]
+        hdr = next(it, None)
+        if not hdr:
+            continue
+        jj = [j for j, h in enumerate(hdr) if h and str(h).strip().upper() == "SMILES"]
+        kk = [j for j, h in enumerate(hdr) if h and str(h).strip().lower() in ("logp", "lipophilicity")]
+        if not jj or not kk:
+            continue
+        si, li = jj[0], kk[0]
         dat = [(r[si], r[li]) for r in it if r[si]]
         sdf2 = pd.DataFrame(dat, columns=["s", "p"])
         sdf2["SMILES"] = sdf2["s"].map(canon)

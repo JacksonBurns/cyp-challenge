@@ -1,0 +1,6 @@
+sim matrices in 2s
+gbm_adme CYP1A2 done
+gbm_adme CYP2C9 done
+gbm_adme CYP2D6 done
+gbm_adme CYP3A4 done
+wrote /home/jackson/cyp-challenge/cache/ft_oof_gbm_adme.csv

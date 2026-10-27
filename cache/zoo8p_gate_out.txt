@@ -1,0 +1,1 @@
+/home/jackson/miniforge3/envs/cyp/bin/python: can't open file '/home/jackson/cyp-challenge/src/zoo8p_gate.py': [Errno 2] No such file or directory

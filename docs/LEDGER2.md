@@ -410,3 +410,16 @@ assertions, etc." Battery:
  R3 floor_calib_gate.py (post-processing: shift high-hazard rows down, scored
    on ship blend soft_rae): running
  R4 adme_stack_gate.py (ADME predictions as stacked inputs to blend meta-model): running
+
+### Oct 26 ~23:30 - ZOO8: gbm_adme pool member PASSES all 4 isoforms (control pending)
+gbm_adme = per-isoform GBM on 3456-stack + 8 ADME-prediction features
+(6145-row fold-aligned; ft_data order == Xtr order verified).
+zoo8 = zoo6 + gbm_adme, L1 hinge-fit + L4 bootstrap:
+  1A2: cv_gain +0.0245 5/5, L4 CI [0.0113,0.0316] PASS
+  2C9: cv_gain +0.0052 4/5, L4 CI [0.0046,0.0193] PASS
+  2D6: cv_gain +0.0319 4/5, L4 CI [0.0006,0.0116] PASS
+  3A4: cv_gain +0.0184 5/5, L4 CI [0.0098,0.0206] PASS
+FIRST all-4-PASS pool since zoo6. Caveat: gbm_adme fitted weights small
+(-.03/-.02/-.10/+.05) -> gain may be pool inflation. PERMUTATION CONTROL
+running (zoo8p = zoo6 + shuffled gbm_adme; must FAIL). ft_adme full GPU
+run running. R5 floor-rule gate crashed on index dtype, fixed, rerunning.
