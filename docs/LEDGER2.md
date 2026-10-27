@@ -531,3 +531,8 @@ zoo11p; TDI cls gate running; B2 running; gates3 (alerts delta) queued
 in battery2. ft_adme2 3-seed family is the pool-swap candidate; zoo11
 pair = gate. If real-minus-shuf > 0 on >=3 isoforms, family goes to cp22
 test with L4 emphasis.
+
+### Oct 27 - ft_adme2 seed3 0.3239 (best); 4-seed family complete
+Standalone softRAE: s0 .3306 / s1 .3294 / s2 .3284 / s3 .3239.
+Family mean .3281. Pool test: zoo11 gate on s0 first; if pass, 4-seed
+avg family (test preds averaged over seeds) to zoo12 gate w/ control.
