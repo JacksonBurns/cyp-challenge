@@ -423,3 +423,16 @@ FIRST all-4-PASS pool since zoo6. Caveat: gbm_adme fitted weights small
 (-.03/-.02/-.10/+.05) -> gain may be pool inflation. PERMUTATION CONTROL
 running (zoo8p = zoo6 + shuffled gbm_adme; must FAIL). ft_adme full GPU
 run running. R5 floor-rule gate crashed on index dtype, fixed, rerunning.
+
+### Oct 26 ~23:50 - ZOO8 CONTROL RESULT: gain is pool inflation, NOT ADME
+zoo8p = zoo6 + SHUFFLED gbm_adme (values permuted per isoform):
+  1A2 +0.0264 (real: +0.0245), 2C9 +0.0044 (real +0.0052),
+  2D6 +0.0291 (real +0.0319), 3A4 +0.0180 (real +0.0184), all CI excl 0.
+A NOISE member reproduces the entire zoo8 gain. The L1+L4 pool gate
+cannot separate signal from noise at 36 members: the fitter harvests
+variance-reduction from any extra near-zero-weight member (same role
+dscst's negative weight plays). => zoo8 is NOT evidence for ADME; do not
+submit zoo8. ADME-specific value remains: Gate A tiny (2C9 +0.0115 MAE),
+Gate B strong detection (.83 2C9 floor hazard) with no metric conversion.
+Methodological keeper: every future pool gate needs the shuffled-member
+control (zoo6 passes + zoo6p passes => claim only the delta real-minus-shuf).
