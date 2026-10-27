@@ -493,3 +493,13 @@ universe) appended to stack, 5-fold GBM pIC50 MAE:
 3/4 positive, 1A2/2C9 ~3-5x the v1 Gate A magnitudes. B2 floor-hazard
 re-running (floor def fixed: pctile 1.5 matches chem_block). zoo10
 (dscst_adme2 pool) building. ft_adme2 (31 heads) full FT on GPU.
+
+### Oct 27 - ADME2 battery deployed (GPU + CPU queues)
+Running: ft_adme2 full FT (31 heads, GPU) -> cache/ft_oof_adme2.csv;
+TDI classification gate (ADME2 feats into run_tdi machinery, field MCC
+vs base in-run); zoo10 (dscst_adme2 = stack+ADME2 GBM family) + zoo10p
+shuffled control; R6 physics-gated CENTER-shrink on zoo6 blend; B2
+floor-hazard AUC (fixed floor def); alerts block (28 PAINS/reactive/
+aggregation SMARTS counts) -> adme2_alerts; A2+ gate (alerts delta).
+Sangster resend verified byte-identical to ingested copy (md5 afd61550).
+Discipline: every pool claim = real-minus-shuffled.

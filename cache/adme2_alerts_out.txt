@@ -1,0 +1,3 @@
+sim matrices in 6s
+bad smarts: []
+alerts block (6145, 29) prevalence top: {'reactive_sulfonyl': 0.124, 'reactive_aziridine': 0.081, 'logP_heavy_hal': 0.057}

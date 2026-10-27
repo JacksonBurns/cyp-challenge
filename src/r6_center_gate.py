@@ -33,13 +33,18 @@ def soft_rae(y, p, lo, hi):
 
 
 def zoo6_oof(iso):
-    fams = H.POOLS["zoo6"]
-    P = np.zeros(len(H.Xtr))
-    for f in fams:
-        p = H.raw_oof_fam(f)[iso]
-        P += np.asarray(p.reindex(H.Xtr.index).values, dtype=float) * W[iso]["w"][f]
-    wsum = sum(abs(W[iso]["w"][f]) for f in fams)
-    return P / wsum
+    smi = H.Xtr["SMILES"].values
+    P = np.zeros(len(smi))
+    tot = np.zeros(len(smi))
+    for fam, w in W[iso]["w"].items():
+        if not isinstance(w, (int, float)) or abs(w) < 1e-9:
+            continue
+        v = H.raw_oof_fam(fam)[iso].reindex(smi).values.astype(float)
+        ok = ~np.isnan(v)
+        P[ok] += w * v[ok]
+        tot[ok] += w
+    P[tot > 0] /= tot[tot > 0]
+    return P
 
 
 def main():
@@ -53,7 +58,8 @@ def main():
         hi = H.bounds[f"{iso}_hi"].reindex(smi).values.astype(float)
         P = zoo6_oof(iso)
         m = np.isfinite(y) & np.isfinite(P) & np.isfinite(lo) & np.isfinite(hi)
-        floor = (y <= np.nanmin(y) + 1e-9)
+        flr = np.nanpercentile(y[np.isfinite(y)], 1.5)
+        floor = (y <= flr)
         hb = np.where(m, floor.astype(int), -1)
         # OOF hazard prob over all scored rows
         hz = np.full(len(smi), np.nan)
