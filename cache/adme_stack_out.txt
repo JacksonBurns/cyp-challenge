@@ -1,0 +1,4 @@
+sim matrices in 2s
+ R4 CYP1A2: control softRAE=0.3467 meta=0.3952 gain=-0.0485 fold_wins=0.00
+ R4 CYP2C9: control softRAE=0.1459 meta=0.1878 gain=-0.0420 fold_wins=0.00
+ R4 CYP2D6: control softRAE=0.3362 meta=0.4087 gain=-0.0724 fold_wins=0.00

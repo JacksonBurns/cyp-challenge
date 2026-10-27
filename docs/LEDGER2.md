@@ -396,3 +396,17 @@ Papp .56, MLM .44, HLM .38. Appended 8 feats to stack, honest 5-fold GBM:
  GATE A MAE gain: 1A2 +0.0019, 2C9 +0.0115 (PASS bar .005), 2D6 +0.0023, 3A4 +0.0008.
 Positive all four isoforms; 2C9 clears bar. R2 GPU arm (src/ft_adme.py,
 12 CYP + 13 ADME heads, ext ~35k rows, full-FT) smoke launching.
+
+### Oct 26 ~22:40 - ADME battery, all routes (user: aux targets OR predictions-as-inputs OR post-processing)
+User directive: "If training with these as auxiliary targets or pretraining
+targets doesnt work, you should also consider using the predictions of these
+models as inputs to other models, or post processing criteria or rule based
+assertions, etc." Battery:
+ R1 GATE A (predictions as inputs, descriptor level): POSITIVE all iso, 2C9 +0.0115
+ R1 GATE B (floor-hazard detection from ADME): ADME feats raise AUC on all four
+   (1A2 .586->.650, 2C9 .689->.828, 2D6 .710->.732, 3A4 .607->.715). STRONGEST
+   detection result of the campaign; floor IS assay physics and ADME sees it.
+ R2 ft_adme.py (aux targets in MPNN, 25 heads: 4 prim + 8 CYP ext + 13 ADME): smoke running
+ R3 floor_calib_gate.py (post-processing: shift high-hazard rows down, scored
+   on ship blend soft_rae): running
+ R4 adme_stack_gate.py (ADME predictions as stacked inputs to blend meta-model): running

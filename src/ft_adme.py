@@ -14,11 +14,11 @@ import time
 
 import numpy as np
 import pandas as pd
-import pytorch_lightning as pl
 import torch
-from chemprop import data, featurizers, models, nn, torch
-from pytorch_lightning.callbacks import EarlyStopping
-from pytorch_lightning import seed_everything
+from chemprop import data, featurizers, models, nn
+from chemprop.nn.metrics import MSE
+from lightning import pytorch as pl, seed_everything
+from lightning.pytorch.callbacks import EarlyStopping
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.path.join(HERE, "..", "cache")
@@ -64,23 +64,18 @@ def canon(s):
 
 def load_adme_rows():
     rows = []
-    ex = pd.read_csv(os.path.join(USER, "expansion_data_train.csv.txt"))
-    sm = ex["canonical_smiles"].map(canon)
+    ex = pd.read_csv(os.path.join(USER, "expansion_data_train.csv"))
+    sm = ex["SMILES"].map(canon)
     df = pd.DataFrame({"SMILES": sm})
-    for c in ["LogD", "KSOL", "HLM_CLint", "MLM_CLint",
-              "Caco-2_Permeability_Papp_A>B", "MDCK-1_Efflux_ratio_AtoB",
-              "Mouse_Liver_Microsomes_Stability_MPPB",
-              "Mouse_Plasmab_Metabolic_Stability_MBPP",
-              "Mouse_Gut_Microbiome_Metabolic_Stability_MGMB",
-              "Aq_Solubility_LogS"]:
+    KEY = {"LogD": "LogD", "KSOL": "KSOL", "HLM CLint": "HLM_CLint",
+           "MLM CLint": "MLM_CLint", "Caco-2 Permeability Papp A>B": "Papp",
+           "Caco-2 Permeability Efflux": "Efflux", "MPPB": "MPPB",
+           "MBPB": "MBBP", "MGMB": "MGMB"}
+    for c, key in KEY.items():
         if c in ex.columns:
-            key = {"Caco-2_Permeability_Papp_A>B": "Papp",
-                   "MDCK-1_Efflux_ratio_AtoB": "Efflux",
-                   "Mouse_Liver_Microsomes_Stability_MPPB": "MPPB",
-                   "Mouse_Plasmab_Metabolic_Stability_MBPP": "MBBP",
-                   "Mouse_Gut_Microbiome_Metabolic_Stability_MGMB": "MGMB",
-                   "Aq_Solubility_LogS": "Aq_Sol"}.get(c, c)
             df[key] = ex[c].map(numify)
+    if "Aq_Sol" not in df:
+        df["Aq_Sol"] = np.nan
     rows.append(df.assign(_src="adme_exp"))
     es = pd.read_csv(os.path.join(USER, "delaney-processed.csv"))
     ec = [c for c in es.columns if "SMILES" in c.upper()][0]

@@ -1,0 +1,5 @@
+sim matrices in 2s
+ GATE C CYP1A2: n=1412 floor=22 softRAE=0.3467 best gain=-0.0040 thrq=0.98 d=0.5 pos=1/5 (flagged rows = 29)
+ GATE C CYP2C9: n=1285 floor=20 softRAE=0.1459 best gain=-0.0015 thrq=0.98 d=0.5 pos=1/5 (flagged rows = 26)
+ GATE C CYP2D6: n=1493 floor=23 softRAE=0.3362 best gain=-0.0027 thrq=0.98 d=0.5 pos=1/5 (flagged rows = 30)
+ GATE C CYP3A4: n=2335 floor=36 softRAE=0.1963 best gain=-0.0020 thrq=0.98 d=0.5 pos=1/5 (flagged rows = 47)
