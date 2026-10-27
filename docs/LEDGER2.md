@@ -443,3 +443,9 @@ rank flag, shift toward floor, hyperparams by inner CV): 1A2 -0.0017,
 2C9 -0.0022, 2D6 -0.0038, 3A4 -0.0018; 1-2/5 folds positive. Third
 independent confirmation: floor-risk detection does not convert to
 metric gain (matches UQ-shrink and gate C). ft_adme full run ongoing.
+
+### Oct 26 ~00:40 - ft_adme (ADME aux-target arm) complete; standalone quality
+28-min full run, 25 heads (4 prim + 8 CYP-ext + 13 ADME), full-FT.
+Standalone OOF soft_rae: 1A2 .4269 2C9 .2071 2D6 .4020 3A4 .2924,
+macro .3321 (competitive arm). zoo9 (zoo6+ft_adme) + zoo9p shuffled
+control chain running -> ADME-specific delta = zoo9 - zoo9p per iso.
