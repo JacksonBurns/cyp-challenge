@@ -8,13 +8,14 @@ import hinge_blend as H  # noqa: E402
 
 CACHE = H.CACHE
 mode = sys.argv[1] if len(sys.argv) > 1 else "real"
-src = os.path.join(CACHE, "ft_oof_adme2.csv" if mode == "real"
-                   else "ft_oof_adme2_shuf.csv")
+SRC = {"real": "ft_oof_adme2.csv", "shuf": "ft_oof_adme2_shuf.csv",
+       "avg": "ft_oof_adme2_avg.csv", "avgshuf": "ft_oof_adme2_avg_shuf.csv"}
+src = os.path.join(CACHE, SRC[mode])
 H.FAMS["ft_adme2"] = [src]
 H.POOLS["zoo11"] = H.POOLS["zoo6"] + ["ft_adme2"]
 
 if __name__ == "__main__":
-    tag = "zoo11" if mode == "real" else "zoo11p"
+    tag = {"real": "zoo11", "shuf": "zoo11p", "avg": "zoo11a", "avgshuf": "zoo11ap"}[mode]
     H.main(emit=False, do_l4=True, pool="zoo11",
            wout=f"hinge_w_{tag}.json", report_name=f"hinge_blend_{tag}.json",
            out_csv=f"regression_{tag}_GATEONLY.csv")

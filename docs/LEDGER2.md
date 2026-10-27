@@ -536,3 +536,13 @@ test with L4 emphasis.
 Standalone softRAE: s0 .3306 / s1 .3294 / s2 .3284 / s3 .3239.
 Family mean .3281. Pool test: zoo11 gate on s0 first; if pass, 4-seed
 avg family (test preds averaged over seeds) to zoo12 gate w/ control.
+
+### Oct 27 - ft_adme2 avg family + zoo11 modes; seed4 running
+4-seed avg OOF (ft_oof_adme2_avg.csv) + test avg (ft_test_preds_adme2_avg.csv,
+750 rows). zoo11_gate modes: real/s
+
+
+### Oct 27 - ft_adme2 avg family + zoo11 modes; seed4 running
+4-seed avg OOF (ft_oof_adme2_avg.csv) + test avg (ft_test_preds_adme2_avg.csv,
+750 rows). zoo11_gate modes: real/shuf/avg/avgshuf -> tags zoo11/11p/11a/11ap.
+avg_shuf control file written. seed4 on GPU (5-seed family; cheap arm).

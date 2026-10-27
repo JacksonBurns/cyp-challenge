@@ -12,4 +12,10 @@ for iso in ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]:
     v[ok] = rng.permutation(v[ok])
     d[iso] = v
 d.to_csv(os.path.join(CACHE, "ft_oof_adme2_shuf.csv"), index=False)
-print("shuffled adme2 written")
+d.to_csv(os.path.join(CACHE, "ft_oof_adme2_avg_shuf.csv"), index=False) if False else None
+a = pd.read_csv(os.path.join(CACHE, "ft_oof_adme2_avg.csv"))
+for iso in ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]:
+    v = np.array(a[iso].values); ok = ~np.isnan(v)
+    v[ok] = rng.permutation(v[ok]); a[iso] = v
+a.to_csv(os.path.join(CACHE, "ft_oof_adme2_avg_shuf.csv"), index=False)
+print("shuffled adme2 + avg_shuf written")
