@@ -12,10 +12,10 @@ CACHE = "/home/jackson/cyp-challenge/cache"
 ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
 
 FAM = {
-    "adme2w002_avg": ["adme2w002", "adme2w002_1", "adme2w002_2"],
-    "adme2w01_avg": ["adme2w01", "adme2w1_1", "adme2w1_2", "adme2w1_3"],
-    "adme2band_avg": ["adme2w002", "adme2w002_1", "adme2w002_2",
-                      "adme2w01", "adme2w1_1", "adme2w1_2", "adme2w1_3"],
+    "adme2w002_avg": ["adme2w002", "adme2w002_1", "adme2w002_2", "adme2w002_3"],
+    "adme2w01_avg": ["adme2w01", "adme2w1_1", "adme2w1_2", "adme2w1_3", "adme2w1_4"],
+    "adme2band_avg": ["adme2w002", "adme2w002_1", "adme2w002_2", "adme2w002_3",
+                      "adme2w01", "adme2w1_1", "adme2w1_2", "adme2w1_3", "adme2w1_4"],
 }
 
 rng = np.random.default_rng(7)

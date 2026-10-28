@@ -591,3 +591,11 @@ Families (avg OOF + shuf control + avg test preds): w0.02x3 (.3237),
 w0.1x4 (.3249), band w0.02+w0.1 x7. zoo12_gate modes band/w002 pair
 queued (battery4). GPU free after seed chains. zoo11 avg pair running.
 Decisive tests: zoo12 band real-minus-shuf (pool), zoo11a pair (v1 avg).
+
+
+### Oct 27 - zoo11 avg pair: v1 aux arm pool delta = 0 (4th control confirmation)
+zoo11a real minus zoo11ap shuf: -.0015/-.0009/-.0022/+.0017. v1 (AUX_W 0.3,
+13 heads, 5-seed avg) adds variance-harvest only. Live candidate: LIGHT
+BAND family (w0.02x4 .3234, w0.1x5 .3253, 9-seed band avg) - standalone
+edge ~.005 over zoo6 members; zoo12 pair running (battery4->5). GPU:
+pure-physics ablation at w0.02 + w0.01 point.
