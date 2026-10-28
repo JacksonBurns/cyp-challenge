@@ -767,3 +767,21 @@ A2 block seed-resolved (4 seeds, stack vs stack+A2 GBM MAE):
  1A2 +.0066 (3/4 +; seed0 .0155 was split-lucky, honest ~.007),
  2D6 -.0005 null. MACRO +.0069. A2 = REAL, durable, 2C9-concentrated.
 SCIENCE PROGRAM CLOSED. Ship lane armed (cp21 -> probes -> placement).
+
+
+## Oct 28 SCIENCE ROUND 3 OPENED (user: execute all, updated submission both tracks)
+Plan (ranked by mechanism x headroom x cost):
+ R3-1 TDI: bioactivation-mechanism aux targets + soft-MCC surrogate loss
+      (TDI headroom .342 board vs .575 ceiling; label semantics=mechanism)
+ R3-2 Pharmacophore geometry features (2D-graph N<->HBA 5-7A 2D6, heme
+      chelators, carboxylate<->HBA 2C9) - targets forensics findings
+ R3-3 Assay-condition measurement physics (enzyme source, incubation,
+      BSA from ChEMBL metadata) - targets 2D6 sigma .65 + floor rows
+ R3-4 Quantitative external pIC50 pretraining with light-band recipe
+      (w0.02-0.1, seed-averaged) - never run with tuned recipe
+ R3-5 Protein-side docking features (1EU9/3ED5/3MO1/1Z19 + heme) - big swing
+ R3-6 Cross-isoform residual co-structure calibration - CPU, cheap
+Discipline: per-isoform gates, seed replication (4 seeds for GBM gates -
+A2 lesson), shuffled controls for pool claims, 1 GPU job at a time.
+Ship lane stays armed: cp21 -> probes -> placement. Goal: updated
+submission for BOTH tracks with answers to real modeling questions.
