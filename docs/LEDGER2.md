@@ -722,3 +722,9 @@ gate chained; ft_adme4 smoke2 running with live d3 head wiring
 ### Oct 27 - ft_adme4 seed0 (3D heads, w0.05): 0.3380 - 0.011 WORSE than
 ft_adme2 w005 seed0 (0.3268), outside band. 3D aux heads look harmful;
 confirm w/ seed1 after build completes (d3 coverage was ~58%).
+
+
+### Oct 27 - GPU queue: ft_adme4 seed1 (FULL d3 coverage) launched
+seed0 at ~58% coverage: 0.3380. seed1 at 100% decides the 3D-heads
+verdict; if still >=0.334, 3D-as-aux CLOSED, feature gate is the
+remaining 3D channel.
