@@ -622,3 +622,8 @@ mean .3248).
 29 PAINS/reactive/aggregation SMARTS counts add nothing over 18-endpoint
 ADME2 block (.0001/.0000/.0003/.0000). Continuous GBM endpoints subsume
 interference chemistry; binary alerts = coarser encoding, no extra signal.
+
+
+### Oct 27 - w0.02 x3 more seeds running (band -> 14 replicas); alerts queued
+GPU: s6,s7,s8 of AUX_W=0.02. Final zoo12 pair will run on 14-seed band
+(avg of w002x9 + w01x5) for max family-member stability.
