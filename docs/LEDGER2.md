@@ -643,3 +643,11 @@ FIELD MCC delta 2D6 +.0103 (.0969->.1072), 3A4 +.0062 (.3903->.3965).
 Both positive = classification track is where ADME physics earns signal
 (pairs with 1A2/2C9 feature concentration). Modest; ship decision vs v4
 (0.409/0.163 best-thr) needs full-threshold comparison, not field-only.
+
+
+### Oct 27 - w002 seeds 6-8 (.3319/.3317/.3276); band family 14 seeds built
+14-seed band pair (decisive pool test) running; endpoint ablation running.
+Battery5 waiter bug: pgrep self-match spin (8.8h lost); fixed via pattern.
+TDI cls final read: adme2 best-thr .4024/.1273 < v4 .409/.163 -> v4 keeps
+TDI slot; ADME2 feats improve in-run base (+.010/+.006 field) but do not
+beat ship candidate. TDI classification CLOSED: v4 owner.

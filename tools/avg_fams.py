@@ -15,6 +15,8 @@ FAM = {
     "adme2w002_avg": ["adme2w002", "adme2w002_1", "adme2w002_2", "adme2w002_3"],
     "adme2w01_avg": ["adme2w01", "adme2w1_1", "adme2w1_2", "adme2w1_3", "adme2w1_4"],
     "adme2band_avg": ["adme2w002", "adme2w002_1", "adme2w002_2", "adme2w002_3",
+                      "adme2w002_4", "adme2w002_5", "adme2w002_6", "adme2w002_7",
+                      "adme2w002_8",
                       "adme2w01", "adme2w1_1", "adme2w1_2", "adme2w1_3", "adme2w1_4"],
 }
 
