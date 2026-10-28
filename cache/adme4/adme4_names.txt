@@ -1,0 +1,12 @@
+d3_strain
+d3_espread
+d3_nlow
+d3_relax
+d3_sasa
+d3_sasapf
+d3_rg
+d3_asp
+d3_npr1
+d3_depth
+d3_rotbd
+d3_nconf

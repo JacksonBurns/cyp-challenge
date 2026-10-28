@@ -736,3 +736,10 @@ adme4 2 seeds .3380/.3321 mean .3351 vs ft_adme2 w005 .3268 (band mean
 best adme2 run. Third aux-channel confirmation: encoder geometry from
 MMFF-style physics is redundant once lipophilicity/ionization heads +
 CYP data present. A4 feature-gate (desolvation->GBM) is last 3D channel.
+
+
+### Oct 27 - 3D FEATURE MATRIX COMPLETE: 100% coverage (6145 train + 750 test)
+d3_finish (SIGALRM 300s/molecule guard) cleared the MMFF stalls; all
+6,895 molecules computed. cache/adme4/adme4_feats_{tr,te}.npy, 12 feats.
+A4 gate (base/+A4/A2/A2+A4) running. 3D-as-aux already CLOSED
+(.3380/.3321 2 seeds vs ft_adme2 w005 .3268).
