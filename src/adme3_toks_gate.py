@@ -33,7 +33,7 @@ def mae_gate(X, iso, seed=0):
 
 
 def main():
-    Xbase = H.Xtr.drop(columns=["SMILES", "ID"]).values.astype(np.float32)
+    Xbase = H.Xtr.drop(columns=["SMILES"]).values.astype(np.float32)
     A2 = np.load(os.path.join(CACHE, "adme2", "adme2_feats_tr.npy"))
     TK = np.load(os.path.join(OUTD, "toks_feats_tr.npy"))
     A2 = np.nan_to_num(A2, nan=0.0)

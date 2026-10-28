@@ -1,19 +1,7 @@
 sim matrices in 1s
-Traceback (most recent call last):
-  File "/home/jackson/cyp-challenge/src/adme3_toks_gate.py", line 54, in <module>
-    main()
-  File "/home/jackson/cyp-challenge/src/adme3_toks_gate.py", line 36, in main
-    Xbase = H.Xtr.drop(columns=["SMILES", "ID"]).values.astype(np.float32)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/frame.py", line 5603, in drop
-    return super().drop(
-           ^^^^^^^^^^^^^
-  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/generic.py", line 4810, in drop
-    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/generic.py", line 4852, in _drop_axis
-    new_axis = axis.drop(labels, errors=errors)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 7136, in drop
-    raise KeyError(f"{labels[mask].tolist()} not found in axis")
-KeyError: "['ID'] not found in axis"
+base (6145, 3456) A2 (6145, 18) TK (6145, 44)
+CYP1A2: base 0.6805 +TK +0.0009 | A2 0.0139 A2+TK 0.0207 TK-on-A2 delta +0.0068
+CYP2C9: base 0.4872 +TK +-0.0022 | A2 0.0221 A2+TK 0.0161 TK-on-A2 delta -0.0060
+CYP2D6: base 0.6246 +TK +-0.0118 | A2 0.0008 A2+TK -0.0014 TK-on-A2 delta -0.0021
+CYP3A4: base 0.5344 +TK +-0.0052 | A2 0.0056 A2+TK 0.0024 TK-on-A2 delta -0.0032
+done

@@ -1,3 +1,4 @@
 sim matrices in 1s
 3D: todo 6895
   500/6895
+  1000/6895

@@ -696,3 +696,11 @@ Gates: A3 (stack+A2 vs +A3 GBM MAE), ft_adme3 pKa heads at w0.05, zoo13.
   3A4 -.000) = predictions-as-features ceiling, GBM can't beat GBM.
 - Channels left: ft_adme3 aux heads (GPU, w0.05, running), TOKS gate
   (stack/TK/A2+TK, running), A4 3D build (12 workers, running).
+
+
+### Oct 27 - CAPTION-TOKEN GATE: closed (no win; 1A2 +.007 only)
+TK standalone: +.0009/-.0022/-.0118/-.0052; on A2: +.0068/-.0060/
+-.0021/-.0032 (mean -.001). Name-token distillation = null, 1A2 only
+positive (again the physics-informative isoform). ft_adme3 seed0
+(w0.05 + pKa heads): 0.3300 - within noise of ft_adme2 w005 (0.3268);
+seeds 1-2 running. Remaining: A4 3D build (12w, ~15%), then A4 gate.
