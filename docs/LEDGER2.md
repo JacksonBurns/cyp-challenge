@@ -651,3 +651,19 @@ Battery5 waiter bug: pgrep self-match spin (8.8h lost); fixed via pattern.
 TDI cls final read: adme2 best-thr .4024/.1273 < v4 .409/.163 -> v4 keeps
 TDI slot; ADME2 feats improve in-run base (+.010/+.006 field) but do not
 beat ship candidate. TDI classification CLOSED: v4 owner.
+
+
+### Oct 27 - ENDPOINT-GROUP ABLATION: lipophilicity is the universal physics driver
+Group-only gains (MAE, + = better) per isoform:
+  lipophilicity (logD+Sangster logP): 1A2 +.0140 / 2C9 +.0131 / 2D6 -.0008 / 3A4 +.0090
+  -> 80-100% of the full-block gain on 3/4 isoforms; drop-lipo from full
+     costs 1A2 +.0072, 3A4 +.0144 (largest single drop everywhere).
+  cyp_veith_sub: 1A2 +.0095 / 2C9 +.0192 (2C9 best single group) / 2D6 -.0072 / 3A4 +.0002
+  solubility: 2C9 +.0090 (unique), ~0 elsewhere.
+  permeability: ~0 EVERYWHERE (-.0008/-.0012/+.0014/-.0021) - transport
+     physics does not inform binding potency. Clean null.
+  distribution/metabolism: small positive (+.001-.010).
+Interpretation: assay-physics gain = (1) lipophilicity: assay partitioning/
+solubilization/nonspecific binding modulates apparent pIC50 for 1A2/2C9/3A4;
+(2) direct CYP polypharmacology labels for 1A2/2C9; (3) aqueous solubility
+specifically for 2C9. 2D6 resists all physics (binding-site driven).

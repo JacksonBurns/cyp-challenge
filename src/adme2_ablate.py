@@ -17,11 +17,12 @@ ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
 CACHE = H.CACHE
 
 # feature order from adme2_build.py (18): v1 8 + TDC 10
-NAMES = ["logd", "logs_exp", "ksol", "hlm_clint", "mlm_clint", "caco2_papp",
-         "efflux", "mppb",
-         "caco2_wang", "hia_hou", "pgp", "bbb", "vdss", "ppbr", "aqsol",
-         "half_life", "cl_hep", "cl_mic", "lipo_az"]
-# NOTE: verify NAMES against adme2_build cols at runtime; adjust if mismatch.
+NAMES = ["caco2_wang", "hia_hou", "pgp", "bbb", "vdss", "ppbr", "aqsol",
+         "half_life", "cl_hep", "cl_mic", "lipo_az",
+         "cyp2c9_veith", "cyp2d6_veith", "cyp3a4_veith", "cyp1a2_veith",
+         "cyp2c9_sub", "cyp2d6_sub", "cyp3a4_sub"]
+V1N = ["logd", "logs_exp", "ksol", "hlm_clint", "mlm_clint", "caco2_papp",
+       "efflux", "mppb"]
 
 
 def gbmae(X, y, seed=0):
@@ -39,15 +40,18 @@ def main():
     smi = H.Xtr["SMILES"].values
     A2 = np.nan_to_num(np.load(os.path.join(CACHE, "adme2", "adme2_feats_tr.npy")),
                        nan=0.0)
+    V1 = np.nan_to_num(np.load(os.path.join(CACHE, "adme_aux", "adme_feats_tr.npy")),
+                       nan=0.0)
+    A2 = np.hstack([A2, V1])  # cols 18-25 = v1 block
     print("A2 block", A2.shape, flush=True)
     Xbase = H.Xtr.drop(columns=["SMILES"]).values.astype(np.float32)
     groups = {
-        "solubility": [2, 7, 14],          # ksol, mppb, aqsol
-        "permeability": [5, 8, 9, 10, 11],  # caco2_papp, caco2_wang, hia, pgp, bbb
-        "lipophilicity": [0, 18],          # logd, lipo_az
-        "distribution": [12, 13],          # vdss, ppbr
-        "metabolism": [3, 4, 15, 16, 17],  # hlm/mlm clint, half_life, cl_hep/mic
-        "expansion": [1, 6],               # logs_exp, efflux
+        "solubility": [6, 20, 25],        # aqsol, ksol, mppb
+        "permeability": [0, 1, 2, 3, 23, 24],  # caco2wang, hia, pgp, bbb, caco2papp, efflux
+        "lipophilicity": [10, 18],        # lipo_az, logd
+        "distribution": [4, 5],           # vdss, ppbr
+        "metabolism": [7, 8, 9, 21, 22],  # half_life, cl_hep/mic, hlm/mlm clint
+        "cyp_veith_sub": [11, 12, 13, 14, 15, 16, 17],
     }
     for iso in ISO:
         y = H.targets[f"{iso}_pIC50_direct_inhibition"].reindex(smi).values.astype(float)

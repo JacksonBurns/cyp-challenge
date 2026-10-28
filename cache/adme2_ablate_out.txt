@@ -1,2 +1,54 @@
 sim matrices in 1s
-A2 block (6145, 18)
+A2 block (6145, 26)
+CYP1A2: base 0.6810 full18 0.6634 gain +0.0176
+   +solubility (3): -0.0007
+   +permeability (6): -0.0008
+   +lipophilicity (2): +0.0140
+   +distribution (2): +0.0034
+   +metabolism (5): +0.0032
+   +cyp_veith_sub (7): +0.0095
+   -solubility from full: +0.0018
+   -permeability from full: -0.0023
+   -lipophilicity from full: +0.0072
+   -distribution from full: +0.0025
+   -metabolism from full: +0.0015
+   -cyp_veith_sub from full: +0.0095
+CYP2C9: base 0.4876 full18 0.4708 gain +0.0168
+   +solubility (3): +0.0090
+   +permeability (6): -0.0012
+   +lipophilicity (2): +0.0131
+   +distribution (2): +0.0102
+   +metabolism (5): +0.0062
+   +cyp_veith_sub (7): +0.0192
+   -solubility from full: +0.0001
+   -permeability from full: +0.0019
+   -lipophilicity from full: -0.0029
+   -distribution from full: -0.0049
+   -metabolism from full: +0.0031
+   -cyp_veith_sub from full: +0.0012
+CYP2D6: base 0.6214 full18 0.6226 gain -0.0012
+   +solubility (3): -0.0030
+   +permeability (6): +0.0014
+   +lipophilicity (2): -0.0008
+   +distribution (2): -0.0045
+   +metabolism (5): +0.0014
+   +cyp_veith_sub (7): -0.0072
+   -solubility from full: +0.0026
+   -permeability from full: +0.0008
+   -lipophilicity from full: +0.0004
+   -distribution from full: -0.0013
+   -metabolism from full: +0.0058
+   -cyp_veith_sub from full: -0.0076
+CYP3A4: base 0.5466 full18 0.5349 gain +0.0116
+   +solubility (3): -0.0006
+   +permeability (6): -0.0021
+   +lipophilicity (2): +0.0090
+   +distribution (2): +0.0014
+   +metabolism (5): -0.0006
+   +cyp_veith_sub (7): +0.0002
+   -solubility from full: -0.0017
+   -permeability from full: -0.0026
+   -lipophilicity from full: +0.0144
+   -distribution from full: -0.0013
+   -metabolism from full: -0.0020
+   -cyp_veith_sub from full: +0.0059
