@@ -170,6 +170,7 @@ def main():
 
                 Xf_tr = np.hstack([Xbase[trc], nnfeat(S[trc], trc), XA[trc]])
                 Xf_va = np.hstack([Xbase[vac], nnfeat(S[vac], vac), XA[vac]])
+                raw = False
                 if loss == "logloss":
                     m = LGBMClassifier(n_estimators=1200, learning_rate=0.03, num_leaves=63,
                                        min_child_samples=15, subsample=0.8, subsample_freq=1,
@@ -183,7 +184,10 @@ def main():
                                        random_state=42, verbosity=-1,
                                        objective=soft_mcc_obj(yl[trc]))
                     m.fit(Xf_tr, yl[trc])
-                proba[vac] = m.predict_proba(Xf_va)[:, 1]
+                if loss == "logloss":
+                    proba[vac] = m.predict_proba(Xf_va)[:, 1]
+                else:
+                    proba[vac] = 1.0 / (1.0 + np.exp(-m.predict(Xf_va)))
             # threshold tune on labeled rows (field: mean over thresholds of OOF proba)
             pv = proba[cand_all]; yv = yl[cand_all]
             ths = np.quantile(pv, np.linspace(0.3, 0.8, 41))

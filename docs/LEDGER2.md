@@ -794,3 +794,18 @@ test-blind has no y_j. Test-applicable version (predictions only, ridge
 stack): 1A2 +.003 2C9 +.001 2D6 -.009 3A4 +.014 MAE. ~0 = hinge blend
 already extracts all joint predictability. Lesson documented: residual
 co-structure across isoforms is mostly the label, not transferable signal.
+
+
+### Oct 28 - R3 arms deployed
+R3-1 tdi_mech: 26 bioactivation SMARTS + soft-MCC custom objective
+ (5 modes x 2 iso, scaffold folds; running)
+R3-2 pharm: 12 center SMARTS x 8 geometry pairs -> 50 feats (2D graph
+ distances, band counts); 4-seed GBM gate; running (fixed key desync)
+R3-3 assay: protocol regexes on ChEMBL assay_description + 2D6
+ replicate-delta diagnostic; queued
+R3-4 extw005: ft_ext (ChEMBL+PubChem quantitative pIC50 heads) at
+ AUX_W=0.05 light band, 3 seeds; GPU running
+R3-5 dock: Vina CPU, 1Z19/1EU9/4UOU/3MO1 heme-centered 24A boxes,
+ 1200 train sample + 750 test; dock env being built
+R3-6 CLOSED: leaky +.25-.49 = label info; test-applicable ~0.
+NOTE: ft_ext AUX_W now env-settable (FT_AUXW).

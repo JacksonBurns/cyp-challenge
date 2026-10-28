@@ -38,7 +38,8 @@ MAX_EPOCHS = 40
 PATIENCE = 8
 BATCH = 128
 VAL_FRAC = 0.1
-AUX_W = 0.3
+import os as _os
+AUX_W = float(_os.environ.get("FT_AUXW", "0.3"))
 EXT_CAP = 9000  # subsample external rows per fold (throughput cap)
 
 

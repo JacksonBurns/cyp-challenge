@@ -35,7 +35,9 @@ CENTER_SMARTS = {
     "hba": "[OX2;!$(O=C);!$(Oc1ccccc1)]",
     "pyrN": "n",
     # negative ionizable
-    "anion": "[CX3](=[OX1])[OX2H1,OX1-]|[c;n]1[nH][nX3+]([O-])n[nH]1|[#6][SX4](=[OX1])(=[OX1])[NX3H][#6]",
+    "anion": "[CX3](=[OX1])[OX2H1,OX1-]",
+    "sulfonimide": "[#6][SX4](=[OX1])(=[OX1])[NX3H][#6]|[NX3][SX4](=[OX1])(=[OX1])[CX3](=[OX1])",
+    "tetrazole": "c1nnn[nH]1",
     "hydroxamate": "[CX3](=[OX1])[OX2H]",
     # aromatic ring centroid proxy: any aromatic carbon
     "arom": "a",
@@ -47,6 +49,7 @@ CENTER_SMARTS = {
     "nitrile": "C#N",
 }
 PAT = {k: Chem.MolFromSmarts(v) for k, v in CENTER_SMARTS.items()}
+PAT = {k: v for k, v in PAT.items() if v is not None}
 
 # pair specs: (a, b, ideal_min_bonds, ideal_max_bonds)
 PAIRS = [
@@ -60,7 +63,8 @@ PAIRS = [
     ("halo", "arom", 0, 4),
 ]
 NF = len(PAIRS) * 4  # min_dist, band_dev, band_count, has_pair
-NC = len(CENTER_SMARTS)
+CNAMES = list(PAT)
+NC = len(CNAMES)
 
 print("center pats:", len(PAT), "pairs:", len(PAIRS), flush=True)
 
@@ -97,7 +101,7 @@ def pharm_feats(smiles):
                 X[i, col + 2] = min(inb, 10) / 10.0
                 X[i, col + 3] = 1.0
             col += 4
-        for j, k in enumerate(CENTER_SMARTS):
+        for j, k in enumerate(CNAMES):
             X[i, NF + j] = min(len(centers[k]), 10) / 10.0
         X[i, NF + NC] = float(m.GetNumBonds()) / 50.0
         X[i, NF + NC + 1] = len(Chem.GetMolFrags(m)) / 2.0
