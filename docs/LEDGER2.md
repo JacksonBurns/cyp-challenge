@@ -809,3 +809,9 @@ R3-5 dock: Vina CPU, 1Z19/1EU9/4UOU/3MO1 heme-centered 24A boxes,
  1200 train sample + 750 test; dock env being built
 R3-6 CLOSED: leaky +.25-.49 = label info; test-applicable ~0.
 NOTE: ft_ext AUX_W now env-settable (FT_AUXW).
+
+
+### Oct 28 - R3-5 docking: structure audit
+1z19/1nw8/4uou/3mo1 are APO (no heme in files). Need holo entries:
+tools/rcsb_holo.py queries RCSB (UniProt + HEM + ligand + <2.8A).
+dock env (meeko/vina/rdkit) building. Vina CPU chosen (GPU busy).

@@ -1,0 +1,22 @@
+{
+ "CYP1A2": {
+  "pdb": "1z19",
+  "center": null,
+  "box": 24.0
+ },
+ "CYP2C9": {
+  "pdb": "1nw8",
+  "center": null,
+  "box": 24.0
+ },
+ "CYP2D6": {
+  "pdb": "4uou",
+  "center": null,
+  "box": 24.0
+ },
+ "CYP3A4": {
+  "pdb": "3mo1",
+  "center": null,
+  "box": 24.0
+ }
+}
