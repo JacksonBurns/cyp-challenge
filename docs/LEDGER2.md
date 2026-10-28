@@ -599,3 +599,11 @@ zoo11a real minus zoo11ap shuf: -.0015/-.0009/-.0022/+.0017. v1 (AUX_W 0.3,
 BAND family (w0.02x4 .3234, w0.1x5 .3253, 9-seed band avg) - standalone
 edge ~.005 over zoo6 members; zoo12 pair running (battery4->5). GPU:
 pure-physics ablation at w0.02 + w0.01 point.
+
+
+### Oct 27 - Curve closed: optimum w0.02-0.05; pure-physics at w0.02 = .3315
+ab_w002 (no CYP heads) .3315 vs full-head w002 mean .3234: Veith CYP labels
+add ~.008 at light aux weight (complementary when physics supervision light;
+at w0.3 they add ~.001). w0.01 .3297 (below band). Best single: w002_3 .3224.
+Band family +2 w0.02 seeds running (s4,s5) -> 11-seed band for zoo12.
+softrae_many.py tool fixed (targets col schema).
