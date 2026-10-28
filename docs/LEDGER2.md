@@ -667,3 +667,12 @@ Interpretation: assay-physics gain = (1) lipophilicity: assay partitioning/
 solubilization/nonspecific binding modulates apparent pIC50 for 1A2/2C9/3A4;
 (2) direct CYP polypharmacology labels for 1A2/2C9; (3) aqueous solubility
 specifically for 2C9. 2D6 resists all physics (binding-site driven).
+
+
+### Oct 27 - ZOO12 BAND14 (final): delta -.0022/+.0015/+.0030/+.0016 (mean +.001)
+14-seed averaged family: positive label delta on 3/4 (2D6 +.0030 largest),
+consistent with band8 (+.001, 1A2/2C9) and w002 pair (~0). Real member
+takes NEGATIVE weights on 1A2/2D6/3A4 (bias-corrector, dscst-style).
+ADME2 PROGRAM CLOSED. Pool verdict: label-specific ~0 to +.002, all
+gates consistent. Q2 discount: pool swap EV <= .014 = board noise ->
+NO cp23; ship cp21 + probe chain (placement algebra > pool swaps).
