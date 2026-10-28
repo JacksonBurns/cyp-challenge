@@ -676,3 +676,14 @@ takes NEGATIVE weights on 1A2/2D6/3A4 (bias-corrector, dscst-style).
 ADME2 PROGRAM CLOSED. Pool verdict: label-specific ~0 to +.002, all
 gates consistent. Q2 discount: pool swap EV <= .014 = board noise ->
 NO cp23; ship cp21 + probe chain (placement algebra > pool swaps).
+
+
+### Oct 27 - ADME3 opened: user IUPAC/pKa dataset (24k EXPERIMENTAL pKa rows)
+Audit: 24,017 usable pka_value rows, 10,701 unique mols; pKaH1 11,155 /
+pKa1 8,716 / pKa2 1,674 / pKaH2 1,134; range -19..20 (clip -5..18);
+overlap 58 train / 1 test -> transfer pipeline. Bonus: 24k IUPAC names
+(substituent+position tokens, no stereo) = captioning aux-task axis.
+Directly on the winning mechanism (ionization = universal driver from
+ablation). Build running: per-type median pKa GBM ensemble -> predicted
+pKa profile (4) + fraction-cation/anion@7.4 + zwitterion window (3).
+Gates: A3 (stack+A2 vs +A3 GBM MAE), ft_adme3 pKa heads at w0.05, zoo13.
