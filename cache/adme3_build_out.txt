@@ -1,2 +1,13 @@
 external molecules: 10484 types: ['pKaH1', 'pKa1', 'pKa2', 'pKaH2']
   featurized 2000
+  featurized 4000
+  featurized 6000
+  featurized 8000
+  featurized 10000
+ext feats (10484, 1234)
+sim matrices in 1s
+  pKaH1: fit on 6436 rows
+  pKa1: fit on 4879 rows
+  pKa2: fit on 997 rows
+  pKaH2: fit on 584 rows
+ADME3 feats: (6145, 4) (750, 4)

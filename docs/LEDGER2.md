@@ -687,3 +687,12 @@ Directly on the winning mechanism (ionization = universal driver from
 ablation). Build running: per-type median pKa GBM ensemble -> predicted
 pKa profile (4) + fraction-cation/anion@7.4 + zwitterion window (3).
 Gates: A3 (stack+A2 vs +A3 GBM MAE), ft_adme3 pKa heads at w0.05, zoo13.
+
+
+### Oct 27 - ADME3 caption tokens built (44 feats); gates armed
+- toks: 49 tokens (aniline/pyridin/sulfonyl/tetrazol/spiro...), 44 kept
+  (>=50 pos), distilled to tr/te prob features.
+- A3 gate FINAL: pKa-as-features null (1A2 +.002 2C9 +.000 2D6 -.007
+  3A4 -.000) = predictions-as-features ceiling, GBM can't beat GBM.
+- Channels left: ft_adme3 aux heads (GPU, w0.05, running), TOKS gate
+  (stack/TK/A2+TK, running), A4 3D build (12 workers, running).

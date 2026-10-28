@@ -1,0 +1,54 @@
+"""Gate: caption-token distilled features.
+
+Per isoform GBM pIC50 MAE (KFold5 seed0):
+  stack | stack+TOKS(44) | stack+A2+TOKS
+"""
+import os
+import sys
+
+import numpy as np
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.model_selection import KFold
+
+sys.path.insert(0, "/home/jackson/cyp-challenge/src")
+import hinge_blend as H  # noqa: E402
+
+CACHE = "/home/jackson/cyp-challenge/cache"
+OUTD = os.path.join(CACHE, "adme3")
+ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
+
+
+def mae_gate(X, iso, seed=0):
+    y = H.targets[f"{iso}_pIC50_direct_inhibition"].values
+    ok = np.isfinite(y)
+    X, y = X[ok], y[ok]
+    kf = KFold(5, shuffle=True, random_state=seed)
+    pred = np.zeros(len(y))
+    for tr, te in kf.split(X):
+        g = HistGradientBoostingRegressor(max_iter=250, learning_rate=0.08,
+                                          random_state=seed)
+        g.fit(X[tr], y[tr])
+        pred[te] = g.predict(X[te])
+    return float(np.mean(np.abs(pred - y)))
+
+
+def main():
+    Xbase = H.Xtr.drop(columns=["SMILES", "ID"]).values.astype(np.float32)
+    A2 = np.load(os.path.join(CACHE, "adme2", "adme2_feats_tr.npy"))
+    TK = np.load(os.path.join(OUTD, "toks_feats_tr.npy"))
+    A2 = np.nan_to_num(A2, nan=0.0)
+    TK = np.nan_to_num(TK, nan=0.0)
+    print("base", Xbase.shape, "A2", A2.shape, "TK", TK.shape, flush=True)
+    for iso in ISO:
+        m0 = mae_gate(Xbase, iso)
+        ma = mae_gate(np.hstack([Xbase, A2]), iso)
+        m1 = mae_gate(np.hstack([Xbase, TK]), iso)
+        m2 = mae_gate(np.hstack([Xbase, A2, TK]), iso)
+        print(f"{iso}: base {m0:.4f} +TK +{m0-m1:.4f} "
+              f"| A2 {m0-ma:.4f} A2+TK {m0-m2:.4f} TK-on-A2 delta {ma-m2:+.4f}",
+              flush=True)
+    print("done", flush=True)
+
+
+if __name__ == "__main__":
+    main()
