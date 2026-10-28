@@ -743,3 +743,17 @@ d3_finish (SIGALRM 300s/molecule guard) cleared the MMFF stalls; all
 6,895 molecules computed. cache/adme4/adme4_feats_{tr,te}.npy, 12 feats.
 A4 gate (base/+A4/A2/A2+A4) running. 3D-as-aux already CLOSED
 (.3380/.3321 2 seeds vs ft_adme2 w005 .3268).
+
+
+### Oct 27 - TDI CLS ship-comparison CLOSED
+in-run base field 2D6 .0969/3A4 .3903 vs v4 ship .163/.409: ADME2
+lift (+.0103/+.0062) over a far-weak base; v4 stays slot owner.
+
+### Oct 27 - ADME3/4 PROGRAM SUMMARY (all lanes adjudicated)
+pKa feats: null (GBM ceiling). pKa aux heads: null (3 seeds .3338).
+Caption tokens: closed (mean -.001; 1A2 +.007).
+3D aux heads: closed (.3380/.3321). 3D feats: gate running.
+Program total: 15 gates/arms since ADME2 opened; only durable wins:
+A2 lipophilicity feature block (+.015/.016 1A2/2C9), B2 floor-hazard
+detection (+.045 3A4), ft_adme2 light-band (best standalone FT .3249).
+All pool claims ~0 after shuffled controls (7th confirmation).
