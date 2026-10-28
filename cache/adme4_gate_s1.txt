@@ -1,0 +1,7 @@
+sim matrices in 1s
+base (6145, 3456) A2 (6145, 18) A4 (6145, 12)
+CYP1A2: base 0.6582 +A4 +-0.0055 | A2 -0.0047 A2+A4 -0.0034 A4-on-A2 delta +0.0013
+CYP2C9: base 0.4878 +A4 +-0.0015 | A2 0.0057 A2+A4 0.0066 A4-on-A2 delta +0.0009
+CYP2D6: base 0.6233 +A4 +0.0072 | A2 -0.0131 A2+A4 -0.0063 A4-on-A2 delta +0.0067
+CYP3A4: base 0.5417 +A4 +0.0002 | A2 0.0120 A2+A4 0.0054 A4-on-A2 delta -0.0066
+done

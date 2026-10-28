@@ -18,18 +18,19 @@ sys.path.insert(0, "/home/jackson/cyp-challenge/src")
 import hinge_blend as H  # noqa: E402
 
 CACHE = "/home/jackson/cyp-challenge/cache"
+SEED = int(os.environ.get("A4SEED", "0"))
 ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
 
 
-def mae_gate(X, iso, seed=0):
+def mae_gate(X, iso):
     y = H.targets[f"{iso}_pIC50_direct_inhibition"].values
     ok = np.isfinite(y)
     X, y = X[ok], y[ok]
-    kf = KFold(5, shuffle=True, random_state=seed)
+    kf = KFold(5, shuffle=True, random_state=SEED)
     pred = np.zeros(len(y))
     for tr, te in kf.split(X):
         g = HistGradientBoostingRegressor(max_iter=250, learning_rate=0.08,
-                                          random_state=seed)
+                                          random_state=SEED)
         g.fit(X[tr], y[tr])
         pred[te] = g.predict(X[te])
     return float(np.mean(np.abs(pred - y)))

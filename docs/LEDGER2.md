@@ -757,3 +757,13 @@ Program total: 15 gates/arms since ADME2 opened; only durable wins:
 A2 lipophilicity feature block (+.015/.016 1A2/2C9), B2 floor-hazard
 detection (+.045 3A4), ft_adme2 light-band (best standalone FT .3249).
 All pool claims ~0 after shuffled controls (7th confirmation).
+
+
+### Oct 28 - 3D FEATURES CLOSED (seed-resolved) + A2 DURABILITY SETTLED
+A4-on-A2 delta, 4 seeds: 1A2 +.0040(sd.0043) 2C9 -.0005 2D6 +.0016
+3A4 -.0004; MACRO +.0012 = noise. 3D axis fully closed (aux + feats).
+A2 block seed-resolved (4 seeds, stack vs stack+A2 GBM MAE):
+ 2C9 +.0150 sd.0068 (4/4 positive, headline holds), 3A4 +.0063 (4/4 +),
+ 1A2 +.0066 (3/4 +; seed0 .0155 was split-lucky, honest ~.007),
+ 2D6 -.0005 null. MACRO +.0069. A2 = REAL, durable, 2C9-concentrated.
+SCIENCE PROGRAM CLOSED. Ship lane armed (cp21 -> probes -> placement).
