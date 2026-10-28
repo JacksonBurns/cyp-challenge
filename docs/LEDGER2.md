@@ -634,3 +634,12 @@ w0.02 family alone = pure inflation too. Pool verdict across ADME2:
 structural inflation ~+.02 for any zoo6-quality member; label-specific
 ADME delta 0 to +.002 (concentrated 1A2/2C9). Band8 was +.001 mean.
 Battery5 (9-seed band pair) running.
+
+
+### Oct 27 - zoo10 pair: delta -.004/+.0045/-.005/+.002 ~0. TDI CLS gate: POSITIVE
+zoo10 (dscst_adme2 feature family): real-shuf ~0, 6th control confirmation.
+TDI classification gate (ADME2 feats into TDI classifier, in-run base):
+FIELD MCC delta 2D6 +.0103 (.0969->.1072), 3A4 +.0062 (.3903->.3965).
+Both positive = classification track is where ADME physics earns signal
+(pairs with 1A2/2C9 feature concentration). Modest; ship decision vs v4
+(0.409/0.163 best-thr) needs full-threshold comparison, not field-only.
