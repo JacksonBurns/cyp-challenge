@@ -717,3 +717,8 @@ A3 feature-gate ceiling). pKa dataset fully exploited: features
 ### Oct 27 - 3D axis: build fixed (parallel Pool, (smi,feats) contract),
 gate chained; ft_adme4 smoke2 running with live d3 head wiring
 (d3 rows merged by SMILES reindex; smoke1 had silent dead heads).
+
+
+### Oct 27 - ft_adme4 seed0 (3D heads, w0.05): 0.3380 - 0.011 WORSE than
+ft_adme2 w005 seed0 (0.3268), outside band. 3D aux heads look harmful;
+confirm w/ seed1 after build completes (d3 coverage was ~58%).
