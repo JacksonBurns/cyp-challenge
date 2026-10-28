@@ -704,3 +704,11 @@ TK standalone: +.0009/-.0022/-.0118/-.0052; on A2: +.0068/-.0060/
 positive (again the physics-informative isoform). ft_adme3 seed0
 (w0.05 + pKa heads): 0.3300 - within noise of ft_adme2 w005 (0.3268);
 seeds 1-2 running. Remaining: A4 3D build (12w, ~15%), then A4 gate.
+
+
+### Oct 27 - ft_adme3 CLOSED: pKa aux heads within noise, no gain
+seeds w0.05: .3300/.3341/.3374 mean .3338 vs ft_adme2 w0.05 .3268
+and band mean .3268. pKa labels add nothing beyond existing physics
+heads (logD/lipo carry ionization signal already - consistent with
+A3 feature-gate ceiling). pKa dataset fully exploited: features
+(null), aux heads (null). GPU free; A4 3D build at 3500/6895.
