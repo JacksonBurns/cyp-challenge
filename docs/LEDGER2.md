@@ -728,3 +728,11 @@ confirm w/ seed1 after build completes (d3 coverage was ~58%).
 seed0 at ~58% coverage: 0.3380. seed1 at 100% decides the 3D-heads
 verdict; if still >=0.334, 3D-as-aux CLOSED, feature gate is the
 remaining 3D channel.
+
+
+### Oct 27 - ft_adme4 seed1 (93% d3 coverage): 0.3321 -> 3D-AS-AUX CLOSED
+adme4 2 seeds .3380/.3321 mean .3351 vs ft_adme2 w005 .3268 (band mean
+.3268, best .3239). 3D heads at best neutral-to-harmful, no seed beats
+best adme2 run. Third aux-channel confirmation: encoder geometry from
+MMFF-style physics is redundant once lipophilicity/ionization heads +
+CYP data present. A4 feature-gate (desolvation->GBM) is last 3D channel.
