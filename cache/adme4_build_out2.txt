@@ -1,0 +1,9 @@
+sim matrices in 1s
+3D: todo 2895
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/adme4_build.py", line 150, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/src/adme4_build.py", line 129, in main
+    for i, (smi, f) in enumerate(pool.imap_unordered(compute_one, todo,
+           ^^^^^^^^
+ValueError: too many values to unpack (expected 2)

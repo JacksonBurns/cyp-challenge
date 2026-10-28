@@ -712,3 +712,8 @@ and band mean .3268. pKa labels add nothing beyond existing physics
 heads (logD/lipo carry ionization signal already - consistent with
 A3 feature-gate ceiling). pKa dataset fully exploited: features
 (null), aux heads (null). GPU free; A4 3D build at 3500/6895.
+
+
+### Oct 27 - 3D axis: build fixed (parallel Pool, (smi,feats) contract),
+gate chained; ft_adme4 smoke2 running with live d3 head wiring
+(d3 rows merged by SMILES reindex; smoke1 had silent dead heads).

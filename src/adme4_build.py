@@ -45,6 +45,7 @@ def polar_atom_frac(m):
 
 
 def compute_one(smi):
+    """Returns (smi, feats) for pool imap."""
     m = Chem.MolFromSmiles(smi)
     if m is None:
         try:
@@ -53,7 +54,7 @@ def compute_one(smi):
         except Exception:
             m = None
     if m is None:
-        return np.full(12, np.nan)
+        return smi, np.full(12, np.nan)
     try:
         m = Chem.AddHs(m)
         p = AllChem.ETKDGv3()
@@ -64,11 +65,11 @@ def compute_one(smi):
             p.useRandomCoords = True
             cids = AllChem.EmbedMultipleConfs(m, NCONF, p)
         if len(cids) == 0:
-            return np.full(12, np.nan)
+            return smi, np.full(12, np.nan)
         res = AllChem.MMFFOptimizeMoleculeConfs(m, maxIters=800, numThreads=1)
         ok = [i for i, (conv, e) in zip(cids, res) if conv != -1]
         if not ok:
-            return np.full(12, np.nan)
+            return smi, np.full(12, np.nan)
         E = np.array([res[i][1] for i in ok])
         E.sort()
         nh = m.GetNumHeavyAtoms()
@@ -104,10 +105,10 @@ def compute_one(smi):
         frac_polar = polar_atom_frac(m)
         sasa_polar = sasa_tot * frac_polar if np.isfinite(sasa_tot) else np.nan
         depth = rdMolDescriptors.CalcNumRotatableBonds(m) / max(nh, 1)
-        return np.array([e_low, spread, n_low, strain_relax, sasa_tot,
-                         sasa_polar, frac_polar, rg, asp, prmax, depth, nh])
+        return smi, np.array([e_low, spread, n_low, strain_relax, sasa_tot,
+                              sasa_polar, frac_polar, rg, asp, prmax, depth, nh])
     except Exception:
-        return np.full(12, np.nan)
+        return smi, np.full(12, np.nan)
 
 
 def main():
@@ -125,8 +126,9 @@ def main():
     print("3D: todo", len(todo), flush=True)
     from multiprocessing import Pool
     with Pool(12) as pool:
-        for i, smi in enumerate(todo):
-            cache[smi] = compute_one(smi)
+        for i, (smi, f) in enumerate(pool.imap_unordered(compute_one, todo,
+                                                          chunksize=32)):
+            cache[smi] = f
             if (i + 1) % 500 == 0:
                 print(f"  {i+1}/{len(todo)}", flush=True)
                 with open(cpath, "wb") as fh:
