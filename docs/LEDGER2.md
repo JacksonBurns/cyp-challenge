@@ -627,3 +627,10 @@ interference chemistry; binary alerts = coarser encoding, no extra signal.
 ### Oct 27 - w0.02 x3 more seeds running (band -> 14 replicas); alerts queued
 GPU: s6,s7,s8 of AUX_W=0.02. Final zoo12 pair will run on 14-seed band
 (avg of w002x9 + w01x5) for max family-member stability.
+
+
+### Oct 27 - zoo12 w002(4-seed) pair: delta -.0004/-.0027/+.0002/+.0013 ~ 0
+w0.02 family alone = pure inflation too. Pool verdict across ADME2:
+structural inflation ~+.02 for any zoo6-quality member; label-specific
+ADME delta 0 to +.002 (concentrated 1A2/2C9). Band8 was +.001 mean.
+Battery5 (9-seed band pair) running.
