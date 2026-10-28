@@ -785,3 +785,12 @@ Discipline: per-isoform gates, seed replication (4 seeds for GBM gates -
 A2 lesson), shuffled controls for pool claims, 1 GPU job at a time.
 Ship lane stays armed: cp21 -> probes -> placement. Goal: updated
 submission for BOTH tracks with answers to real modeling questions.
+
+
+### Oct 28 - R3-6 CLOSED (cross-isoform residual co-structure)
+Leaky version (features include y_j - P_j for other isoforms): corr .83-.89,
+ST-RAE +.25-.49 - because y_j IS label information for the same molecule;
+test-blind has no y_j. Test-applicable version (predictions only, ridge
+stack): 1A2 +.003 2C9 +.001 2D6 -.009 3A4 +.014 MAE. ~0 = hinge blend
+already extracts all joint predictability. Lesson documented: residual
+co-structure across isoforms is mostly the label, not transferable signal.

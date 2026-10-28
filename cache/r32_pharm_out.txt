@@ -1,0 +1,18 @@
+center pats: 11 pairs: 8
+sim matrices in 1s
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 150, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 112, in main
+    Ftr = pharm_feats(H.Xtr["SMILES"].tolist())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 77, in pharm_feats
+    for match in m.GetSubstructMatches(p):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+Boost.Python.ArgumentError: Python argument types in
+    Mol.GetSubstructMatches(Mol, NoneType)
+did not match C++ signature:
+    GetSubstructMatches(RDKit::ROMol self, RDKit::MolBundle query, RDKit::SubstructMatchParameters params)
+    GetSubstructMatches(RDKit::ROMol self, RDKit::ROMol query, RDKit::SubstructMatchParameters params)
+    GetSubstructMatches(RDKit::ROMol self, RDKit::MolBundle query, bool uniquify=True, bool useChirality=False, bool useQueryQueryMatches=False, unsigned int maxMatches=1000)
+    GetSubstructMatches(RDKit::ROMol self, RDKit::ROMol query, bool uniquify=True, bool useChirality=False, bool useQueryQueryMatches=False, unsigned int maxMatches=1000)

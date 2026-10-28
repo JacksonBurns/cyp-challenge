@@ -1,0 +1,14 @@
+bioact patterns: 26
+mech (6145, 26) prevalence>0: 0.179
+sim matrices in 1s
+CYP2D6 base        best-thr MCC 0.1264 | field MCC 0.0932
+CYP2D6 mech        best-thr MCC 0.1270 | field MCC 0.0966
+CYP2D6 adme2       best-thr MCC 0.1180 | field MCC 0.0951
+CYP2D6 mech_adme2  best-thr MCC 0.1294 | field MCC 0.0903
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/r31_tdi_mech.py", line 204, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/src/r31_tdi_mech.py", line 186, in main
+    proba[vac] = m.predict_proba(Xf_va)[:, 1]
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+IndexError: too many indices for array: array is 1-dimensional, but 2 were indexed
