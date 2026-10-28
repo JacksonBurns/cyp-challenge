@@ -616,3 +616,9 @@ on 1A2/2C9 = the two isoforms with A2 feature gains -> ADME2 physics signal
 concentrated there, magnitude ~.002 (gate noise level). w002 pair running;
 battery5 (9-seed band pair) chained. w002_4 .3248, w002_5 .3305 (6-seed w002
 mean .3248).
+
+
+### Oct 27 - Alerts block CLOSED: +0.0000 on all four (A2+ gate)
+29 PAINS/reactive/aggregation SMARTS counts add nothing over 18-endpoint
+ADME2 block (.0001/.0000/.0003/.0000). Continuous GBM endpoints subsume
+interference chemistry; binary alerts = coarser encoding, no extra signal.

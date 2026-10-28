@@ -2,3 +2,4 @@ sim matrices in 1s
 CYP1A2: base 0.6810 | +ADME2 0.6655 (+0.0155) | +alerts 0.6654 (+0.0001)
 CYP2C9: base 0.4876 | +ADME2 0.4713 (+0.0163) | +alerts 0.4713 (+0.0000)
 CYP2D6: base 0.6214 | +ADME2 0.6247 (-0.0033) | +alerts 0.6244 (+0.0003)
+CYP3A4: base 0.5466 | +ADME2 0.5414 (+0.0052) | +alerts 0.5414 (+0.0000)
