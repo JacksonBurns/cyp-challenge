@@ -607,3 +607,12 @@ add ~.008 at light aux weight (complementary when physics supervision light;
 at w0.3 they add ~.001). w0.01 .3297 (below band). Best single: w002_3 .3224.
 Band family +2 w0.02 seeds running (s4,s5) -> 11-seed band for zoo12.
 softrae_many.py tool fixed (targets col schema).
+
+
+### Oct 27 - zoo12 band(8-seed) pair: band delta +.002/+.002/-.000/+.001 (mean +.001)
+real .0265/.0068/.0294/.0181 vs shuf .0246/.0049/.0296/.0170. 5th consecutive
+arm where shuf control absorbs ~90% of pool gain. Band delta positive exactly
+on 1A2/2C9 = the two isoforms with A2 feature gains -> ADME2 physics signal
+concentrated there, magnitude ~.002 (gate noise level). w002 pair running;
+battery5 (9-seed band pair) chained. w002_4 .3248, w002_5 .3305 (6-seed w002
+mean .3248).
