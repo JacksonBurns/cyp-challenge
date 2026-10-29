@@ -72,13 +72,8 @@ def dock_one(args):
 
 
 def main():
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
-    import hinge_blend as H
-    rng = np.random.default_rng(0)
-    tr = list(H.Xtr["SMILES"])
-    te = list(H.Xte["SMILES"])
-    idx = sorted(rng.choice(len(tr), N_TR, replace=False))
-    todo = [("tr", tr[i]) for i in idx] + [("te", s) for s in te]
+    mol = json.load(open(os.path.join(DOCKD, "mols.json")))
+    todo = [("tr", s) for s in mol["tr"]] + [("te", s) for s in mol["te"]]
     done = {}
     if os.path.exists(OUT):
         done = json.load(open(OUT))

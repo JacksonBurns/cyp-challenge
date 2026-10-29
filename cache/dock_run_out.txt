@@ -1,11 +1,31 @@
+todo 1950 cached 0
+multiprocessing.pool.RemoteTraceback: 
+"""
 Traceback (most recent call last):
-  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 98, in <module>
+  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 53, in dock_one
+    txt = lig_pdbqt(smi, tag)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 42, in lig_pdbqt
+    os.remove(sdf)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/jackson/cyp-challenge/src/../cache/dock/tmp_tr.sdf'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 93, in <module>
     main()
-  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 76, in main
-    import hinge_blend as H
-  File "/home/jackson/cyp-challenge/src/hinge_blend.py", line 52, in <module>
-    import run_regression as R  # noqa: E402
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/run_regression.py", line 16, in <module>
-    from lightgbm import LGBMRegressor
-ModuleNotFoundError: No module named 'lightgbm'
+  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 83, in main
+    for i, (tag, smi, res) in enumerate(p.imap_unordered(dock_one, todo, chunksize=8)):
+  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 451, in <genexpr>
+    return (item for chunk in result for item in chunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 873, in next
+    raise value
+FileNotFoundError: [Errno 2] No such file or directory: '/home/jackson/cyp-challenge/src/../cache/dock/tmp_tr.sdf'
