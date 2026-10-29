@@ -863,3 +863,10 @@ both tracks. Current R3-5 (4 holo receptors, heme boxes) = CONFIRMATION
 run of the closed avenue with better structures; finish + gate on 1200
 subset, report as replication, do NOT re-litigate. src/dock_features.py
 was the prior infra (kept).
+
+
+### Oct 28 - R3-4 extw005 5-SEED COMPLETE
+softRAE .3250/.3220/.3270/.3230/.3240 mean .3242 sd .0019. Most stable FT
+family of campaign; ties physics band (.3249-.3268), beats heavy w0.3 (.3299).
+5-seed avg+shuf -> zoo13 pool gates (proc_d655264342f4) firing now.
+r31b fold-align fix (folds in labeled-subset space), relaunched proc_46e33ace3c93.

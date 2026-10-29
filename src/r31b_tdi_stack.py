@@ -69,13 +69,12 @@ def main():
     idx = [pos.get(s, -1) for s in Xtr["SMILES"]]
     A2 = A2[np.array(idx)]
 
-    smi = Xtr["SMILES"].tolist()
-    fold_assign = make_folds(scaffold_groups(smi), k=5, seed=3)
-
     for iso in ISO:
         y = Y[f"{iso}_is_TDI"].values
         m = ~pd.isna(y)
         yl = np.array([1 if bool(v) else 0 for v in y[m]], dtype=int)
+        Xl = Xtr[m].reset_index(drop=True)
+        fold_assign = make_folds(scaffold_groups(Xl["SMILES"].tolist()), k=5, seed=3)
         pb = np.load(os.path.join(CACHE, f"tdi_fb4_v6b_merged_{iso}cap.npy"))
         assert len(pb) == m.sum(), (len(pb), m.sum())
         lb = np.log(np.clip(pb, 1e-6, 1 - 1e-6) / (1 - np.clip(pb, 1e-6, 1 - 1e-6)))

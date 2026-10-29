@@ -5,7 +5,7 @@ import os
 
 CACHE = "/home/jackson/cyp-challenge/cache"
 ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
-SEEDFILES = {0: "ft_oof_extw005.csv", 1: "ft_oof_extw005_s1.csv", 2: "ft_oof_extw005_s2.csv"}
+SEEDFILES = {0: "ft_oof_extw005.csv", 1: "ft_oof_extw005_s1.csv", 2: "ft_oof_extw005_s2.csv", 3: "ft_oof_extw005_s3.csv", 4: "ft_oof_extw005_s4.csv"}
 dfs = []
 for s, fn in SEEDFILES.items():
     p_ = os.path.join(CACHE, fn)
