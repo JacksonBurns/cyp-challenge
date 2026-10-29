@@ -1,0 +1,3 @@
+1.1 s CC(=O)Oc1ccccc1C(=O)O {'CYP1A2': None, 'CYP2C9': None, 'CYP2D6': None, 'CYP3A4': None}
+1.1 s CN1CCC2(CC1)Cc1ccccc1c1c {}
+2.1 s c1ccc2c(c1)c(CC(=O)O)cn2 {'CYP1A2': None, 'CYP2C9': None, 'CYP2D6': None, 'CYP3A4': None}

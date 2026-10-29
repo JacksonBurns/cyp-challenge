@@ -815,3 +815,13 @@ NOTE: ft_ext AUX_W now env-settable (FT_AUXW).
 1z19/1nw8/4uou/3mo1 are APO (no heme in files). Need holo entries:
 tools/rcsb_holo.py queries RCSB (UniProt + HEM + ligand + <2.8A).
 dock env (meeko/vina/rdkit) building. Vina CPU chosen (GPU busy).
+
+
+### Oct 28 - R3-5 DOCKING PIPELINE LIVE
+Holo picks (UniProt scan + HEM/ligand parse): 1A2 2HI4 (aNF), 2C9 1R9o
+(flurbiprofen), 2D6 4WNU (quinidine), 3A4 6MA8; 1.78-2.26A. Heme-Fe
+box centers extracted. Receptors: obabel -p 7.4 pdbqt (protein+HEM+
+cocrystal ligand) - meeko mk_prepare_receptor crashed on HEM.
+Vina CPU API fixed (sf_name/cpu; dock(exhaustiveness,n_poses)).
+Ligands: RDKit ETKDG+MMFF -> mk_prepare_ligand. 1200 tr + 750 te,
+12 workers, checkpointed. Smoke running (map build cost first call).

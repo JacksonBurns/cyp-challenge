@@ -1,15 +1,3 @@
 center pats: 12 pairs: 8
-sim matrices in 3s
+sim matrices in 2s
 pharm feats (6145, 46) nonzero frac 0.231
-Traceback (most recent call last):
-  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 154, in <module>
-    main()
-  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 145, in main
-    m0 = mae_gate(Xbase, iso, seed)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 133, in mae_gate
-    g = HistGB(seed)
-        ^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/r32_pharm.py", line 139, in HistGB
-    from lightgbm import HistGradientBoostingRegressor
-ImportError: cannot import name 'HistGradientBoostingRegressor' from 'lightgbm' (/home/jackson/miniforge3/envs/cyp/lib/python3.11/site-packages/lightgbm/__init__.py)

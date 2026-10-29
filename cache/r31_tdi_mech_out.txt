@@ -2,3 +2,4 @@ bioact patterns: 26
 mech (6145, 26) prevalence>0: 0.179
 sim matrices in 1s
 CYP2D6 base        best-thr MCC 0.1264 | field MCC 0.0932
+CYP2D6 mech        best-thr MCC 0.1270 | field MCC 0.0966

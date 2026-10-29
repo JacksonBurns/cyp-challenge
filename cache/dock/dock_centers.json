@@ -1,22 +1,38 @@
 {
  "CYP1A2": {
-  "pdb": "1z19",
-  "center": null,
+  "pdb": "2hi4",
+  "center": [
+   4.92,
+   25.0,
+   23.91
+  ],
   "box": 24.0
  },
  "CYP2C9": {
-  "pdb": "1nw8",
-  "center": null,
+  "pdb": "1r9o",
+  "center": [
+   5.89,
+   24.57,
+   -1.06
+  ],
   "box": 24.0
  },
  "CYP2D6": {
-  "pdb": "4uou",
-  "center": null,
+  "pdb": "4wnu",
+  "center": [
+   12.58,
+   0.48,
+   31.36
+  ],
   "box": 24.0
  },
  "CYP3A4": {
-  "pdb": "3mo1",
-  "center": null,
+  "pdb": "6ma8",
+  "center": [
+   -15.76,
+   -23.05,
+   -10.98
+  ],
   "box": 24.0
  }
 }

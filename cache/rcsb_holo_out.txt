@@ -1,0 +1,4 @@
+CYP1A2 [{"pid": "2hi4", "res": 1.95, "lig": ["BHF"], "fe": null}]
+CYP2C9 [{"pid": "1r9o", "res": 2.0, "lig": ["FLP"], "fe": null}, {"pid": "5a5i", "res": 2.0, "lig": ["XI1"], "fe": null}]
+CYP2D6 [{"pid": "3tbg", "res": 2.1, "lig": ["RTZ"], "fe": null}, {"pid": "4wnu", "res": 2.26, "lig": ["QDN"], "fe": null}]
+CYP3A4 [{"pid": "9yk4", "res": 1.78, "lig": ["IMD", "PG4"], "fe": null}, {"pid": "6ma8", "res": 1.83, "lig": ["PMF"], "fe": null}]

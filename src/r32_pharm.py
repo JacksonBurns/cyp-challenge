@@ -110,7 +110,6 @@ def pharm_feats(smiles):
 
 def main():
     import hinge_blend as H
-    from lightgbm import LGBMRegressor
     from sklearn.model_selection import KFold
 
     Ftr = pharm_feats(H.Xtr["SMILES"].tolist())
@@ -136,7 +135,7 @@ def main():
         return float(np.mean(np.abs(pred - y)))
 
     def HistGB(seed):
-        from lightgbm import HistGradientBoostingRegressor
+        from sklearn.ensemble import HistGradientBoostingRegressor
         return HistGradientBoostingRegressor(max_iter=250, learning_rate=0.08,
                                              random_state=seed)
 
