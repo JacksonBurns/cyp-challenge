@@ -1,1 +1,10 @@
 bioact patterns: 26
+sim matrices in 6s
+CYP2D6 BASE v6bcap E[MCC] 0.1998 @ f=0.17 (n=1497, pi_hat=0.216)
+CYP2D6 +mech        E[MCC] 0.1417 @ f=0.22  delta -0.0581
+CYP2D6 +adme2       E[MCC] 0.0949 @ f=0.08  delta -0.1049
+CYP2D6 +mech+adme2  E[MCC] 0.1064 @ f=0.14  delta -0.0934
+CYP3A4 BASE v6bcap E[MCC] 0.4087 @ f=0.24 (n=3584, pi_hat=0.213)
+CYP3A4 +mech        E[MCC] 0.3678 @ f=0.29  delta -0.0409
+CYP3A4 +adme2       E[MCC] 0.3545 @ f=0.28  delta -0.0542
+CYP3A4 +mech+adme2  E[MCC] 0.3677 @ f=0.31  delta -0.0410

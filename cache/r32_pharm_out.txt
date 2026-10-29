@@ -2,3 +2,4 @@ center pats: 12 pairs: 8
 sim matrices in 2s
 pharm feats (6145, 46) nonzero frac 0.231
 seed0 CYP1A2: +PHARM +0.0046 | PHARM-on-A2 +0.0033
+seed0 CYP2C9: +PHARM +0.0029 | PHARM-on-A2 -0.0000

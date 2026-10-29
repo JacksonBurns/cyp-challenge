@@ -4,3 +4,4 @@ sim matrices in 1s
 CYP2D6 base        best-thr MCC 0.1264 | field MCC 0.0932
 CYP2D6 mech        best-thr MCC 0.1270 | field MCC 0.0966
 CYP2D6 adme2       best-thr MCC 0.1180 | field MCC 0.0951
+CYP2D6 mech_adme2  best-thr MCC 0.1294 | field MCC 0.0903

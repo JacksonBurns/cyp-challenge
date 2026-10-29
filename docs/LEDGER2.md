@@ -870,3 +870,16 @@ softRAE .3250/.3220/.3270/.3230/.3240 mean .3242 sd .0019. Most stable FT
 family of campaign; ties physics band (.3249-.3268), beats heavy w0.3 (.3299).
 5-seed avg+shuf -> zoo13 pool gates (proc_d655264342f4) firing now.
 r31b fold-align fix (folds in labeled-subset space), relaunched proc_46e33ace3c93.
+
+
+### Oct 28 - R3-1b TDI STACK CLOSED (decisive negative)
+Mechanism (26 bioactivation SMARTS) + ADME2 features stacked (LGBM) on the
+v5-ship v6b-capped pooled OOF logit, scaffold folds, E[MCC] under v7 prior:
+2D6 base .1998 -> mech -.058 / adme2 -.105 / both -.093
+3A4 base .4087 -> mech -.041 / adme2 -.054 / both -.041
+Interpretation: the v5 machinery (family-capped ensemble) already contains
+any mechanism/physics signal; a downstream stack only adds variance and
+dilutes the strong calibrated base logit (E[MCC] drops toward the weak
+in-run classifier levels). TDI: NO ship change. v4/v5 unchanged.
+Mechanism features' only observed effect: +0.0034 in the WEAK 2D6 in-run
+base (R3-1) - real but irrelevant to the ship. Classification science closed.
