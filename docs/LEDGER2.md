@@ -825,3 +825,10 @@ cocrystal ligand) - meeko mk_prepare_receptor crashed on HEM.
 Vina CPU API fixed (sf_name/cpu; dock(exhaustiveness,n_poses)).
 Ligands: RDKit ETKDG+MMFF -> mk_prepare_ligand. 1200 tr + 750 te,
 12 workers, checkpointed. Smoke running (map build cost first call).
+
+
+### Oct 28 - R3-4 partial: extw005 (quantitative pIC50 aux, AUX_W=0.05) seed0
+macro softRAE 0.3250 [1A2 .4084 2C9 .2154 2D6 .3977 3A4 .2786] - best
+ft_ext config yet (old recipe w0.3 ~.33+); seeds 1-2 running.
+Docking: full run launched (1200tr+750te x 4 receptors, CPU 12w).
+R3-2 pharm gate grinding (46 feats, 23% nonzero). R3-1 tdi_mech running.

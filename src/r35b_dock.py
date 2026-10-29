@@ -60,7 +60,7 @@ def dock_one(args):
         c = CENTERS[iso]["center"]
         v = Vina(sf_name="vina", cpu=1, seed=0)
         try:
-            v.set_receptor(os.path.join(DOCKD, f"{iso}.pdbqt"))
+            v.set_receptor(os.path.join(DOCKD, f"{iso}.rigid.pdbqt"))
             v.set_ligand_from_file(ligf)
             v.compute_vina_maps(center=c, box_size=[24, 24, 24])
             v.dock(exhaustiveness=8, n_poses=3)

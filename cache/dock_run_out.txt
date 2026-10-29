@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 98, in <module>
+    main()
+  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 76, in main
+    import hinge_blend as H
+  File "/home/jackson/cyp-challenge/src/hinge_blend.py", line 52, in <module>
+    import run_regression as R  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jackson/cyp-challenge/src/run_regression.py", line 16, in <module>
+    from lightgbm import LGBMRegressor
+ModuleNotFoundError: No module named 'lightgbm'
