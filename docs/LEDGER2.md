@@ -832,3 +832,10 @@ macro softRAE 0.3250 [1A2 .4084 2C9 .2154 2D6 .3977 3A4 .2786] - best
 ft_ext config yet (old recipe w0.3 ~.33+); seeds 1-2 running.
 Docking: full run launched (1200tr+750te x 4 receptors, CPU 12w).
 R3-2 pharm gate grinding (46 feats, 23% nonzero). R3-1 tdi_mech running.
+
+
+### Oct 28 - R3-5 dock v2: receptor-pinned workers
+v1 rebuilt Vina maps per ligand per receptor (~4min/ligand -> 10h). v2:
+phase1 ligand PDBQT prep cached (lig/<md5>.pdbqt), phase2 per receptor
+maps ONCE per worker, stream. Running prep then 4 receptors.
+extw005 zoo13 pool gate battery staged (tools/r34_battery.sh).

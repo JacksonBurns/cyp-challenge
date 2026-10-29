@@ -1,31 +1,250 @@
 todo 1950 cached 0
-multiprocessing.pool.RemoteTraceback: 
-"""
-Traceback (most recent call last):
-  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 125, in worker
-    result = (True, func(*args, **kwds))
-                    ^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 48, in mapstar
-    return list(map(*args))
-           ^^^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 53, in dock_one
-    txt = lig_pdbqt(smi, tag)
-          ^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 42, in lig_pdbqt
-    os.remove(sdf)
-FileNotFoundError: [Errno 2] No such file or directory: '/home/jackson/cyp-challenge/src/../cache/dock/tmp_tr.sdf'
-"""
+Computing Vina grid ... Computing Vina grid ... Computing Vina grid ... Computing Vina grid ... Computing Vina grid ... done.
+done.
+Performing docking (random seed: 1888159446) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*Performing docking (random seed: -852538636) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*done.
+done.
+done.
+Performing docking (random seed: 2037496004) ... Performing docking (random seed: 1691623192) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+Computing Vina grid ... *Performing docking (random seed: 782567667) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*Computing Vina grid ... Computing Vina grid ... *Computing Vina grid ... *Computing Vina grid ... Computing Vina grid ... ***Computing Vina grid ... *done.
+Performing docking (random seed: -712153709) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+**done.
+Performing docking (random seed: 792479731) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*done.
+Performing docking (random seed: -1994768431) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+**done.
+Performing docking (random seed: 546291741) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***done.
+done.
+Performing docking (random seed: 1725777919) ... Performing docking (random seed: -1995078384) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
 
-The above exception was the direct cause of the following exception:
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+****done.
+Performing docking (random seed: -93938910) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+****************************************************************************************************************************************************************
+*
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -5.375          0          0
+   2       -4.828       3.28      5.412
+   3       -4.573      3.255      5.347
+****Computing Vina grid ... *********done.
+Performing docking (random seed: -650726815) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***********************************************************************************************************************************************************************************************
+*
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.074          0          0
+   2       -5.629      2.596      7.129
+   3       -5.584      2.581      7.021
+*
 
-Traceback (most recent call last):
-  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 93, in <module>
-    main()
-  File "/home/jackson/cyp-challenge/src/r35b_dock.py", line 83, in main
-    for i, (tag, smi, res) in enumerate(p.imap_unordered(dock_one, todo, chunksize=8)):
-  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 451, in <genexpr>
-    return (item for chunk in result for item in chunk)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/miniforge3/envs/dock/lib/python3.11/multiprocessing/pool.py", line 873, in next
-    raise value
-FileNotFoundError: [Errno 2] No such file or directory: '/home/jackson/cyp-challenge/src/../cache/dock/tmp_tr.sdf'
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.861          0          0
+   2       -5.314       18.9      20.01
+   3       -5.251       3.28      5.231
+*Computing Vina grid ... ***done.
+Performing docking (random seed: -1505518989) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+****Computing Vina grid ... *******done.
+*Performing docking (random seed: 1184662606) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+**********************************************************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.836          0          0
+   2       -6.672      2.131      8.453
+   3       -6.659      1.699      8.298
+*****Computing Vina grid ... ******done.
+Performing docking (random seed: -586312096) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+**
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1        -7.01          0          0
+   2       -6.113      2.662      4.193
+   3       -6.068        6.4      9.765
+***************Computing Vina grid ... **********done.
+*Performing docking (random seed: -899776721) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+********
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -4.774          0          0
+   2       -4.562      1.286      1.478
+   3       -4.546      1.996      2.736
+**Computing Vina grid ... ******done.
+Performing docking (random seed: -1150589331) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*************************************************
+*
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.558          0          0
+   2       -6.314      5.147      8.006
+   3       -5.978      5.364      8.115
+******************Computing Vina grid ... ****done.
+*Performing docking (random seed: 486334676) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+************************************************************************
+*
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.705          0          0
+   2       -6.408      2.297       3.93
+   3       -6.368      2.378      6.937
+*****
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.807          0          0
+   2       -6.645      4.298      5.821
+   3       -6.616      3.087      4.085
+******Computing Vina grid ... *****done.
+Performing docking (random seed: 2061616399) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*******
+Computing Vina grid ... *
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1        -5.78          0          0
+   2       -5.738      5.021      7.416
+   3       -5.587      4.047      7.563
+****done.
+Performing docking (random seed: 2088921191) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*******Computing Vina grid ... *****done.
+Performing docking (random seed: 426553763) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.103          0          0
+   2       -6.023      2.229      7.252
+   3       -3.118      2.519      7.451
+****Computing Vina grid ... **done.
+*Performing docking (random seed: 1669406523) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+**************************************************************************************************************************************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.413          0          0
+   2       -5.896      19.09      21.78
+   3       -5.754      19.93      21.12
+******Computing Vina grid ... done.
+*Performing docking (random seed: -169548431) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+**********************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.587          0          0
+   2        -7.28      3.621      8.875
+   3        -5.96      21.72      24.25
+****Computing Vina grid ... *****done.
+Performing docking (random seed: -384780302) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***********************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -5.582          0          0
+   2       -5.378      13.77      17.74
+   3       -5.362      12.51      16.21
+***Computing Vina grid ... ********done.
+Performing docking (random seed: 757445487) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+*******************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.591          0          0
+   2       -5.911      3.624       5.61
+   3       0.2241      20.46      21.32
+*******Computing Vina grid ... done.
+Performing docking (random seed: -199417566) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+******************************************************************************************************************
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -7.341          0          0
+   2       -6.694      4.709      7.685
+   3       -6.512      1.275      2.558
+*****************Computing Vina grid ... ***done.
+*Performing docking (random seed: -1332599711) ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+********
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1       -6.171          0          0
+   2       -5.817      2.793       6.43
+   3       -5.401      1.602      2.218
+****
