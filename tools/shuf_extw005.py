@@ -5,11 +5,12 @@ import os
 
 CACHE = "/home/jackson/cyp-challenge/cache"
 ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
+SEEDFILES = {0: "ft_oof_extw005.csv", 1: "ft_oof_extw005_s1.csv", 2: "ft_oof_extw005_s2.csv"}
 dfs = []
-for s in [0, 1, 2]:
-    p = os.path.join(CACHE, f"ft_oof_extw005_{s}.csv")
-    if os.path.exists(p):
-        dfs.append(pd.read_csv(p))
+for s, fn in SEEDFILES.items():
+    p_ = os.path.join(CACHE, fn)
+    if os.path.exists(p_):
+        dfs.append(pd.read_csv(p_))
 print("seeds:", len(dfs))
 base = dfs[0]
 for iso in ISO:

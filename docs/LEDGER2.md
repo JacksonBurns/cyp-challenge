@@ -839,3 +839,9 @@ v1 rebuilt Vina maps per ligand per receptor (~4min/ligand -> 10h). v2:
 phase1 ligand PDBQT prep cached (lig/<md5>.pdbqt), phase2 per receptor
 maps ONCE per worker, stream. Running prep then 4 receptors.
 extw005 zoo13 pool gate battery staged (tools/r34_battery.sh).
+
+
+### Oct 28 - extw005 3 seeds done (naming: extw005, _s1, _s2)
+avg/shuf + zoo13 pool gate battery relaunched (proc_3a0546875a86).
+softrae seeds appended to extw005_avg_out. zoo14 battery (proc_b73a71801a48)
+waits on ft_oof_extw005_avg.csv -> fires after zoo13.
