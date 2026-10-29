@@ -1,1 +1,13 @@
 prep todo 1950
+  prep 0/1950
+  prep 200/1950
+  prep 400/1950
+  prep 600/1950
+  prep 800/1950
+  prep 1000/1950
+  prep 1200/1950
+  prep 1400/1950
+  prep 1600/1950
+  prep 1800/1950
+PREP DONE
+CYP1A2 dock todo 1950
