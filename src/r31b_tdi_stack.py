@@ -70,7 +70,7 @@ def main():
     A2 = A2[np.array(idx)]
 
     smi = Xtr["SMILES"].tolist()
-    folds = list(make_folds(scaffold_groups(smi), 5, seed=3))
+    fold_assign = make_folds(scaffold_groups(smi), k=5, seed=3)
 
     for iso in ISO:
         y = Y[f"{iso}_is_TDI"].values
@@ -86,7 +86,9 @@ def main():
         for nm, extra in [("mech", MECH[m]), ("adme2", A2[m]), ("mech+adme2", np.hstack([MECH[m], A2[m]]))]:
             Xs = np.hstack([lb[:, None], extra])
             oof = np.zeros(m.sum())
-            for tr, te in folds:
+            for fv in range(5):
+                te = np.where(fold_assign == fv)[0]
+                tr = np.where(fold_assign != fv)[0]
                 g = LGBMClassifier(n_estimators=300, learning_rate=0.06, num_leaves=31,
                                    random_state=0, verbose=-1)
                 g.fit(Xs[tr], yl[tr])

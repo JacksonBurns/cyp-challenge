@@ -853,3 +853,13 @@ softRAE s0 .3250 / s1 .3220 / s2 .3270; mean .3247. Ties ft_adme2 w0.1
 nM + PubChem pIC50 aux at w=0.05 = best standalone FT arm (with adme2).
 zoo13 pool gates running; zoo14 dual-family (ext+physics) queued.
 Dock ALL running (4 receptors x 12->3 workers, per-worker checkpoints).
+
+
+### Oct 28 - R3-5 CONTEXT FOUND: dockfeat CLOSED Oct 20 (docs/archive/DOCKFEAT_PLAN.md)
+Prior campaign docked CYP2D6 full 6145+750 (96.9%): cp18 delta -0.0016
+REGRESSION FAIL; TDI inconsistent (helps only umtm+dock 2D6); standalone
+2D6 R2 0.18, |corr| vs pool 0.09-0.34 = redundant signal. Verdict: DEAD
+both tracks. Current R3-5 (4 holo receptors, heme boxes) = CONFIRMATION
+run of the closed avenue with better structures; finish + gate on 1200
+subset, report as replication, do NOT re-litigate. src/dock_features.py
+was the prior infra (kept).
