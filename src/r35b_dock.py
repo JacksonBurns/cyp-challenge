@@ -50,25 +50,35 @@ def prep_one(smi):
 
 
 def dock_worker(args):
-    iso, smis = args
+    iso, wid, smis = args
     from vina import Vina
     c = CENTERS[iso]["center"]
     v = Vina(sf_name="vina", cpu=1, seed=0, verbosity=0)
     v.set_receptor(os.path.join(DOCKD, f"{iso}.rigid.pdbqt"))
     v.compute_vina_maps(center=c, box_size=[24, 24, 24])
     out = {}
-    for smi in smis:
-        p = os.path.join(LIGD, uid(smi) + ".pdbqt")
-        if not os.path.exists(p):
+    cp = os.path.join(DOCKD, f"dock_{iso}_w{wid}.json")
+    for i, smi in enumerate(smis):
+        p_ = os.path.join(LIGD, uid(smi) + ".pdbqt")
+        if not os.path.exists(p_):
             out[smi] = None
             continue
         try:
-            v.set_ligand_from_file(p)
+            v.set_ligand_from_file(p_)
             v.dock(exhaustiveness=8, n_poses=1)
             out[smi] = float(v.score()[0])
         except Exception:
             out[smi] = None
-    return iso, out
+        if i % 100 == 99:
+            done_ = json.load(open(cp)) if os.path.exists(cp) else {}
+            done_.update(out)
+            json.dump(done_, open(cp, "w"))
+            print(f"  {iso} w{wid} {len(done_)}", flush=True)
+            out = {}
+    done_ = json.load(open(cp)) if os.path.exists(cp) else {}
+    done_.update(out)
+    json.dump(done_, open(cp, "w"))
+    return iso, wid
 
 
 def all_mols():
@@ -87,19 +97,23 @@ def main():
                 if i % 200 == 0:
                     print(f"  prep {i}/{len(todo)}", flush=True)
         print("PREP DONE", flush=True)
-    elif mode == "dock":
-        iso = sys.argv[2]
-        cp = os.path.join(DOCKD, f"dock_{iso}.json")
-        done = json.load(open(cp)) if os.path.exists(cp) else {}
-        smis = [s for s in all_mols() if s not in done]
-        print(iso, "dock todo", len(smis), flush=True)
-        chunks = [smis[i::2] for i in range(2)]  # 2 workers
-        with Pool(2) as p:
-            for j, (isox, out) in enumerate(p.imap_unordered(dock_worker, [(iso, c) for c in chunks])):
-                done.update(out)
-                json.dump(done, open(cp, "w"))
-                print(f"  {iso} chunk done {len(done)}/{len(all_mols())}", flush=True)
-        print("DOCK DONE", iso, len(done), flush=True)
+    elif mode.startswith("dock"):
+        iso = sys.argv[2] if mode == "dock" else "ALL"
+        isos = ISO if iso == "ALL" else [iso]
+        allsm = all_mols()
+        NW = 12 // len(isos)
+        jobs = []
+        for iz in isos:
+            cp = os.path.join(DOCKD, f"dock_{iz}.json")
+            done = json.load(open(cp)) if os.path.exists(cp) else {}
+            smis = [s for s in allsm if s not in done]
+            print(iz, "dock todo", len(smis), flush=True)
+            for i in range(NW):
+                jobs.append((iz, i, smis[i::NW]))
+        with Pool(12) as p_:
+            for j, (isox, wid) in enumerate(p_.imap_unordered(dock_worker, jobs)):
+                print(f"  {isox} w{wid} finished", flush=True)
+        print("DOCK DONE", flush=True)
 
 
 if __name__ == "__main__":

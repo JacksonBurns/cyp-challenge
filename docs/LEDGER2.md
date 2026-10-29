@@ -845,3 +845,11 @@ extw005 zoo13 pool gate battery staged (tools/r34_battery.sh).
 avg/shuf + zoo13 pool gate battery relaunched (proc_3a0546875a86).
 softrae seeds appended to extw005_avg_out. zoo14 battery (proc_b73a71801a48)
 waits on ft_oof_extw005_avg.csv -> fires after zoo13.
+
+
+### Oct 28 - R3-4 extw005 3-seed COMPLETE
+softRAE s0 .3250 / s1 .3220 / s2 .3270; mean .3247. Ties ft_adme2 w0.1
+(.3249), beats w0.02 band (.3268) and w0 (.3282). Quantitative ChEMBL
+nM + PubChem pIC50 aux at w=0.05 = best standalone FT arm (with adme2).
+zoo13 pool gates running; zoo14 dual-family (ext+physics) queued.
+Dock ALL running (4 receptors x 12->3 workers, per-worker checkpoints).
