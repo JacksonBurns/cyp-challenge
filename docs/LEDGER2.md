@@ -921,3 +921,11 @@ labels reproduce them exactly. extw005 is a strong standalone FT (0.3242,
 ties physics arm) but adds ZERO label-specific signal to the pool - the
 zoo6 pool already contains this signal class. Pool channel closed (8/8
 shuffled controls). No cp23. Ship stays cp21 + probes + placement.
+
+
+### Oct 28 - zoo13 (5-seed avg) SHUFFLED CONTROL CONFIRMS: rms ~0
+zoo13 real-vs-shuf: 1A2 -0.0028, 2C9 +0.0006, 2D6 +0.0022, 3A4 +0.0149 real
+L4 vs shuf L4 +0.0143 -> 3A4 rms +0.0012. Mean rms +0.0003.
+FINAL: R3-4 quantitative external pIC50 pretraining = strong standalone FT
+(5-seed 0.3242) that adds ZERO label-specific pool value. 8/8 shuffled
+controls. POOL CHANNEL PERMANENTLY CLOSED. Ship = cp21 + probes + placement.
