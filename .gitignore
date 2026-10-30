@@ -13,3 +13,4 @@ cache/oof_x_extemb.csv
 cache/oof_emb2_*.csv
 
 cache/emb_mordred_ext.parquet
+cache/adme2/ext_feats2.npy
