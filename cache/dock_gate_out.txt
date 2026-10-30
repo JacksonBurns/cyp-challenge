@@ -1,14 +1,2 @@
-sim matrices in 2s
-Traceback (most recent call last):
-  File "/home/jackson/cyp-challenge/src/r35c_dock_gate.py", line 83, in <module>
-    main()
-  File "/home/jackson/cyp-challenge/src/r35c_dock_gate.py", line 63, in main
-    Dtr = feats_for(tr_sm, sc)
-          ^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/r35c_dock_gate.py", line 37, in feats_for
-    v = [d.get(k) for k in ISO]
-        ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/jackson/cyp-challenge/src/r35c_dock_gate.py", line 37, in <listcomp>
-    v = [d.get(k) for k in ISO]
-         ^^^^^
-AttributeError: 'float' object has no attribute 'get'
+sim matrices in 1s
+docked train rows: 1184

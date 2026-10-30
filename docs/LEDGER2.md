@@ -908,3 +908,16 @@ contains the same FT families). Shuffled control decides: if shuf cv gain is
 similar, this is pool inflation, not ext-specific signal (expected per the
 7 prior shuffled controls). Aggregator armed (tools/zoo134_agg.py).
 Dock gate A5G relaunched (JSON race fixed).
+
+
+### Oct 28 - R3-4 POOL CLAIM KILLED BY SHUFFLED CONTROL (8th confirmation)
+zoo14 ext mode real-vs-shuffled (zoo6 + extw005 family):
+ 1A2 real +0.0269 shuf +0.0274 -> rms -0.0005
+ 2C9 real +0.0066 shuf +0.0030 -> rms +0.0036
+ 2D6 real +0.0282 shuf +0.0296 -> rms -0.0014
+ 3A4 real +0.0168 shuf +0.0169 -> rms -0.0001
+The headline CV gains (+0.02..+0.03, L4 CI>0) are POOL INFLATION: shuffled
+labels reproduce them exactly. extw005 is a strong standalone FT (0.3242,
+ties physics arm) but adds ZERO label-specific signal to the pool - the
+zoo6 pool already contains this signal class. Pool channel closed (8/8
+shuffled controls). No cp23. Ship stays cp21 + probes + placement.

@@ -20,12 +20,7 @@ ISO = ["CYP1A2", "CYP2C9", "CYP2D6", "CYP3A4"]
 
 
 def load_dock():
-    sc = {}
-    for iso in ISO:
-        for fn in os.listdir(os.path.join(CACHE, "dock")):
-            if fn.startswith(f"dock_{iso}_w") and fn.endswith(".json"):
-                sc.update(json.load(open(os.path.join(CACHE, "dock", fn))))
-    return sc
+    return json.load(open(os.path.join(CACHE, "dock", "dock_scores.json")))
 
 
 def feats_for(smis, sc):
