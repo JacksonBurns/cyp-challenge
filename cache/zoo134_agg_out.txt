@@ -1,0 +1,5 @@
+== zoo14_ext ==
+CYP1A2: cv_gain +0.0269 L4 +0.0214 | shuf cv +0.0274 -> real-minus-shuf -0.0005
+CYP2C9: cv_gain +0.0066 L4 +0.0117 | shuf cv +0.0030 -> real-minus-shuf +0.0036
+CYP2D6: cv_gain +0.0282 L4 +0.0062 | shuf cv +0.0296 -> real-minus-shuf -0.0014
+CYP3A4: cv_gain +0.0168 L4 +0.0148 | shuf cv +0.0169 -> real-minus-shuf -0.0001

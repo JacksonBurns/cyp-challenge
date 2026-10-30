@@ -1,2 +1,5 @@
 sim matrices in 1s
 docked train rows: 1184
+seed0 CYP1A2: +DOCK -0.0199 | DOCK-on-A2 -0.0054
+seed0 CYP2C9: +DOCK -0.0034 | DOCK-on-A2 +0.0049
+seed0 CYP2D6: +DOCK +0.0003 | DOCK-on-A2 +0.0004

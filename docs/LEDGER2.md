@@ -929,3 +929,13 @@ L4 vs shuf L4 +0.0143 -> 3A4 rms +0.0012. Mean rms +0.0003.
 FINAL: R3-4 quantitative external pIC50 pretraining = strong standalone FT
 (5-seed 0.3242) that adds ZERO label-specific pool value. 8/8 shuffled
 controls. POOL CHANNEL PERMANENTLY CLOSED. Ship = cp21 + probes + placement.
+
+
+### Oct 30 - CAMPAIGN CLOSE: FINAL SUBMISSIONS SENT
+User: skip probes, submit now; chose real scientific effort over leaderboard
+hacking. Files: regression_cp21_submission.csv (md5 f98cd854...) +
+tdi_submission_v5_candidate.csv (md5 c8ab0626...), both 750 rows validated
+vs blinded test. All R3 runs cancelled by user direction (remaining arms
+predicted ~0 by 8/8 shuffled-control pattern; zoo14 aggregation confirmed
+rms ~0 on final tick). Final science record: LEDGER2 + SCICOMPENDIUM +
+CHEMFORENSICS + ADME2_OCT27 + R3 entries.
