@@ -896,3 +896,15 @@ NOTE: extfam gets NEGATIVE fitted weights in several isoforms - the fitter
 pushes it OUT, sign of redundancy with existing pool members. Shuffled
 controls running (zoo13_shuf, zoo14_extshuf, then both/bothshuf).
 Decisive metric = real-minus-shuf. Dock gate A5G relaunched.
+
+
+### Oct 28 - extw005 pool gate numbers + extfam redundancy sign
+zoo13 real gate (zoo6+extw005_avg 5-seed): 1A2 cv +0.0246 (5/5 pos),
+2C9 +0.0036 (L1 fail), 2D6 +0.0318 (L1 PASS, L4 CI>0), 3A4 +0.0181 (L1 PASS, L4 CI>0).
+zoo14 ext: 2D6 +0.0282, 3A4 +0.0168. Key tell: fitted weight of ft_extfam is
+NEGATIVE in 2D6 (-0.125) and 3A4 (-0.141) - the constrained fitter pushes the
+new family OUT, classic redundancy with existing pool members (zoo6 already
+contains the same FT families). Shuffled control decides: if shuf cv gain is
+similar, this is pool inflation, not ext-specific signal (expected per the
+7 prior shuffled controls). Aggregator armed (tools/zoo134_agg.py).
+Dock gate A5G relaunched (JSON race fixed).
