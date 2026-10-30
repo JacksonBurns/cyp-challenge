@@ -883,3 +883,16 @@ dilutes the strong calibrated base logit (E[MCC] drops toward the weak
 in-run classifier levels). TDI: NO ship change. v4/v5 unchanged.
 Mechanism features' only observed effect: +0.0034 in the WEAK 2D6 in-run
 base (R3-1) - real but irrelevant to the ship. Classification science closed.
+
+
+### Oct 28 - POOL GATES zoo13 (extw005 5-seed avg) REAL + zoo14_ext REAL
+zoo13 real (zoo6 + extw005_avg 5-seed):
+ 1A2 cv +0.0246 (5/5); 2C9 cv +0.0036 (4/5, L1 fail, L4 +0.0117 CI>0);
+ 2D6 cv +0.0318 (4/5, L1 PASS, L4 +0.0062 CI>0); 3A4 cv +0.0181 (5/5, L1 PASS, L4 +0.0149 CI>0)
+zoo14 ext mode (ext only into zoo6, w grid):
+ 2D6 cv +0.0282 (L1 PASS, extfam weight -0.125, ext +0.113);
+ 3A4 cv +0.0168 (5/5, extfam -0.141, ext -0.084)
+NOTE: extfam gets NEGATIVE fitted weights in several isoforms - the fitter
+pushes it OUT, sign of redundancy with existing pool members. Shuffled
+controls running (zoo13_shuf, zoo14_extshuf, then both/bothshuf).
+Decisive metric = real-minus-shuf. Dock gate A5G relaunched.
